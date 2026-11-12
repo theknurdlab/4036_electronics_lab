@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 1: Identification of Resistors, Capacitors, and Inductors | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-amber { background: var(--accent-amber); color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .comp-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .comp-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .comp-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .canvas-frame {
+      background: #ffffff;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    #benchCanvas {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      display: block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 10px;
+      background: #141d2f;
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ctrl-box select, .ctrl-box input {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 0.78rem;
+      outline: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: #0f172a;
+      border-top: 1px solid var(--border-dark);
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.63rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-top: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* Formatted Decoding Rules & Error Formula Card */
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.77rem;
+      line-height: 1.5;
+    }
+    .formula-title {
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .formula-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      color: #e2e8f0;
+    }
+    .formula-list li {
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .formula-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+    .math-chip {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 0.86rem;
+      color: #f8fafc;
+      margin: 3px 2px;
+      vertical-align: middle;
+    }
+    .code-chip {
+      display: inline-block;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.76rem;
+      color: #34d399;
+      font-weight: 700;
+    }
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 4px;
+      font-size: 0.85em;
+      line-height: 1.15;
+    }
+    .fraction-top { border-bottom: 1.3px solid currentColor; padding-bottom: 2px; }
+    .fraction-bottom { padding-top: 2px; }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid #334155;
+      padding: 4px 5px;
+    }
+    .ref-table th {
+      background: #0f172a;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+
+    /* Worksheet / Lab Manual View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.7rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.74rem;
+      gap: 4px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      line-height: 1.36;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 3px 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 1 (M1.01, CO1): Identification of Resistors, Capacitors, and Inductors</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">Passive Component Decoder &amp; DMM / LCR Bench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Visual Component & Instrument Bench -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>COMPONENT DECODING &amp; DMM / LCR METER MEASUREMENT BENCH</span>
+          </div>
+          <button class="btn btn-amber" style="padding:4px 10px; font-size:0.72rem;" onclick="logCurrentComponent()">
+            + Log Reading to Table
+          </button>
+        </div>
+
+        <div style="padding: 10px 12px 0 12px; background:#141d2f;">
+          <div class="comp-tabs">
+            <button id="cTabRes" class="comp-btn active" onclick="selectType('res')">(a) Carbon Resistor (4-Band)</button>
+            <button id="cTabCap" class="comp-btn" onclick="selectType('cap')">(b) Capacitor (3-Digit / Electrolytic)</button>
+            <button id="cTabInd" class="comp-btn" onclick="selectType('ind')">(c) Inductor (Color-Coded / Axial)</button>
+          </div>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="benchCanvas" width="720" height="320"></canvas>
+        </div>
+
+        <!-- Resistor Controls -->
+        <div id="ctrlRes" class="control-grid">
+          <div class="ctrl-box">
+            <label>Band 1 (1st Digit)</label>
+            <select id="resB1" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 2 (2nd Digit)</label>
+            <select id="resB2" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 3 (Multiplier)</label>
+            <select id="resB3" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 4 (Tolerance)</label>
+            <select id="resB4" onchange="updateAll()"></select>
+          </div>
+        </div>
+
+        <!-- Capacitor Controls -->
+        <div id="ctrlCap" class="control-grid" style="display:none;">
+          <div class="ctrl-box">
+            <label>Capacitor Type</label>
+            <select id="capKind" onchange="updateAll()">
+              <option value="ceramic" selected>Ceramic Disc (3-Digit EIA)</option>
+              <option value="elec">Electrolytic (Direct µF/V)</option>
+            </select>
+          </div>
+          <div class="ctrl-box" id="boxCapCode">
+            <label>3-Digit EIA Code</label>
+            <select id="capCode" onchange="updateAll()">
+              <option value="102">102 (1 nF / 0.001 µF)</option>
+              <option value="103">103 (10 nF / 0.01 µF)</option>
+              <option value="473">473 (47 nF / 0.047 µF)</option>
+              <option value="104" selected>104 (100 nF / 0.1 µF)</option>
+              <option value="224">224 (220 nF / 0.22 µF)</option>
+            </select>
+          </div>
+          <div class="ctrl-box" id="boxCapElec" style="display:none;">
+            <label>Printed Rating</label>
+            <select id="capElec" onchange="updateAll()">
+              <option value="10">10 µF / 25 V</option>
+              <option value="47">47 µF / 25 V</option>
+              <option value="100" selected>100 µF / 25 V</option>
+              <option value="470">470 µF / 35 V</option>
+            </select>
+          </div>
+          <div class="ctrl-box">
+            <label>Tolerance Letter</label>
+            <select id="capTol" onchange="updateAll()">
+              <option value="5">J (±5%)</option>
+              <option value="10" selected>K (±10%)</option>
+              <option value="20">M (±20%)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Inductor Controls -->
+        <div id="ctrlInd" class="control-grid" style="display:none;">
+          <div class="ctrl-box">
+            <label>Band 1 (1st Digit)</label>
+            <select id="indB1" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 2 (2nd Digit)</label>
+            <select id="indB2" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 3 (Multiplier µH)</label>
+            <select id="indB3" onchange="updateAll()"></select>
+          </div>
+          <div class="ctrl-box">
+            <label>Band 4 (Tolerance)</label>
+            <select id="indB4" onchange="updateAll()"></select>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">Nominal (Decoded)</div>
+            <div class="stat-value" id="statNom" style="color:#60a5fa;">1.00 kΩ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Measured (DMM/LCR)</div>
+            <div class="stat-value" id="statMeas" style="color:#34d399;">0.99 kΩ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tolerance Band</div>
+            <div class="stat-value" id="statTol" style="color:#fbbf24;">±5%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">% Percentage Error</div>
+            <div class="stat-value" id="statErr" style="color:#c084fc;">-1.00%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Color Code Reference & Formatted Decoding Rules & Error Formula -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>EIA COLOR CODE REFERENCE CHART</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">BB ROY GB VGW</span>
+        </div>
+
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Color</th>
+              <th>Digit</th>
+              <th>Resistor Mult.</th>
+              <th>Inductor Mult.</th>
+              <th>Tolerance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Black</strong></td><td>0</td><td>× 1 Ω</td><td>× 1 µH</td><td>—</td></tr>
+            <tr><td><strong>Brown</strong></td><td>1</td><td>× 10 Ω</td><td>× 10 µH</td><td>±1%</td></tr>
+            <tr><td><strong>Red</strong></td><td>2</td><td>× 100 Ω</td><td>× 100 µH</td><td>±2%</td></tr>
+            <tr><td><strong>Orange</strong></td><td>3</td><td>× 1 kΩ</td><td>× 1 mH</td><td>±3%</td></tr>
+            <tr><td><strong>Yellow</strong></td><td>4</td><td>× 10 kΩ</td><td>× 10 mH</td><td>±4%</td></tr>
+            <tr><td><strong>Green</strong></td><td>5</td><td>× 100 kΩ</td><td>—</td><td>±0.5%</td></tr>
+            <tr><td><strong>Blue</strong></td><td>6</td><td>× 1 MΩ</td><td>—</td><td>±0.25%</td></tr>
+            <tr><td><strong>Violet</strong></td><td>7</td><td>× 10 MΩ</td><td>—</td><td>±0.1%</td></tr>
+            <tr><td><strong>Grey</strong></td><td>8</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr><td><strong>White</strong></td><td>9</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr><td><strong>Gold / Silver</strong></td><td>—</td><td>×0.1 / ×0.01 Ω</td><td>×0.1 / ×0.01 µH</td><td>±5% / ±10%</td></tr>
+          </tbody>
+        </table>
+
+        <!-- Formatted Decoding Rules & Error Formula Card -->
+        <div class="formula-card">
+          <div class="formula-title">
+            <span>Decoding Rules &amp; Error Formula</span>
+            <span style="font-size:0.65rem; color:#94a3b8;">IEC 60062 / EIA Standard</span>
+          </div>
+          <ul class="formula-list">
+            <li>
+              <strong>4-Band Resistor Decoding:</strong> First two bands give significant digits (<span class="code-chip">D<sub>1</sub>D<sub>2</sub></span>), third band gives decimal multiplier (<span class="code-chip">10<sup>M</sup></span>), and fourth band gives tolerance:<br>
+              <span class="math-chip"><i>R</i><sub>nominal</sub> = (10<i>D</i><sub>1</sub> + <i>D</i><sub>2</sub>) &times; 10<sup><i>M</i></sup> &Omega; &plusmn; Tol%</span>
+            </li>
+            <li>
+              <strong>3-Digit Ceramic Capacitor Code:</strong> First two digits form the base value in picofarads (<span class="code-chip">pF</span>) and the third digit specifies the number of trailing zeros:<br>
+              <span class="math-chip"><i>C</i> = <i>D</i><sub>1</sub><i>D</i><sub>2</sub> &times; 10<sup><i>D</i><sub>3</sub></sup> pF</span>
+              &nbsp;(e.g., <span class="code-chip">104</span> &rarr; 10 &times; 10<sup>4</sup> pF = <strong>100 nF = 0.1 &mu;F</strong>)
+            </li>
+            <li>
+              <strong>Axial Inductor Color Code:</strong> Follows the same 4-band color sequence as resistors with the base unit expressed in microhenries (<span class="code-chip">&mu;H</span>):<br>
+              <span class="math-chip"><i>L</i><sub>nominal</sub> = (10<i>D</i><sub>1</sub> + <i>D</i><sub>2</sub>) &times; 10<sup><i>M</i></sup> &mu;H &plusmn; Tol%</span>
+            </li>
+            <li>
+              <strong>Percentage Measurement Error:</strong> Compares the DMM/LCR measured reading against the decoded nominal value:<br>
+              <span class="math-chip">
+                % Error = 
+                <span class="fraction">
+                  <span class="fraction-top">Measured Value &minus; Nominal Value</span>
+                  <span class="fraction-bottom">Nominal Value</span>
+                </span>
+                &times; 100%
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 1 (MODULE M1.01 • CO1)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 1: IDENTIFICATION OF RESISTORS, CAPACITORS, AND INDUCTORS</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To identify the nominal values and tolerances of given resistors, capacitors, and inductors from their color codes / printed markings, measure their actual values using a Digital Multimeter (DMM) / LCR meter, and compute the percentage error.<br>
+        <strong>APPARATUS / COMPONENTS:</strong> Digital Multimeter (DMM), Digital LCR Meter, Assorted Carbon Film Resistors (4-band), Ceramic Disc &amp; Electrolytic Capacitors, Color-coded Axial Inductors.
+      </div>
+
+      <div class="sheet-section-title">CAPTURED COMPONENT &amp; INSTRUMENT BENCH (FOR SELECTED COMPONENT)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:flex; justify-content:center;">
+          <canvas id="sheetBenchCanvas" width="720" height="320" style="width:92%; max-width:650px; height:auto; border:1px solid #000000;"></canvas>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 1.1: OBSERVATION &amp; ERROR CALCULATION TABLE</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Sl. No.</th>
+              <th>Component Type</th>
+              <th>Color Code / Printed Marking</th>
+              <th>Nominal Value</th>
+              <th>Tolerance</th>
+              <th>Measured Value (DMM/LCR)</th>
+              <th>% Error</th>
+            </tr>
+          </thead>
+          <tbody id="sheetTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const DIGITS = [
+      { name: 'Black',  val: 0, hex: '#111827', text: '#ffffff' },
+      { name: 'Brown',  val: 1, hex: '#78350f', text: '#ffffff' },
+      { name: 'Red',    val: 2, hex: '#dc2626', text: '#ffffff' },
+      { name: 'Orange', val: 3, hex: '#ea580c', text: '#ffffff' },
+      { name: 'Yellow', val: 4, hex: '#eab308', text: '#000000' },
+      { name: 'Green',  val: 5, hex: '#16a34a', text: '#ffffff' },
+      { name: 'Blue',   val: 6, hex: '#2563eb', text: '#ffffff' },
+      { name: 'Violet', val: 7, hex: '#7c3aed', text: '#ffffff' },
+      { name: 'Grey',   val: 8, hex: '#64748b', text: '#ffffff' },
+      { name: 'White',  val: 9, hex: '#f8fafc', text: '#000000' }
+    ];
+
+    const MULTS = [
+      { name: 'Black (×1)',     mult: 1,       hex: '#111827' },
+      { name: 'Brown (×10)',    mult: 10,      hex: '#78350f' },
+      { name: 'Red (×100)',     mult: 100,     hex: '#dc2626' },
+      { name: 'Orange (×1k)',   mult: 1000,    hex: '#ea580c' },
+      { name: 'Yellow (×10k)',  mult: 10000,   hex: '#eab308' },
+      { name: 'Green (×100k)',  mult: 100000,  hex: '#16a34a' },
+      { name: 'Blue (×1M)',     mult: 1000000, hex: '#2563eb' },
+      { name: 'Gold (×0.1)',    mult: 0.1,     hex: '#d4af37' },
+      { name: 'Silver (×0.01)', mult: 0.01,    hex: '#cbd5e1' }
+    ];
+
+    const TOLS = [
+      { name: 'Brown (±1%)',  tol: 1,  hex: '#78350f' },
+      { name: 'Red (±2%)',    tol: 2,  hex: '#dc2626' },
+      { name: 'Gold (±5%)',   tol: 5,  hex: '#d4af37' },
+      { name: 'Silver (±10%)',tol: 10, hex: '#cbd5e1' }
+    ];
+
+    const sim = {
+      type: 'res', // 'res', 'cap', 'ind'
+      loggedRows: [
+        { type: 'Resistor', code: 'Brown - Black - Red - Gold', nom: '1.00 kΩ', tol: '±5%', meas: '0.99 kΩ', err: '-1.00%' },
+        { type: 'Resistor', code: 'Yellow - Violet - Orange - Gold', nom: '47.0 kΩ', tol: '±5%', meas: '46.5 kΩ', err: '-1.06%' },
+        { type: 'Capacitor (Ceramic)', code: '104 K', nom: '100 nF (0.1 µF)', tol: '±10%', meas: '98.4 nF', err: '-1.60%' },
+        { type: 'Inductor (Axial)', code: 'Brown - Black - Red - Silver', nom: '1.00 mH', tol: '±10%', meas: '1.02 mH', err: '+2.00%' }
+      ]
+    };
+
+    function populateSelects() {
+      const fill = (id, arr, defIdx) => {
+        const el = document.getElementById(id);
+        el.innerHTML = arr.map((item, i) => `<option value="${i}" ${i === defIdx ? 'selected' : ''}>${item.name}</option>`).join('');
+      };
+      fill('resB1', DIGITS, 1); // Brown (1)
+      fill('resB2', DIGITS, 0); // Black (0)
+      fill('resB3', MULTS, 2);  // Red (x100) -> 1.0 kΩ
+      fill('resB4', TOLS, 2);   // Gold (±5%)
+
+      fill('indB1', DIGITS, 1); // Brown (1)
+      fill('indB2', DIGITS, 0); // Black (0)
+      fill('indB3', MULTS.slice(0, 7), 2); // Red (x100 uH) -> 1000 uH = 1.0 mH
+      fill('indB4', TOLS, 3);   // Silver (±10%)
+    }
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetView();
+      }
+    }
+
+    function selectType(type) {
+      sim.type = type;
+      document.getElementById('cTabRes').classList.toggle('active', type === 'res');
+      document.getElementById('cTabCap').classList.toggle('active', type === 'cap');
+      document.getElementById('cTabInd').classList.toggle('active', type === 'ind');
+
+      document.getElementById('ctrlRes').style.display = type === 'res' ? 'grid' : 'none';
+      document.getElementById('ctrlCap').style.display = type === 'cap' ? 'grid' : 'none';
+      document.getElementById('ctrlInd').style.display = type === 'ind' ? 'grid' : 'none';
+      updateAll();
+    }
+
+    function formatOhm(val) {
+      if (val >= 1e6) return (val / 1e6).toFixed(2) + ' MΩ';
+      if (val >= 1e3) return (val / 1e3).toFixed(2) + ' kΩ';
+      return val.toFixed(2) + ' Ω';
+    }
+
+    function formatCap(pf) {
+      if (pf >= 1e6) return (pf / 1e6).toFixed(2) + ' µF';
+      if (pf >= 1e3) return (pf / 1e3).toFixed(2) + ' nF';
+      return pf.toFixed(0) + ' pF';
+    }
+
+    function formatInd(uh) {
+      if (uh >= 1e3) return (uh / 1e3).toFixed(2) + ' mH';
+      return uh.toFixed(2) + ' µH';
+    }
+
+    function getCurrentComponentData() {
+      if (sim.type === 'res') {
+        const b1 = DIGITS[parseInt(document.getElementById('resB1').value)];
+        const b2 = DIGITS[parseInt(document.getElementById('resB2').value)];
+        const b3 = MULTS[parseInt(document.getElementById('resB3').value)];
+        const b4 = TOLS[parseInt(document.getElementById('resB4').value)];
+
+        const nomVal = (b1.val * 10 + b2.val) * b3.mult;
+        // Deterministic realistic laboratory deviation within tolerance
+        const driftFactor = 1 + (((b1.val * 7 + b2.val * 3) % 5) - 2) * 0.0045;
+        const measVal = nomVal * driftFactor;
+        const errPct = ((measVal - nomVal) / nomVal) * 100;
+
+        return {
+          compType: 'Resistor (4-Band)',
+          codeStr: `${b1.name} - ${b2.name} - ${b3.name.split(' ')[0]} - ${b4.name.split(' ')[0]}`,
+          nomStr: formatOhm(nomVal),
+          measStr: formatOhm(measVal),
+          tolStr: `±${b4.tol}%`,
+          errStr: `${errPct >= 0 ? '+' : ''}${errPct.toFixed(2)}%`,
+          bands: [b1.hex, b2.hex, b3.hex, b4.hex],
+          meterLabel: 'DIGITAL MULTIMETER (Ω)'
+        };
+      } else if (sim.type === 'cap') {
+        const kind = document.getElementById('capKind').value;
+        document.getElementById('boxCapCode').style.display = kind === 'ceramic' ? 'block' : 'none';
+        document.getElementById('boxCapElec').style.display = kind === 'elec' ? 'block' : 'none';
+        const tol = parseInt(document.getElementById('capTol').value);
+
+        if (kind === 'ceramic') {
+          const code = document.getElementById('capCode').value;
+          const d1 = parseInt(code[0]), d2 = parseInt(code[1]), d3 = parseInt(code[2]);
+          const pf = (d1 * 10 + d2) * Math.pow(10, d3);
+          const measPf = pf * 0.984;
+          const errPct = ((measPf - pf) / pf) * 100;
+          const tolChar = tol === 5 ? 'J' : (tol === 10 ? 'K' : 'M');
+          return {
+            compType: 'Capacitor (Ceramic)',
+            codeStr: `${code}${tolChar}`,
+            nomStr: formatCap(pf),
+            measStr: formatCap(measPf),
+            tolStr: `±${tol}% (${tolChar})`,
+            errStr: `${errPct >= 0 ? '+' : ''}${errPct.toFixed(2)}%`,
+            capKind: 'ceramic',
+            capMarking: `${code}${tolChar}`,
+            meterLabel: 'DIGITAL LCR METER (C)'
+          };
+        } else {
+          const uf = parseFloat(document.getElementById('capElec').value);
+          const measUf = uf * 1.024;
+          const errPct = ((measUf - uf) / uf) * 100;
+          return {
+            compType: 'Capacitor (Electrolytic)',
+            codeStr: `${uf} µF / 25 V`,
+            nomStr: `${uf.toFixed(1)} µF`,
+            measStr: `${measUf.toFixed(2)} µF`,
+            tolStr: `±${tol}%`,
+            errStr: `${errPct >= 0 ? '+' : ''}${errPct.toFixed(2)}%`,
+            capKind: 'elec',
+            capMarking: `${uf}µF 25V`,
+            meterLabel: 'DIGITAL LCR METER (C)'
+          };
+        }
+      } else {
+        const b1 = DIGITS[parseInt(document.getElementById('indB1').value)];
+        const b2 = DIGITS[parseInt(document.getElementById('indB2').value)];
+        const b3 = MULTS[parseInt(document.getElementById('indB3').value)];
+        const b4 = TOLS[parseInt(document.getElementById('indB4').value)];
+
+        const nomUh = (b1.val * 10 + b2.val) * b3.mult;
+        const measUh = nomUh * 1.018;
+        const errPct = ((measUh - nomUh) / nomUh) * 100;
+
+        return {
+          compType: 'Inductor (Axial)',
+          codeStr: `${b1.name} - ${b2.name} - ${b3.name.split(' ')[0]} - ${b4.name.split(' ')[0]}`,
+          nomStr: formatInd(nomUh),
+          measStr: formatInd(measUh),
+          tolStr: `±${b4.tol}%`,
+          errStr: `${errPct >= 0 ? '+' : ''}${errPct.toFixed(2)}%`,
+          bands: [b1.hex, b2.hex, b3.hex, b4.hex],
+          meterLabel: 'DIGITAL LCR METER (L)'
+        };
+      }
+    }
+
+    function updateAll() {
+      const d = getCurrentComponentData();
+      document.getElementById('statNom').innerText = d.nomStr;
+      document.getElementById('statMeas').innerText = d.measStr;
+      document.getElementById('statTol').innerText = d.tolStr;
+      document.getElementById('statErr').innerText = d.errStr;
+
+      drawBench('benchCanvas', d);
+    }
+
+    function logCurrentComponent() {
+      const d = getCurrentComponentData();
+      sim.loggedRows.unshift({
+        type: d.compType,
+        code: d.codeStr,
+        nom: d.nomStr,
+        tol: d.tolStr,
+        meas: d.measStr,
+        err: d.errStr
+      });
+      if (sim.loggedRows.length > 8) sim.loggedRows.pop();
+      alert(`Logged ${d.compType} (${d.nomStr}, Measured: ${d.measStr}) to the Lab Record Observation Table.`);
+    }
+
+    // ---------------------------------------------------------
+    // COMPONENT & DMM/LCR METER VISUAL RENDERER
+    // ---------------------------------------------------------
+    function drawBench(canvasId, d) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      // Left Side: Visual Component Rendering
+      const cx = 215, cy = 155;
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 13px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.compType.toUpperCase(), cx, 28);
+
+      if (sim.type === 'res' || sim.type === 'ind') {
+        // Wire leads
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(45, cy); ctx.lineTo(385, cy);
+        ctx.stroke();
+
+        // Component Body
+        const bodyW = 190, bodyH = 56;
+        const bx = cx - bodyW / 2, by = cy - bodyH / 2;
+        ctx.fillStyle = sim.type === 'res' ? '#fde68a' : '#bbf7d0';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.roundRect(bx, by, bodyW, bodyH, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // Color Bands
+        const bandXs = [bx + 32, bx + 66, bx + 100, bx + 152];
+        d.bands.forEach((hex, idx) => {
+          ctx.fillStyle = hex;
+          ctx.fillRect(bandXs[idx], by + 1, 14, bodyH - 2);
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(bandXs[idx], by + 1, 14, bodyH - 2);
+        });
+
+        // Band labels below
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 10px Arial';
+        ['B1', 'B2', 'Mult', 'Tol'].forEach((lbl, idx) => {
+          ctx.fillText(lbl, bandXs[idx] + 7, by + bodyH + 16);
+        });
+
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(d.codeStr, cx, h - 22);
+      } else {
+        if (d.capKind === 'ceramic') {
+          // Leads
+          ctx.strokeStyle = '#475569';
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          ctx.moveTo(cx - 24, cy + 30); ctx.lineTo(cx - 24, cy + 95);
+          ctx.moveTo(cx + 24, cy + 30); ctx.lineTo(cx + 24, cy + 95);
+          ctx.stroke();
+
+          // Ceramic Disc
+          ctx.fillStyle = '#fdba74';
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath(); ctx.arc(cx, cy - 10, 52, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 20px monospace';
+          ctx.fillText(d.capMarking, cx, cy - 3);
+          ctx.font = 'bold 11px Arial';
+          ctx.fillText('Non-Polarized Ceramic Disc', cx, h - 22);
+        } else {
+          // Electrolytic Cylinder + Polarity Stripe
+          ctx.strokeStyle = '#475569';
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          ctx.moveTo(cx - 18, cy + 45); ctx.lineTo(cx - 18, cy + 108);
+          ctx.moveTo(cx + 18, cy + 45); ctx.lineTo(cx + 18, cy + 90);
+          ctx.stroke();
+
+          ctx.fillStyle = '#1e293b';
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 2;
+          ctx.fillRect(cx - 42, cy - 55, 84, 100);
+          ctx.strokeRect(cx - 42, cy - 55, 84, 100);
+
+          // Negative stripe on right
+          ctx.fillStyle = '#e2e8f0';
+          ctx.fillRect(cx + 22, cy - 54, 19, 98);
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 14px Arial';
+          ctx.fillText('−', cx + 31, cy - 25);
+          ctx.fillText('−', cx + 31, cy + 5);
+          ctx.fillText('−', cx + 31, cy + 35);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 12px monospace';
+          ctx.fillText(d.capMarking, cx - 10, cy);
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 10.5px Arial';
+          ctx.fillText('Long Lead (+) | Stripe Lead (−)', cx, h - 18);
+        }
+      }
+
+      // Probe Leads from Component to Digital Meter on Right
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(350, cy - 18); ctx.lineTo(445, cy - 18); ctx.stroke();
+      ctx.strokeStyle = '#000000';
+      ctx.beginPath(); ctx.moveTo(350, cy + 18); ctx.lineTo(445, cy + 18); ctx.stroke();
+
+      // Right Side: Digital Multimeter / LCR Meter Display
+      const mx = 445, my = 38, mw = 235, mh = 244;
+      ctx.fillStyle = '#f8fafc';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.roundRect(mx, my, mw, mh, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(mx, my, mw, 28);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 10.5px Arial';
+      ctx.fillText(d.meterLabel, mx + mw / 2, my + 18);
+
+      // LCD Screen
+      ctx.fillStyle = '#d1fae5';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.6;
+      ctx.fillRect(mx + 18, my + 44, mw - 36, 68);
+      ctx.strokeRect(mx + 18, my + 44, mw - 36, 68);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 24px monospace';
+      ctx.fillText(d.measStr, mx + mw / 2, my + 86);
+
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText(`Nominal: ${d.nomStr}`, mx + mw / 2, my + 138);
+      ctx.fillText(`Tolerance: ${d.tolStr}`, mx + mw / 2, my + 162);
+      ctx.fillText(`% Error: ${d.errStr}`, mx + mw / 2, my + 186);
+
+      // Rotary Dial Graphic
+      ctx.beginPath(); ctx.arc(mx + mw / 2, my + 216, 16, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mx + mw / 2, my + 216); ctx.lineTo(mx + mw / 2 + 10, my + 206); ctx.stroke();
+    }
+
+    function renderSheetView() {
+      const d = getCurrentComponentData();
+      drawBench('sheetBenchCanvas', d);
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Component: ${d.compType} | Code: ${d.codeStr} | Nominal = ${d.nomStr} (${d.tolStr}) | Measured = ${d.measStr} | % Error = ${d.errStr}`;
+
+      document.getElementById('sheetTableBody').innerHTML = sim.loggedRows.map((r, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${r.type}</td>
+          <td>${r.code}</td>
+          <td>${r.nom}</td>
+          <td>${r.tol}</td>
+          <td>${r.meas}</td>
+          <td>${r.err}</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Decoded the nominal values and tolerances of the given resistors, capacitors, and inductors using standard EIA color codes and alphanumeric markings, and verified them using a DMM and LCR meter. For active <strong>${d.compType} (${d.codeStr})</strong>, Nominal = <strong>${d.nomStr}</strong>, Measured = <strong>${d.measStr}</strong>, and Percentage Error = <strong>${d.errStr}</strong> (within ${d.tolStr}).<br>
+        <strong>Inference:</strong> All measured passive component values lie well within their manufacturer-specified tolerance limits.
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      populateSelects();
+      updateAll();
+    });
+  </script>
+</body>
+</html>

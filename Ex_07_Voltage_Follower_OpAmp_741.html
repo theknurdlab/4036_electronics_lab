@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 7: Voltage Follower using Op-Amp 741 | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dso-frame {
+      position: relative;
+      background: #ffffff;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      display: flex;
+    }
+    #dsoCanvas { width: 100%; height: 100%; display: block; }
+    .dso-hud-top {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+    .dso-hud-bottom {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      text-align: right;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+
+    .sub-section-bar {
+      background: #0f172a;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #334155;
+    }
+
+    .control-grid {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      background: #141d2f;
+      border-top: 1px solid var(--border-dark);
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ctrl-box select, .ctrl-box input[type="range"] {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 4px;
+      font-size: 0.74rem;
+      outline: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #141d2f;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.64rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-top: 2px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+    }
+    #schematicCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 600px;
+      display: block;
+    }
+
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    .formula-title {
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .math-line {
+      font-family: "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
+      font-size: 0.92rem;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 4px;
+      font-size: 0.9em;
+    }
+    .fraction-top { border-bottom: 1.5px solid currentColor; padding-bottom: 1px; }
+    .fraction-bottom { padding-top: 1px; }
+
+    /* Worksheet / Lab Manual View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 22px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.72rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      gap: 5px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.73rem;
+      line-height: 1.38;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong {
+      color: #e5e7eb;
+    }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 7 (M2.03, CO2): Voltage Follower using Op-Amp 741</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">Virtual Op-Amp 741 Buffer &amp; DSO Workbench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Dual-Channel DSO -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: Vi, CH2: Vo)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
+            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+          </div>
+        </div>
+
+        <div class="dso-frame">
+          <canvas id="dsoCanvas" width="700" height="420"></canvas>
+
+          <div class="dso-hud-top">
+            <div>TB: <strong id="hudTime">250 µs/div</strong> | TRIG: <strong>CH1 EDGE</strong></div>
+            <div>CH1 (Vi): <strong id="hudCh1Scale">0.5 V/div</strong> (Solid Thick)</div>
+            <div>CH2 (Vo): <strong id="hudCh2Scale">0.5 V/div</strong> (Dashed Overlay)</div>
+          </div>
+
+          <div class="dso-hud-bottom">
+            <div>Input Vi: <strong id="hudVin">2.00 Vpp</strong></div>
+            <div>Output Vo: <strong id="hudVo" style="color:#059669;">2.00 Vpp</strong></div>
+            <div>Voltage Gain Av: <strong id="hudGain" style="color:#2563eb;">1.00</strong></div>
+            <div>Phase Shift: <strong id="hudPhase">0.0° (Identical)</strong></div>
+          </div>
+        </div>
+
+        <!-- DSO Scales -->
+        <div class="sub-section-bar"><span>Oscilloscope Timebase &amp; Voltage Scales (Includes 5 V/div &amp; 10 V/div)</span></div>
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Time / Division</label>
+            <select id="selTimeDiv" onchange="onTimebaseChange(this.value)">
+              <option value="0.0001">100 µs/div</option>
+              <option value="0.00025" selected>250 µs/div</option>
+              <option value="0.0005">500 µs/div</option>
+              <option value="0.001">1.0 ms/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>CH1 (Vi) Scale</label>
+            <select id="selCh1Vdiv" onchange="onCh1ScaleChange(this.value)">
+              <option value="0.2">0.2 V/div</option>
+              <option value="0.5" selected>0.5 V/div</option>
+              <option value="1.0">1.0 V/div</option>
+              <option value="2.0">2.0 V/div</option>
+              <option value="5.0">5.0 V/div</option>
+              <option value="10.0">10.0 V/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>CH2 (Vo) Scale</label>
+            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
+              <option value="0.2">0.2 V/div</option>
+              <option value="0.5" selected>0.5 V/div</option>
+              <option value="1.0">1.0 V/div</option>
+              <option value="2.0">2.0 V/div</option>
+              <option value="5.0">5.0 V/div</option>
+              <option value="10.0">10.0 V/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input Signal Vi (pp)</label>
+            <select id="selVin" onchange="sim.vin = parseFloat(this.value); updateAll()">
+              <option value="1.0">1.0 Vpp</option>
+              <option value="2.0" selected>2.0 Vpp (Standard)</option>
+              <option value="5.0">5.0 Vpp</option>
+              <option value="10.0">10.0 Vpp</option>
+              <option value="28.0">28.0 Vpp (Saturation Clip)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Buffer Isolation & Load Test Controls -->
+        <div class="sub-section-bar"><span>Buffer Load Isolation Test (No Load vs RL = 1 kΩ &amp; Direct Source Loading)</span></div>
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Load Resistor (RL)</label>
+            <select id="selLoad" onchange="sim.load = this.value; updateAll()">
+              <option value="open" selected>No Load (Open Circuit)</option>
+              <option value="1000">RL = 1 kΩ (Table 7.1)</option>
+              <option value="470">RL = 470 Ω (Heavy Load)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Buffer Mode (Isolation Demo)</label>
+            <select id="selBufferMode" onchange="sim.buffered = (this.value === 'on'); updateAll()">
+              <option value="on" selected>With Op-Amp 741 Buffer (Isolated)</option>
+              <option value="off">Without Buffer (10 kΩ Source Direct)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Dual Supply (±VCC)</label>
+            <select id="selVcc" onchange="sim.vcc = parseFloat(this.value); updateAll()">
+              <option value="15" selected>±15 V (Sat ±13 V)</option>
+              <option value="12">±12 V (Sat ±10 V)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input Frequency</label>
+            <select id="selFreq" onchange="sim.freq = parseFloat(this.value); updateAll()">
+              <option value="500">500 Hz</option>
+              <option value="1000" selected>1.0 kHz (Standard)</option>
+              <option value="2000">2.0 kHz</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="padding: 10px;">
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-label">Voltage Gain Av</div>
+              <div class="stat-value" id="statGain" style="color:#60a5fa;">1.000</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Input Impedance Zin</div>
+              <div class="stat-value" id="statZin" style="color:#34d399;">&gt; 2 MΩ (High)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Output Impedance Zo</div>
+              <div class="stat-value" id="statZout" style="color:#fbbf24;">&lt; 1 Ω (Low)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Load Isolation</div>
+              <div class="stat-value" id="statIso" style="color:#c084fc; font-size:0.78rem;">100% Isolated</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Schematic & IC 741 Pinout -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 12px -14px;">
+          <span>VOLTAGE FOLLOWER &amp; IC 741 PINOUT</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">Laser-Friendly B&amp;W</span>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="schematicCanvas" width="600" height="310"></canvas>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-title">Unity-Gain Buffer Equation &amp; Impedance Isolation</div>
+          <div class="math-line">
+            <i>A</i><sub>v</sub> = 1 + 
+            <span class="fraction">
+              <span class="fraction-top"><i>R</i><sub>f</sub></span>
+              <span class="fraction-bottom"><i>R</i><sub>i</sub></span>
+            </span>
+            = 1 + 
+            <span class="fraction">
+              <span class="fraction-top">0 &Omega; (Direct Short)</span>
+              <span class="fraction-bottom">&infin; (Open)</span>
+            </span>
+            = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>
+          </div>
+          <div style="margin-top:8px; font-size:0.74rem; color:#cbd5e1; line-height:1.45;">
+            • <strong>100% Voltage-Series Negative Feedback:</strong> Output Pin 6 is wired directly to Inverting Pin 2 (&beta; = 1), forcing <i>V</i><sub>o</sub> to track <i>V</i><sub>i</sub> identically in amplitude and phase (0&deg;).<br>
+            • <strong>Why Output Does Not Drop with R<sub>L</sub> = 1 k&Omega;:</strong> Because of its ultra-high input impedance (~2 M&Omega;) and very low closed-loop output impedance (&lt;1 &Omega;), the buffer isolates high-impedance sources from low-impedance loads.<br>
+            • <strong>Try "Without Buffer":</strong> Toggle Buffer Mode to observe how a 10 k&Omega; sensor/source collapses to 0.18 V<sub>pp</sub> across a 1 k&Omega; load without the voltage follower!
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 7 (MODULE M2.03 • CO2)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 7: VOLTAGE FOLLOWER USING OP-AMP 741</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To design and set up a voltage follower circuit using op-amp IC 741C and observe the waveforms.<br>
+        <strong>COMPONENTS REQUIRED:</strong> Regulated Dual Power Supply (±15 V), Function Generator (0–1 MHz), DSO, Op-Amp IC 741 (1 no.), Resistor RL = 1 kΩ (for load test), Breadboard &amp; probes.
+      </div>
+
+      <div class="sheet-section-title">CIRCUIT DIAGRAM &amp; CAPTURED DSO WAVEFORM (FOR SELECTED PARAMETERS)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.05fr 0.95fr; gap:10px; align-items:center;">
+          <div>
+            <canvas id="sheetSchematicCanvas" width="600" height="310" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 7.1 &amp; 7.2: Voltage Follower &amp; IC 741 Pinout</div>
+          </div>
+          <div>
+            <canvas id="sheetDsoCanvas" width="560" height="290" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetDsoCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">
+              Fig. 7.4: Observed DSO Waveforms (CH1 Solid: Vi, CH2 Dashed: Vo)
+            </div>
+          </div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 7.1: INPUT, OUTPUT, GAIN AND PHASE DIFFERENCE</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Condition</th>
+              <th>Vi (Vpp)</th>
+              <th>Vo (Vpp)</th>
+              <th>Voltage Gain (Vo / Vi)</th>
+              <th>Phase Difference (°)</th>
+            </tr>
+          </thead>
+          <tbody id="sheetTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">DESIGN CALCULATION, RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:12px; padding-top:8px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const sim = {
+      vin: 2.0,        // 2.0 Vpp
+      load: 'open',    // 'open', '1000', '470'
+      buffered: true,  // true = Op-Amp 741 buffer active; false = direct 10k source loading demo
+      vcc: 15,         // ±15 V
+      freq: 1000,      // 1 kHz
+      timeDiv: 0.00025,// 250 us/div
+      ch1Scale: 0.5,   // 0.5 V/div
+      ch2Scale: 0.5,   // 0.5 V/div
+      laserMode: true,
+      running: true,
+      t: 0
+    };
+
+    function resetDefaults() {
+      sim.vin = 2.0; sim.load = 'open'; sim.buffered = true; sim.vcc = 15; sim.freq = 1000;
+      sim.timeDiv = 0.00025; sim.ch1Scale = 0.5; sim.ch2Scale = 0.5;
+      document.getElementById('selVin').value = '2.0';
+      document.getElementById('selLoad').value = 'open';
+      document.getElementById('selBufferMode').value = 'on';
+      document.getElementById('selVcc').value = '15';
+      document.getElementById('selFreq').value = '1000';
+      document.getElementById('selTimeDiv').value = '0.00025';
+      document.getElementById('selCh1Vdiv').value = '0.5';
+      document.getElementById('selCh2Vdiv').value = '0.5';
+      onTimebaseChange('0.00025');
+      onCh1ScaleChange('0.5');
+      onCh2ScaleChange('0.5');
+      updateAll();
+    }
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function toggleRun() {
+      sim.running = !sim.running;
+      const btn = document.getElementById('btnRun');
+      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
+      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+    }
+
+    function toggleTheme() {
+      sim.laserMode = !sim.laserMode;
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
+    }
+
+    function onTimebaseChange(val) {
+      sim.timeDiv = parseFloat(val);
+      document.getElementById('hudTime').innerText = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + ' ms/div' : (sim.timeDiv * 1e6).toFixed(0) + ' µs/div';
+    }
+    function onCh1ScaleChange(val) {
+      sim.ch1Scale = parseFloat(val);
+      document.getElementById('hudCh1Scale').innerText = sim.ch1Scale.toFixed(1) + ' V/div';
+    }
+    function onCh2ScaleChange(val) {
+      sim.ch2Scale = parseFloat(val);
+      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
+    }
+
+    function getFollowerMetrics() {
+      const satLimit = sim.vcc - 2.0; // ±13 V for ±15 V supply
+      const rlVal = sim.load === 'open' ? Infinity : parseFloat(sim.load);
+      let gain = 1.0;
+
+      if (!sim.buffered) {
+        // Unbuffered 10 kΩ source connected directly to RL
+        gain = rlVal === Infinity ? 1.0 : (rlVal / (10000 + rlVal));
+      }
+
+      const idealVoutPeak = (sim.vin / 2) * gain;
+      const clipped = idealVoutPeak > satLimit;
+      const actualVoutPeak = Math.min(satLimit, idealVoutPeak);
+      const actualVoutPP = actualVoutPeak * 2;
+      const pracGain = actualVoutPP / sim.vin;
+      return { satLimit, idealVoutPeak, actualVoutPeak, actualVoutPP, pracGain, clipped };
+    }
+
+    function updateAll() {
+      const m = getFollowerMetrics();
+      document.getElementById('hudVin').innerText = sim.vin.toFixed(2) + ' Vpp';
+      document.getElementById('hudVo').innerText = m.actualVoutPP.toFixed(2) + ' Vpp';
+      document.getElementById('hudGain').innerText = m.pracGain.toFixed(2);
+      document.getElementById('statGain').innerText = m.pracGain.toFixed(3);
+
+      if (sim.buffered) {
+        document.getElementById('statZin').innerText = '> 2 MΩ (High)';
+        document.getElementById('statZout').innerText = '< 1 Ω (Low)';
+        document.getElementById('statIso').innerText = m.clipped ? `Clipped (±${m.satLimit}V)` : '100% Isolated';
+        document.getElementById('statIso').style.color = m.clipped ? '#f59e0b' : '#34d399';
+      } else {
+        document.getElementById('statZin').innerText = '10 kΩ (Unbuffered)';
+        document.getElementById('statZout').innerText = '10 kΩ (High)';
+        document.getElementById('statIso').innerText = sim.load === 'open' ? 'No Load' : 'Loading Drop!';
+        document.getElementById('statIso').style.color = '#f87171';
+      }
+
+      drawCircuitAndPinout('schematicCanvas');
+    }
+
+    // ---------------------------------------------------------
+    // SCHEMATIC & IC 741 PINOUT RENDERER (Fig 7.1 & 7.2)
+    // ---------------------------------------------------------
+    function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+      ctx.save();
+      ctx.translate(x1, y1);
+      ctx.rotate(Math.atan2(dy, dx));
+      const lead = Math.max(8, (len - 36) / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(lead, 0);
+      const step = (len - 2 * lead) / (peaks * 2);
+      for (let i = 0; i <= peaks * 2; i++) {
+        const px = lead + i * step;
+        const py = (i === 0 || i === peaks * 2) ? 0 : (i % 2 === 1 ? -w : w);
+        ctx.lineTo(px, py);
+      }
+      ctx.lineTo(len, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawDot(ctx, x, y) {
+      ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function drawGround(ctx, x, y) {
+      ctx.beginPath();
+      ctx.moveTo(x, y); ctx.lineTo(x, y + 8);
+      ctx.moveTo(x - 11, y + 8); ctx.lineTo(x + 11, y + 8);
+      ctx.moveTo(x - 7, y + 12); ctx.lineTo(x + 7, y + 12);
+      ctx.moveTo(x - 3, y + 16); ctx.lineTo(x + 3, y + 16);
+      ctx.stroke();
+    }
+
+    function drawCircuitAndPinout(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 1.8;
+
+      // Left Side: Voltage Follower Schematic (Clean, zero overlap)
+      const invY = 135, nonInvY = 185, outY = 160;
+      const opX = 185, fbNodeX = 310, fbTopY = 65, fbLeftX = 140;
+      const rlX = 355, gndY = 255;
+
+      // Vin AC Source Symbol on Left
+      const srcX = 65, srcY = 215;
+      ctx.beginPath(); ctx.arc(srcX, srcY, 16, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(srcX - 8, srcY);
+      ctx.bezierCurveTo(srcX - 4, srcY - 8, srcX, srcY - 8, srcX, srcY);
+      ctx.bezierCurveTo(srcX, srcY + 8, srcX + 4, srcY + 8, srcX + 8, srcY);
+      ctx.stroke();
+
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText('Vin', srcX - 22, srcY + 4);
+
+      // Ground below Vin source
+      ctx.beginPath(); ctx.moveTo(srcX, srcY + 16); ctx.lineTo(srcX, gndY); ctx.stroke();
+      drawGround(ctx, srcX, gndY);
+
+      // Lead from Vin source up to Non-Inverting Pin 3
+      ctx.beginPath();
+      ctx.moveTo(srcX, srcY - 16);
+      ctx.lineTo(srcX, nonInvY);
+      ctx.lineTo(opX, nonInvY);
+      ctx.stroke();
+
+      // Direct Unity-Gain Feedback Wire (Output Pin 6 to Inverting Pin 2)
+      ctx.beginPath();
+      ctx.moveTo(fbLeftX, invY);
+      ctx.lineTo(opX, invY);
+      ctx.moveTo(fbLeftX, invY);
+      ctx.lineTo(fbLeftX, fbTopY);
+      ctx.lineTo(fbNodeX, fbTopY);
+      ctx.lineTo(fbNodeX, outY);
+      ctx.stroke();
+      drawDot(ctx, fbNodeX, outY);
+
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 10.5px Arial';
+      ctx.fillText('Direct Feedback (Rf = 0 Ω)', (fbLeftX + fbNodeX) / 2, fbTopY - 10);
+
+      // Op-Amp Triangle
+      ctx.beginPath();
+      ctx.moveTo(opX, 112);
+      ctx.lineTo(opX, 208);
+      ctx.lineTo(280, outY);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText('−', opX + 12, invY + 4);
+      ctx.fillText('+', opX + 12, nonInvY + 4);
+      ctx.font = 'bold 10px Arial';
+      ctx.fillText('2', opX - 8, invY - 6);
+      ctx.fillText('3', opX - 8, nonInvY - 6);
+      ctx.fillText('6', 286, outY - 7);
+      ctx.fillText('IC 741', opX + 35, outY + 4);
+
+      // Power Rails (+VCC Pin 7, -VEE Pin 4)
+      ctx.beginPath();
+      ctx.moveTo(230, 134); ctx.lineTo(230, 96);
+      ctx.moveTo(220, 96); ctx.lineTo(240, 96);
+      ctx.moveTo(230, 186); ctx.lineTo(230, 226);
+      ctx.moveTo(220, 226); ctx.lineTo(240, 226);
+      ctx.stroke();
+      ctx.fillText(`+${sim.vcc} V (7)`, 230, 88);
+      ctx.fillText(`−${sim.vcc} V (4)`, 230, 238);
+
+      // Output Vo & Optional Load RL
+      ctx.beginPath(); ctx.moveTo(280, outY); ctx.lineTo(382, outY); ctx.stroke();
+      ctx.beginPath(); ctx.arc(386, outY, 3.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText('Vo', 393, outY + 4);
+
+      if (sim.load !== 'open') {
+        drawDot(ctx, rlX, outY);
+        drawZigzag(ctx, rlX, outY, rlX, gndY, 6, 4);
+        drawGround(ctx, rlX, gndY);
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 10px Arial';
+        ctx.fillText(`RL = ${sim.load === '1000' ? '1 kΩ' : '470 Ω'}`, rlX - 9, (outY + gndY) / 2);
+      }
+
+      // Divider Line
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(418, 20); ctx.lineTo(418, h - 20); ctx.stroke();
+
+      // Right Side: IC 741 8-Pin DIP Top View
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 2;
+      const icX = 488, icY = 65, icW = 54, icH = 175;
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('IC 741 (Top View)', icX + icW / 2, 42);
+
+      ctx.strokeRect(icX, icY, icW, icH);
+      ctx.beginPath(); ctx.arc(icX + icW / 2, icY, 9, 0, Math.PI); ctx.stroke();
+
+      ctx.save();
+      ctx.translate(icX + icW / 2, icY + icH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.font = 'bold 16px Arial';
+      ctx.fillText('IC 741', 0, 5);
+      ctx.restore();
+
+      const leftPins = ['1: Offset', '2: Inv (−)', '3: Non-Inv (+)', '4: −VEE'];
+      const rightPins = ['8: NC', '7: +VCC', '6: Output', '5: Offset'];
+      ctx.font = '9.5px Arial';
+      for (let i = 0; i < 4; i++) {
+        const py = icY + 26 + i * 40;
+        ctx.strokeRect(icX - 10, py - 6, 10, 12);
+        ctx.textAlign = 'right';
+        ctx.fillText(leftPins[i], icX - 14, py + 3);
+
+        ctx.strokeRect(icX + icW, py - 6, 10, 12);
+        ctx.textAlign = 'left';
+        ctx.fillText(rightPins[i], icX + icW + 14, py + 3);
+      }
+    }
+
+    // ---------------------------------------------------------
+    // DUAL-TRACE DSO RENDERER (Matching Fig 7.3 Overlay Style)
+    // ---------------------------------------------------------
+    function drawOscilloscope(canvasId, isLaser, staticSnap) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      const bg = isLaser ? '#ffffff' : '#030712';
+      const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
+      const gridMinor = isLaser ? '#e2e8f0' : '#0f172a';
+      const axis = isLaser ? '#000000' : '#38bdf8';
+      const tr1 = isLaser ? '#000000' : '#38bdf8';
+      const tr2 = isLaser ? '#ffffff' : '#fbbf24';
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      const divW = w / 10, divH = h / 8;
+      ctx.strokeStyle = gridMinor;
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < 10; x++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo((x + s/5)*divW, 0); ctx.lineTo((x + s/5)*divW, h); ctx.stroke();
+        }
+      }
+      for (let y = 0; y < 8; y++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo(0, (y + s/5)*divH); ctx.lineTo(w, (y + s/5)*divH); ctx.stroke();
+        }
+      }
+
+      ctx.strokeStyle = gridMajor;
+      ctx.lineWidth = 0.8;
+      for (let x = 0; x <= 10; x++) { ctx.beginPath(); ctx.moveTo(x * divW, 0); ctx.lineTo(x * divW, h); ctx.stroke(); }
+      for (let y = 0; y <= 8; y++) { ctx.beginPath(); ctx.moveTo(0, y * divH); ctx.lineTo(w, y * divH); ctx.stroke(); }
+
+      ctx.strokeStyle = axis;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+      ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
+      ctx.stroke();
+
+      const m = getFollowerMetrics();
+      const totalTime = 10 * sim.timeDiv;
+      const dt = totalTime / w;
+      const omega = 2 * Math.PI * sim.freq;
+      const t0 = staticSnap ? 0 : (sim.t % (1 / sim.freq));
+
+      // CH1: Vi (Thick Solid Curve)
+      ctx.save();
+      ctx.strokeStyle = tr1;
+      ctx.lineWidth = isLaser ? 4.5 : 3.5;
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        const v1 = (sim.vin / 2) * Math.sin(omega * (t0 + px * dt));
+        const py = (h / 2) - (v1 / sim.ch1Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // CH2: Vo (Dashed Curve clearly visible inside/over CH1, matching Fig 7.3)
+      ctx.save();
+      ctx.strokeStyle = isLaser && sim.buffered && !m.clipped && sim.ch1Scale === sim.ch2Scale ? '#ffffff' : (isLaser ? '#000000' : '#fbbf24');
+      ctx.lineWidth = 2.0;
+      ctx.setLineDash([6, 5]);
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        let v2 = m.idealVoutPeak * Math.sin(omega * (t0 + px * dt));
+        v2 = Math.max(-m.satLimit, Math.min(m.satLimit, v2));
+        const py = (h / 2) - (v2 / sim.ch2Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      if (staticSnap) {
+        const tbStr = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + 'ms/d' : (sim.timeDiv * 1e6).toFixed(0) + 'µs/d';
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fillRect(6, 6, 330, 20);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 0.8;
+        ctx.strokeRect(6, 6, 330, 20);
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(`TB:${tbStr} | CH1:${sim.ch1Scale.toFixed(1)}V/d | CH2:${sim.ch2Scale.toFixed(1)}V/d`, 11, 19);
+      }
+    }
+
+    function renderSheetCanvases() {
+      drawCircuitAndPinout('sheetSchematicCanvas');
+      drawOscilloscope('sheetDsoCanvas', true, true);
+
+      const m = getFollowerMetrics();
+      const loadStr = sim.load === 'open' ? 'No Load (Open)' : (sim.load === '1000' ? 'RL = 1 kΩ' : 'RL = 470 Ω');
+      const bufStr = sim.buffered ? 'Op-Amp 741 Buffer Active' : 'Unbuffered (10 kΩ Source Direct)';
+
+      document.getElementById('sheetDsoCaption').innerText =
+        `Fig. 7.4: Captured Waveforms (CH1 Solid: Vi = ${sim.vin.toFixed(2)} Vpp, CH2 Dashed: Vo = ${m.actualVoutPP.toFixed(2)} Vpp)`;
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Condition: ${bufStr} | ${loadStr} | Vi = ${sim.vin.toFixed(2)} Vpp | Vo = ${m.actualVoutPP.toFixed(2)} Vpp | Gain = ${m.pracGain.toFixed(2)} | Phase = 0.0°`;
+
+      document.getElementById('sheetTableBody').innerHTML = `
+        <tr>
+          <td><strong>Selected: ${loadStr} (${sim.buffered ? 'Buffered' : 'Unbuffered'})</strong></td>
+          <td>${sim.vin.toFixed(2)} V</td>
+          <td>${m.actualVoutPP.toFixed(2)} V</td>
+          <td>${m.pracGain.toFixed(2)}</td>
+          <td>0.0°</td>
+        </tr>
+        <tr>
+          <td>Standard Table 7.1: No Load</td>
+          <td>2.00 V</td>
+          <td>2.00 V</td>
+          <td>1.00</td>
+          <td>0.0°</td>
+        </tr>
+        <tr>
+          <td>Standard Table 7.1: RL = 1 kΩ</td>
+          <td>2.00 V</td>
+          <td>2.00 V</td>
+          <td>1.00</td>
+          <td>0.0°</td>
+        </tr>
+      `;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <div class="math-line" style="color:#000000; margin-bottom:4px;">
+          <strong>Design Equation:</strong>
+          <i>A</i><sub>v</sub> = 1 + 
+          <span class="fraction">
+            <span class="fraction-top"><i>R</i><sub>f</sub></span>
+            <span class="fraction-bottom"><i>R</i><sub>i</sub></span>
+          </span>
+          = 1 + 
+          <span class="fraction">
+            <span class="fraction-top">0</span>
+            <span class="fraction-bottom">&infin;</span>
+          </span>
+          = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>
+        </div>
+        <div>
+          <strong>Result:</strong> Set up and tested the voltage follower using IC 741 (${bufStr}, ${loadStr}). For input Vi = <strong>${sim.vin.toFixed(2)} Vpp</strong>, observed output Vo = <strong>${m.actualVoutPP.toFixed(2)} Vpp</strong>, voltage gain = <strong>${m.pracGain.toFixed(2)}</strong>, and phase difference = <strong>0° (in phase)</strong>.<br>
+          <strong>Inference:</strong> The output voltage follows the input identically in magnitude and phase without dropping under load, proving the high input impedance and low output impedance of a unity-gain buffer.
+        </div>
+      `;
+    }
+
+    let lastTime = performance.now();
+    function mainLoop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (sim.running) sim.t += dt;
+      drawOscilloscope('dsoCanvas', sim.laserMode, false);
+      requestAnimationFrame(mainLoop);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAll();
+      requestAnimationFrame(mainLoop);
+    });
+  </script>
+</body>
+</html>

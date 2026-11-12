@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 11: J-K Flip-Flop using NAND Gates | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-amber { background: var(--accent-amber); color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .circuit-frame {
+      background: #ffffff;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    #circuitCanvas {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      display: block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+      background: #141d2f;
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .switch-btn {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid #475569;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sw-low { background: #0f172a; color: #94a3b8; }
+    .sw-high { background: #dc2626; color: #ffffff; border-color: #f87171; }
+    .sw-pulse { background: #2563eb; color: #ffffff; border-color: #60a5fa; }
+    .sw-pulse:hover { background: #1d4ed8; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: #0f172a;
+      border-top: 1px solid var(--border-dark);
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.64rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-top: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+      margin-bottom: 10px;
+    }
+    #pinoutCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 560px;
+      display: block;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.74rem;
+      text-align: center;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid #334155;
+      padding: 5px;
+    }
+    .ref-table th {
+      background: #0f172a;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .active-row {
+      background: rgba(37, 99, 235, 0.35);
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      line-height: 1.45;
+    }
+    .formula-title {
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* Worksheet View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 22px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.72rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      gap: 5px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.73rem;
+      line-height: 1.38;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 11 (M3.04, CO3): J-K Flip-Flop using NAND Gates</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">J-K Flip-Flop Sequential Logic &amp; Trainer Workbench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: J-K Flip-Flop NAND Gate Diagram & Controls -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>J-K FLIP-FLOP USING NAND GATES (IC 7410 &amp; IC 7400)</span>
+          </div>
+          <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.72rem;" onclick="resetFlipFlop()">
+            Reset State (Q = 0)
+          </button>
+        </div>
+
+        <div class="circuit-frame">
+          <canvas id="circuitCanvas" width="720" height="360"></canvas>
+        </div>
+
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Trainer Power (+5 V)</label>
+            <button id="btnPower" class="switch-btn sw-high" onclick="togglePower()">POWER: ON (+5 V)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input J (Switch J)</label>
+            <button id="btnJ" class="switch-btn sw-low" onclick="toggleInput('J')">J = 0 (LOW)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input K (Switch K)</label>
+            <button id="btnK" class="switch-btn sw-low" onclick="toggleInput('K')">K = 0 (LOW)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Debounced Clock (CLK)</label>
+            <button id="btnClk" class="switch-btn sw-pulse" onclick="triggerClockPulse()">APPLY CLK PULSE (1 → 0)</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">Previous State Q(t)</div>
+            <div class="stat-value" id="statQprev" style="color:#60a5fa;">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Current Output Q(t+1)</div>
+            <div class="stat-value" id="statQ" style="color:#34d399;">0 (LED OFF)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Complement Output Q̄</div>
+            <div class="stat-value" id="statQbar" style="color:#fbbf24;">1 (LED ON)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Operating Mode</div>
+            <div class="stat-value" id="statMode" style="color:#c084fc; font-size:0.78rem;">No Change (Hold)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: IC 7410 & IC 7400 Pinouts & Characteristic Table -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>IC 7410 (3-IN NAND) &amp; IC 7400 (2-IN NAND) PINOUTS</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">VCC = 14, GND = 7</span>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="pinoutCanvas" width="560" height="220"></canvas>
+        </div>
+
+        <div class="panel-head" style="margin:4px -14px 8px -14px;">
+          <span>J-K FLIP-FLOP CHARACTERISTIC TABLE</span>
+          <span style="font-size:0.7rem; color:#34d399;">Active Mode Highlighted</span>
+        </div>
+
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>CLK</th>
+              <th>J</th>
+              <th>K</th>
+              <th>Q(t+1)</th>
+              <th>Mode</th>
+            </tr>
+          </thead>
+          <tbody id="charTableBody"></tbody>
+        </table>
+
+        <div class="formula-card">
+          <div class="formula-title">Characteristic Equation &amp; Race-Around Note</div>
+          <div><strong>• Characteristic Equation:</strong> Q(t+1) = J · Q̄(t) + K̄ · Q(t)</div>
+          <div><strong>• Race-Around Condition:</strong> When J = K = 1 and the level-triggered clock pulse width is longer than the gate propagation delay, Q toggles continuously. Always use the <strong>single-pulse (debounced) switch</strong> on the trainer kit.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 11 (MODULE M3.04 • CO3)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 11: J-K FLIP-FLOP USING NAND GATES</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To construct a J-K flip-flop using NAND gates and verify its characteristic table.<br>
+        <strong>APPARATUS / COMPONENTS:</strong> Digital IC Trainer Kit (+5 V supply, data switches, debounced single-pulse switch, LEDs), IC 7400 (Quad 2-input NAND, 1 no.), IC 7410 (Triple 3-input NAND, 1 no.), Breadboard &amp; connecting wires.
+      </div>
+
+      <div class="sheet-section-title">CAPTURED LOGIC DIAGRAM &amp; IC PINOUTS (FOR SELECTED STATE)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.15fr 0.85fr; gap:10px; align-items:center;">
+          <div>
+            <canvas id="sheetCircuitCanvas" width="720" height="360" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 11.1: J-K Flip-Flop using 3-Input (7410) &amp; 2-Input (7400) NAND Gates</div>
+          </div>
+          <div>
+            <canvas id="sheetPinoutCanvas" width="560" height="220" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 11.2: IC 7410 &amp; IC 7400 Pin-Out (VCC = 14, GND = 7)</div>
+          </div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 11.1: OBSERVATION TABLE OF THE J-K FLIP-FLOP</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>CLK</th>
+              <th>J</th>
+              <th>K</th>
+              <th>Q before pulse Q(t)</th>
+              <th>Q after pulse Q(t+1)</th>
+              <th>Q̄ after pulse</th>
+              <th>Mode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>×</td><td>×</td><td>0</td><td>0</td><td>1</td><td>No change (Hold)</td></tr>
+            <tr><td>1 (Pulse)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>No change (Hold)</td></tr>
+            <tr><td>1 (Pulse)</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>No change (Hold)</td></tr>
+            <tr><td>1 (Pulse)</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>Reset (Q = 0)</td></tr>
+            <tr><td>1 (Pulse)</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>Set (Q = 1)</td></tr>
+            <tr><td>1 (Pulse)</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>Toggle (Q̄)</td></tr>
+            <tr><td>1 (Pulse)</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>Toggle (Q̄)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const sim = {
+      power: true,
+      j: 0,
+      k: 0,
+      clkPulse: 0,
+      qPrev: 0,
+      q: 0,
+      modeText: 'No Change (Hold)'
+    };
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function togglePower() {
+      sim.power = !sim.power;
+      if (!sim.power) {
+        sim.q = 0;
+        sim.qPrev = 0;
+      }
+      const btn = document.getElementById('btnPower');
+      btn.innerText = sim.power ? 'POWER: ON (+5 V)' : 'POWER: OFF (0 V)';
+      btn.className = sim.power ? 'switch-btn sw-high' : 'switch-btn sw-low';
+      updateAll();
+    }
+
+    function toggleInput(which) {
+      if (which === 'J') sim.j = sim.j ? 0 : 1;
+      else sim.k = sim.k ? 0 : 1;
+      updateAll();
+    }
+
+    function resetFlipFlop() {
+      sim.j = 0;
+      sim.k = 0;
+      sim.qPrev = sim.q;
+      sim.q = 0;
+      sim.modeText = 'Reset to 0';
+      updateAll();
+    }
+
+    function triggerClockPulse() {
+      if (!sim.power) return;
+      sim.clkPulse = 1;
+      sim.qPrev = sim.q;
+
+      if (sim.j === 0 && sim.k === 0) {
+        sim.modeText = 'No Change (Hold)';
+      } else if (sim.j === 0 && sim.k === 1) {
+        sim.q = 0;
+        sim.modeText = 'Reset (Q = 0)';
+      } else if (sim.j === 1 && sim.k === 0) {
+        sim.q = 1;
+        sim.modeText = 'Set (Q = 1)';
+      } else {
+        sim.q = sim.q ? 0 : 1;
+        sim.modeText = 'Toggle (Q̄)';
+      }
+
+      updateAll();
+      setTimeout(() => {
+        sim.clkPulse = 0;
+        updateAll();
+      }, 280);
+    }
+
+    function getModeLabel(j, k) {
+      if (j === 0 && k === 0) return 'No Change (Hold)';
+      if (j === 0 && k === 1) return 'Reset (Q = 0)';
+      if (j === 1 && k === 0) return 'Set (Q = 1)';
+      return 'Toggle (Q̄)';
+    }
+
+    function updateAll() {
+      const qBar = sim.power ? (sim.q ? 0 : 1) : 0;
+
+      const btnJ = document.getElementById('btnJ');
+      btnJ.innerText = sim.j ? 'J = 1 (HIGH)' : 'J = 0 (LOW)';
+      btnJ.className = sim.j ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      const btnK = document.getElementById('btnK');
+      btnK.innerText = sim.k ? 'K = 1 (HIGH)' : 'K = 0 (LOW)';
+      btnK.className = sim.k ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      document.getElementById('statQprev').innerText = sim.qPrev;
+      document.getElementById('statQ').innerText = sim.q ? '1 (LED ON)' : '0 (LED OFF)';
+      document.getElementById('statQ').style.color = sim.q ? '#34d399' : '#94a3b8';
+      document.getElementById('statQbar').innerText = qBar ? '1 (LED ON)' : '0 (LED OFF)';
+      document.getElementById('statQbar').style.color = qBar ? '#fbbf24' : '#94a3b8';
+      document.getElementById('statMode').innerText = getModeLabel(sim.j, sim.k);
+
+      renderCharTable();
+      drawJKFlipFlop('circuitCanvas', sim.j, sim.k, sim.clkPulse, sim.q, qBar);
+      drawPinouts('pinoutCanvas');
+    }
+
+    function renderCharTable() {
+      const rows = [
+        { clk: '0', j: '×', k: '×', qNext: 'Q(t) (Hold)', mode: 'No change (Inactive CLK)', match: false },
+        { clk: '1 (Pulse)', j: 0, k: 0, qNext: 'Q(t) (Hold)', mode: 'No change', match: sim.j === 0 && sim.k === 0 },
+        { clk: '1 (Pulse)', j: 0, k: 1, qNext: '0', mode: 'Reset', match: sim.j === 0 && sim.k === 1 },
+        { clk: '1 (Pulse)', j: 1, k: 0, qNext: '1', mode: 'Set', match: sim.j === 1 && sim.k === 0 },
+        { clk: '1 (Pulse)', j: 1, k: 1, qNext: 'Q̄(t)', mode: 'Toggle', match: sim.j === 1 && sim.k === 1 }
+      ];
+      document.getElementById('charTableBody').innerHTML = rows.map(r => `
+        <tr class="${r.match ? 'active-row' : ''}">
+          <td>${r.clk}</td><td>${r.j}</td><td>${r.k}</td><td>${r.qNext}</td><td>${r.mode}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ---------------------------------------------------------
+    // SCHEMATIC DRAWING HELPERS (Fig 11.1 & Fig 11.2)
+    // ---------------------------------------------------------
+    function drawDot(ctx, x, y) {
+      ctx.beginPath(); ctx.arc(x, y, 3.6, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function drawNandGate(ctx, cx, cy, label) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(-26, -22); ctx.lineTo(0, -22);
+      ctx.arc(0, 0, 22, -Math.PI / 2, Math.PI / 2, false);
+      ctx.lineTo(-26, 22); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      // Bubble
+      ctx.beginPath(); ctx.arc(27, 0, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 9.5px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, -4, 3);
+      ctx.restore();
+    }
+
+    function drawLed(ctx, x, y, label, state) {
+      ctx.save();
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.8;
+      ctx.fillStyle = state ? '#dc2626' : '#e2e8f0';
+      ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      if (state) {
+        for (let i = 0; i < 8; i++) {
+          const ang = (i * Math.PI) / 4;
+          ctx.beginPath();
+          ctx.moveTo(x + Math.cos(ang)*15, y + Math.sin(ang)*15);
+          ctx.lineTo(x + Math.cos(ang)*20, y + Math.sin(ang)*20);
+          ctx.stroke();
+        }
+      }
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${label} = ${state}`, x + 22, y + 4);
+      ctx.restore();
+    }
+
+    function drawJKFlipFlop(canvasId, j, k, clk, q, qBar) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 13px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Fig. 11.1: Clocked J-K Flip-Flop using NAND Gates (IC 7410 & IC 7400)', w / 2, 22);
+
+      // Gate Coordinates
+      const g1X = 240, g1Y = 105; // Top 3-input NAND (7410)
+      const g2X = 240, g2Y = 255; // Bottom 3-input NAND (7410)
+      const g3X = 435, g3Y = 115; // Top 2-input NAND (7400)
+      const g4X = 435, g4Y = 245; // Bottom 2-input NAND (7400)
+
+      const actJ = sim.power && j === 1;
+      const actK = sim.power && k === 1;
+      const actClk = sim.power && clk === 1;
+      const actQ = sim.power && q === 1;
+      const actQbar = sim.power && qBar === 1;
+
+      const s1 = sim.power ? ((actQbar && actJ && actClk) ? 0 : 1) : 1;
+      const s2 = sim.power ? ((actQ && actK && actClk) ? 0 : 1) : 1;
+
+      // Input Terminals: J, CLK, K
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(85, g1Y, 4.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(85, 180, 4.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(85, g2Y, 4.5, 0, Math.PI * 2); ctx.stroke();
+
+      ctx.font = 'bold 12px Arial'; ctx.textAlign = 'right';
+      ctx.fillText(`J = ${j}`, 74, g1Y + 4);
+      ctx.fillText(`CLK = ${clk}`, 74, 184);
+      ctx.fillText(`K = ${k}`, 74, g2Y + 4);
+
+      // J wire -> G1 middle input
+      ctx.strokeStyle = actJ ? '#dc2626' : '#000000';
+      ctx.beginPath(); ctx.moveTo(90, g1Y); ctx.lineTo(g1X - 26, g1Y); ctx.stroke();
+
+      // K wire -> G2 middle input
+      ctx.strokeStyle = actK ? '#dc2626' : '#000000';
+      ctx.beginPath(); ctx.moveTo(90, g2Y); ctx.lineTo(g2X - 26, g2Y); ctx.stroke();
+
+      // CLK wire -> splits to G1 bottom (+14) and G2 top (-14)
+      ctx.strokeStyle = actClk ? '#dc2626' : '#000000';
+      ctx.beginPath();
+      ctx.moveTo(90, 180); ctx.lineTo(155, 180);
+      ctx.moveTo(155, g1Y + 14); ctx.lineTo(155, g2Y - 14);
+      ctx.moveTo(155, g1Y + 14); ctx.lineTo(g1X - 26, g1Y + 14);
+      ctx.moveTo(155, g2Y - 14); ctx.lineTo(g2X - 26, g2Y - 14);
+      ctx.stroke();
+      ctx.fillStyle = actClk ? '#dc2626' : '#000000';
+      drawDot(ctx, 155, 180);
+
+      // G1 output -> G3 top (-10)
+      ctx.strokeStyle = s1 ? '#dc2626' : '#000000';
+      ctx.beginPath(); ctx.moveTo(g1X + 32, g1Y); ctx.lineTo(g3X - 26, g1Y); ctx.stroke();
+
+      // G2 output -> G4 bottom (+10)
+      ctx.strokeStyle = s2 ? '#dc2626' : '#000000';
+      ctx.beginPath(); ctx.moveTo(g2X + 32, g2Y); ctx.lineTo(g4X - 26, g2Y); ctx.stroke();
+
+      // Cross-coupled Latch Feedback using strictly orthogonal 90-degree bends and semicircular jumpers!
+      // Layout coordinates:
+      // g3X = 435, g3Y = 115 (7400 (1), output bubble at x = 467, y = 115)
+      // g4X = 435, g4Y = 245 (7400 (2), output bubble at x = 467, y = 245)
+      // g3 input side: x = 409; top input at y = 105, bottom input at y = 127
+      // g4 input side: x = 409; top input at y = 233, bottom input at y = 255
+      const qTapX = 515;        // Tap on Q output line (x = 515, y = 115)
+      const qBarTapX = 548;     // Tap on Q_bar output line (x = 548, y = 245)
+      const chQ_Y = 165;        // Upper-middle horizontal channel for Q cross-couple (y = 165)
+      const chQBar_Y = 195;     // Lower-middle horizontal channel for Q_bar cross-couple (y = 195)
+      const dropQ_X = 355;      // Left vertical drop for Q -> G4 top input (x = 355)
+      const riseQBar_X = 378;   // Left vertical riser for Q_bar -> G3 bottom input (x = 378)
+      const rJump = 6;
+
+      // 1. Q (top output, y = 115) routing:
+      ctx.strokeStyle = actQ ? '#dc2626' : '#000000';
+      ctx.beginPath();
+      // Main horizontal Q output to LED
+      ctx.moveTo(g3X + 32, g3Y);
+      ctx.lineTo(590, g3Y);
+
+      // Cross-couple Q down to G4 top input (y = 233) via 90-degree bends:
+      // (515, 115) -> down to (515, 165) -> left to (355, 165) -> down to (355, 233) [jumping over chQBar_Y=195!] -> right to (409, 233)
+      ctx.moveTo(qTapX, g3Y);
+      ctx.lineTo(qTapX, chQ_Y);
+      ctx.lineTo(dropQ_X, chQ_Y);
+      ctx.lineTo(dropQ_X, chQBar_Y - rJump);
+      ctx.arc(dropQ_X, chQBar_Y, rJump, -Math.PI / 2, Math.PI / 2, false);
+      ctx.lineTo(dropQ_X, g4Y - 12);
+      ctx.lineTo(g4X - 26, g4Y - 12);
+
+      // Outer feedback loop along bottom rail (y = 328) back to G2 bottom input (y = 269):
+      // (515, 165) -> down to (515, 245) [jumping over Q_bar horizontal wire at y=245!] -> down to (515, 328) -> left to (175, 328) -> up to (175, 269) -> right to G2
+      ctx.moveTo(qTapX, chQ_Y);
+      ctx.lineTo(qTapX, g4Y - rJump);
+      ctx.arc(qTapX, g4Y, rJump, -Math.PI / 2, Math.PI / 2, false);
+      ctx.lineTo(qTapX, 328);
+      ctx.lineTo(175, 328);
+      ctx.lineTo(175, g2Y + 14);
+      ctx.lineTo(g2X - 26, g2Y + 14);
+      ctx.stroke();
+
+      ctx.fillStyle = actQ ? '#dc2626' : '#000000';
+      drawDot(ctx, qTapX, g3Y);
+      drawDot(ctx, qTapX, chQ_Y);
+
+      // 2. Q_bar (bottom output, y = 245) routing:
+      ctx.strokeStyle = actQbar ? '#dc2626' : '#000000';
+      ctx.beginPath();
+      // Main horizontal Q_bar output to LED
+      ctx.moveTo(g4X + 32, g4Y);
+      ctx.lineTo(590, g4Y);
+
+      // Cross-couple Q_bar up to G3 bottom input (y = 127) via 90-degree bends:
+      // (548, 245) -> up to (548, 195) -> left to (378, 195) -> up to (378, 127) [jumping over chQ_Y=165!] -> right to (409, 127)
+      ctx.moveTo(qBarTapX, g4Y);
+      ctx.lineTo(qBarTapX, chQBar_Y);
+      ctx.lineTo(riseQBar_X, chQBar_Y);
+      ctx.lineTo(riseQBar_X, chQ_Y + rJump);
+      ctx.arc(riseQBar_X, chQ_Y, rJump, Math.PI / 2, -Math.PI / 2, false);
+      ctx.lineTo(riseQBar_X, g3Y + 12);
+      ctx.lineTo(g3X - 26, g3Y + 12);
+
+      // Outer feedback loop along top rail (y = 46) back to G1 top input (y = 91):
+      // (548, 195) -> up to (548, 115) [jumping over Q horizontal wire at y=115!] -> up to (548, 46) -> left to (175, 46) -> down to (175, 91) -> right to G1
+      ctx.moveTo(qBarTapX, chQBar_Y);
+      ctx.lineTo(qBarTapX, g3Y + rJump);
+      ctx.arc(qBarTapX, g3Y, rJump, Math.PI / 2, -Math.PI / 2, false);
+      ctx.lineTo(qBarTapX, 46);
+      ctx.lineTo(175, 46);
+      ctx.lineTo(175, g1Y - 14);
+      ctx.lineTo(g1X - 26, g1Y - 14);
+      ctx.stroke();
+
+      ctx.fillStyle = actQbar ? '#dc2626' : '#000000';
+      drawDot(ctx, qBarTapX, g4Y);
+      drawDot(ctx, qBarTapX, chQBar_Y);
+
+      // Draw the 4 NAND Gates
+      drawNandGate(ctx, g1X, g1Y, '7410 (1)');
+      drawNandGate(ctx, g2X, g2Y, '7410 (2)');
+      drawNandGate(ctx, g3X, g3Y, '7400 (1)');
+      drawNandGate(ctx, g4X, g4Y, '7400 (2)');
+
+      // Output LEDs for Q and Q_bar
+      drawLed(ctx, 606, g3Y, 'Q', q);
+      drawLed(ctx, 606, g4Y, 'Q̄', qBar);
+    }
+
+    function drawPinouts(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 1.8;
+
+      const ics = [
+        {
+          name: 'IC 7410 (Triple 3-In NAND)', x: 138,
+          left:  ['1: 1A', '2: 1B', '3: 2A', '4: 2B', '5: 2C', '6: 2Y', '7: GND'],
+          right: ['14: VCC', '13: 1C', '12: 1Y', '11: 3C', '10: 3B', '9: 3A', '8: 3Y']
+        },
+        {
+          name: 'IC 7400 (Quad 2-In NAND)', x: 418,
+          left:  ['1: 1A', '2: 1B', '3: 1Y', '4: 2A', '5: 2B', '6: 2Y', '7: GND'],
+          right: ['14: VCC', '13: 4B', '12: 4A', '11: 4Y', '10: 3B', '9: 3A', '8: 3Y']
+        }
+      ];
+
+      ics.forEach(ic => {
+        const bx = ic.x - 35, by = 36, bw = 70, bh = 165;
+        ctx.font = 'bold 10.5px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(ic.name, ic.x, 19);
+        ctx.strokeRect(bx, by, bw, bh);
+        ctx.beginPath(); ctx.arc(ic.x, by, 8, 0, Math.PI); ctx.stroke();
+
+        ctx.font = '8.8px Arial';
+        for (let i = 0; i < 7; i++) {
+          const py = by + 16 + i * 22;
+          ctx.strokeRect(bx - 8, py - 4, 8, 8);
+          ctx.textAlign = 'right';
+          ctx.fillText(ic.left[i], bx - 12, py + 3);
+
+          ctx.strokeRect(bx + bw, py - 4, 8, 8);
+          ctx.textAlign = 'left';
+          ctx.fillText(ic.right[i], bx + bw + 12, py + 3);
+        }
+      });
+    }
+
+    function renderSheetCanvases() {
+      const qBar = sim.power ? (sim.q ? 0 : 1) : 0;
+      drawJKFlipFlop('sheetCircuitCanvas', sim.j, sim.k, sim.clkPulse, sim.q, qBar);
+      drawPinouts('sheetPinoutCanvas');
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Captured State: J = ${sim.j}, K = ${sim.k} | Previous Q(t) = ${sim.qPrev} → Current Output Q(t+1) = ${sim.q}, Q̄ = ${qBar} (${getModeLabel(sim.j, sim.k)})`;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Constructed a clocked J-K flip-flop using 3-input NAND gates (IC 7410) and 2-input NAND gates (IC 7400) and verified all four operating modes (Hold, Reset, Set, and Toggle) using single clock pulses. For selected inputs <strong>J = ${sim.j}, K = ${sim.k}</strong>, observed <strong>Q = ${sim.q}</strong> and <strong>Q̄ = ${qBar}</strong> (${getModeLabel(sim.j, sim.k)}).<br>
+        <strong>Inference:</strong> A J-K flip-flop is a bistable 1-bit memory element that eliminates the forbidden state of an S-R flip-flop by toggling its output (Q(t+1) = Q̄(t)) when J = K = 1.
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAll();
+    });
+  </script>
+</body>
+</html>

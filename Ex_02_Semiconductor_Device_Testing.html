@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 2: Identification and Testing of Semiconductor Devices | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-amber { background: var(--accent-amber); color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .dev-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .dev-btn {
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.77rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dev-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .canvas-frame {
+      background: #ffffff;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    #testCanvas {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      display: block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 10px;
+      background: #141d2f;
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ctrl-box select {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 0.78rem;
+      outline: none;
+    }
+    .swap-btn {
+      width: 100%;
+      padding: 7px 10px;
+      border-radius: 5px;
+      border: 1px solid #60a5fa;
+      background: #2563eb;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .swap-btn:hover { background: #1d4ed8; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: #0f172a;
+      border-top: 1px solid var(--border-dark);
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.63rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-top: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.73rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid #334155;
+      padding: 5px;
+    }
+    .ref-table th {
+      background: #0f172a;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .active-row {
+      background: rgba(37, 99, 235, 0.35);
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Formatted Testing Rules & Diagnostic Criteria Card */
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.77rem;
+      line-height: 1.5;
+    }
+    .formula-title {
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .formula-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      color: #e2e8f0;
+    }
+    .formula-list li {
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .formula-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+    .code-chip {
+      display: inline-block;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.76rem;
+      color: #34d399;
+      font-weight: 700;
+    }
+    .probe-red {
+      display: inline-block;
+      background: rgba(220, 38, 38, 0.2);
+      border: 1px solid rgba(248, 113, 113, 0.5);
+      color: #fca5a5;
+      border-radius: 4px;
+      padding: 0 5px;
+      font-weight: 700;
+      font-size: 0.74rem;
+    }
+    .probe-blk {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #64748b;
+      color: #e2e8f0;
+      border-radius: 4px;
+      padding: 0 5px;
+      font-weight: 700;
+      font-size: 0.74rem;
+    }
+
+    /* Worksheet / Lab Manual View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.7rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.74rem;
+      gap: 4px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      line-height: 1.36;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 3px 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 2 (M1.02, CO1): Identification and Testing of Semiconductor Devices</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">DMM Diode-Test &amp; Semiconductor Pinout Workbench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Interactive DMM Diode-Test Bench -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>DIGITAL MULTIMETER (DIODE-TEST RANGE) &amp; TERMINAL VERIFICATION</span>
+          </div>
+          <button class="btn btn-amber" style="padding:4px 10px; font-size:0.72rem;" onclick="cycleTestStep()">
+            Step Next Probe Test
+          </button>
+        </div>
+
+        <div style="padding: 10px 12px 0 12px; background:#141d2f;">
+          <div class="dev-tabs">
+            <button id="dTabDiode" class="dev-btn active" onclick="selectDevice('diode')">1. PN Diode (1N4007)</button>
+            <button id="dTabZener" class="dev-btn" onclick="selectDevice('zener')">2. Zener Diode (5.1V)</button>
+            <button id="dTabBjt" class="dev-btn" onclick="selectDevice('bjt')">3. NPN BJT (BC548)</button>
+            <button id="dTabScr" class="dev-btn" onclick="selectDevice('scr')">4. SCR (TYN612)</button>
+            <button id="dTabUjt" class="dev-btn" onclick="selectDevice('ujt')">5. UJT (2N2646)</button>
+          </div>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="testCanvas" width="720" height="330"></canvas>
+        </div>
+
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Red Probe (+ / VΩmA)</label>
+            <select id="selRedPin" onchange="updateAll()"></select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Black Probe (− / COM)</label>
+            <select id="selBlkPin" onchange="updateAll()"></select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Reverse Probe Polarity</label>
+            <button class="swap-btn" onclick="swapProbes()">⇄ Swap Red &amp; Black Probes</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Device Condition</label>
+            <select id="selFault" onchange="updateAll()">
+              <option value="ok" selected>Healthy / Good Device</option>
+              <option value="short">Short-Circuited Junction</option>
+              <option value="open">Open-Circuited Junction</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">Selected Device</div>
+            <div class="stat-value" id="statDev" style="color:#60a5fa;">1N4007 Diode</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">DMM Display (Diode Mode)</div>
+            <div class="stat-value" id="statDmm" style="color:#34d399;">0.58 V</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Junction Bias State</div>
+            <div class="stat-value" id="statBias" style="color:#fbbf24; font-size:0.78rem;">Forward Biased</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Diagnostic Result</div>
+            <div class="stat-value" id="statHealth" style="color:#c084fc; font-size:0.78rem;">GOOD (Healthy)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Expected DMM Readings & Formatted Testing Rules -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>EXPECTED DMM DIODE-TEST READINGS</span>
+          <span style="font-size:0.7rem; color:#34d399;">Active Test Highlighted</span>
+        </div>
+
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Red (+)</th>
+              <th>Black (−)</th>
+              <th>Expected Reading</th>
+              <th>Inference</th>
+            </tr>
+          </thead>
+          <tbody id="refTableBody"></tbody>
+        </table>
+
+        <!-- Formatted Testing Rules & Diagnostic Criteria -->
+        <div class="formula-card">
+          <div class="formula-title">
+            <span>DMM Testing Rules &amp; Diagnostic Criteria</span>
+            <span style="font-size:0.65rem; color:#94a3b8;">Diode-Test Mode</span>
+          </div>
+          <ul class="formula-list">
+            <li>
+              <strong>PN &amp; Zener Diodes (<span class="code-chip">1N4007</span>, <span class="code-chip">5.1V Zener</span>):</strong> Forward bias (<span class="probe-red">Red → Anode</span>, <span class="probe-blk">Black → Cathode</span>) reads <span class="code-chip">0.55 V – 0.72 V</span>; reverse bias reads <span class="code-chip">OL</span> (open). The silver/black band marks the <strong>Cathode (K)</strong>.
+            </li>
+            <li>
+              <strong>NPN Transistor (<span class="code-chip">BC548</span>, <span class="code-chip">1:C 2:B 3:E</span>):</strong> With <span class="probe-red">Red on Base (B)</span> and <span class="probe-blk">Black on E or C</span>, both <span class="code-chip">B–E</span> and <span class="code-chip">B–C</span> junctions read <span class="code-chip">0.60 V – 0.72 V</span>. <span class="code-chip">C–E</span> reads <span class="code-chip">OL</span> in both directions.
+            </li>
+            <li>
+              <strong>SCR (<span class="code-chip">TYN612</span>, <span class="code-chip">1:K 2:A 3:G</span>):</strong> Gate-Cathode (<span class="probe-red">Red → G</span>, <span class="probe-blk">Black → K</span>) conducts like a PN junction (<span class="code-chip">~0.65 V</span> or low resistance); <span class="code-chip">A–K</span> blocks (<span class="code-chip">OL</span>) in both polarities without gate trigger.
+            </li>
+            <li>
+              <strong>UJT (<span class="code-chip">2N2646</span>, <span class="code-chip">TO-18 Tab = E</span>):</strong> Inter-base resistance <span class="code-chip">B1–B2</span> is <span class="code-chip">4 kΩ – 10 kΩ</span> (reads <span class="code-chip">OL</span> in diode range); <span class="probe-red">Red → Emitter (E)</span> to <span class="probe-blk">Black → B1 or B2</span> reads <span class="code-chip">0.60 V – 0.75 V</span>.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 2 (MODULE M1.02 • CO1)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 2: IDENTIFICATION AND TESTING OF SEMICONDUCTOR DEVICES</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To identify the terminals and test the working condition of a PN junction diode (1N4007), Zener diode, NPN transistor (BC548), SCR (TYN612), and UJT (2N2646) using a Digital Multimeter.<br>
+        <strong>APPARATUS / COMPONENTS:</strong> Digital Multimeter (with Diode-Test range), PN Diode 1N4007, Zener Diode (5.1 V / 6.2 V), NPN Transistor BC548, SCR TYN612, UJT 2N2646.
+      </div>
+
+      <div class="sheet-section-title">CAPTURED DMM PROBE SETUP &amp; TERMINAL PINOUT (FOR SELECTED DEVICE)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:flex; justify-content:center;">
+          <canvas id="sheetTestCanvas" width="720" height="330" style="width:92%; max-width:650px; height:auto; border:1px solid #000000;"></canvas>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 2.1: SUMMARY OF SEMICONDUCTOR DEVICE TERMINAL &amp; DMM TEST OBSERVATIONS</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Sl. No.</th>
+              <th>Device &amp; Code</th>
+              <th>Package &amp; Pinout</th>
+              <th>Forward Test (Red → Black)</th>
+              <th>Reverse Test</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>PN Diode (1N4007)</td><td>DO-41 (Band = K)</td><td>A → K: 0.58 V</td><td>K → A: OL</td><td>Good</td></tr>
+            <tr><td>2</td><td>Zener Diode (5.1 V)</td><td>DO-35 (Band = K)</td><td>A → K: 0.68 V</td><td>K → A: OL</td><td>Good</td></tr>
+            <tr><td>3</td><td>NPN BJT (BC548)</td><td>TO-92 (1:C, 2:B, 3:E)</td><td>B → E: 0.66 V, B → C: 0.65 V</td><td>E → B, C → B, C ↔ E: OL</td><td>Good</td></tr>
+            <tr><td>4</td><td>SCR (TYN612)</td><td>TO-220 (1:K, 2:A, 3:G)</td><td>G → K: 0.64 V</td><td>A ↔ K: OL, K → G: OL</td><td>Good</td></tr>
+            <tr><td>5</td><td>UJT (2N2646)</td><td>TO-18 (Tab = E, B1, B2)</td><td>E → B1: 0.67 V, E → B2: 0.65 V</td><td>B1 → E: OL, B2 → E: OL</td><td>Good</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const DEVICES = {
+      diode: {
+        name: 'PN Diode (1N4007)',
+        pkg: 'DO-41 Axial (Silver Band = Cathode)',
+        pins: ['A', 'K'],
+        pinLabels: { A: 'Anode (A)', K: 'Cathode (K)' },
+        tests: [
+          { r: 'A', b: 'K', val: '0.58 V', bias: 'Forward Biased', desc: 'PN junction conducts' },
+          { r: 'K', b: 'A', val: 'OL',     bias: 'Reverse Biased', desc: 'PN junction blocks' }
+        ]
+      },
+      zener: {
+        name: 'Zener Diode (5.1 V)',
+        pkg: 'DO-35 Glass (Black Band = Cathode)',
+        pins: ['A', 'K'],
+        pinLabels: { A: 'Anode (A)', K: 'Cathode (K)' },
+        tests: [
+          { r: 'A', b: 'K', val: '0.68 V', bias: 'Forward Biased', desc: 'Forward diode drop' },
+          { r: 'K', b: 'A', val: 'OL',     bias: 'Reverse (<5.1V)', desc: 'Blocks below VZ' }
+        ]
+      },
+      bjt: {
+        name: 'NPN Transistor (BC548)',
+        pkg: 'TO-92 Flat Face (1:C, 2:B, 3:E)',
+        pins: ['C', 'B', 'E'],
+        pinLabels: { C: 'Pin 1: Collector (C)', B: 'Pin 2: Base (B)', E: 'Pin 3: Emitter (E)' },
+        tests: [
+          { r: 'B', b: 'E', val: '0.66 V', bias: 'B-E Forward', desc: 'Base-Emitter junction OK' },
+          { r: 'B', b: 'C', val: '0.65 V', bias: 'B-C Forward', desc: 'Base-Collector junction OK' },
+          { r: 'E', b: 'B', val: 'OL',     bias: 'B-E Reverse', desc: 'Reverse blocked' },
+          { r: 'C', b: 'B', val: 'OL',     bias: 'B-C Reverse', desc: 'Reverse blocked' },
+          { r: 'C', b: 'E', val: 'OL',     bias: 'C-E Open',    desc: 'No C-E short' }
+        ]
+      },
+      scr: {
+        name: 'SCR (TYN612)',
+        pkg: 'TO-220 Front View (1:K, 2:A, 3:G)',
+        pins: ['K', 'A', 'G'],
+        pinLabels: { K: 'Pin 1: Cathode (K)', A: 'Pin 2: Anode (A)', G: 'Pin 3: Gate (G)' },
+        tests: [
+          { r: 'G', b: 'K', val: '0.64 V', bias: 'G-K Forward', desc: 'Gate-Cathode junction OK' },
+          { r: 'K', b: 'G', val: 'OL',     bias: 'G-K Reverse', desc: 'Reverse blocked' },
+          { r: 'A', b: 'K', val: 'OL',     bias: 'A-K Forward Block', desc: 'Off without gate pulse' },
+          { r: 'K', b: 'A', val: 'OL',     bias: 'A-K Reverse Block', desc: 'Reverse blocking OK' }
+        ]
+      },
+      ujt: {
+        name: 'UJT (2N2646)',
+        pkg: 'TO-18 Bottom View (Tab = E, B1, B2)',
+        pins: ['E', 'B1', 'B2'],
+        pinLabels: { E: 'Emitter (E - Tab)', B1: 'Base 1 (B1)', B2: 'Base 2 (B2)' },
+        tests: [
+          { r: 'E',  b: 'B1', val: '0.67 V', bias: 'E-B1 Forward', desc: 'Emitter-B1 diode OK' },
+          { r: 'E',  b: 'B2', val: '0.65 V', bias: 'E-B2 Forward', desc: 'Emitter-B2 diode OK' },
+          { r: 'B1', b: 'E',  val: 'OL',     bias: 'E-B1 Reverse', desc: 'Reverse blocked' },
+          { r: 'B1', b: 'B2', val: 'OL (6.8kΩ)', bias: 'Inter-Base RBB', desc: 'Ohmic silicon bar' }
+        ]
+      }
+    };
+
+    const sim = {
+      devKey: 'diode',
+      stepIdx: 0
+    };
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetView();
+      }
+    }
+
+    function selectDevice(key) {
+      sim.devKey = key;
+      sim.stepIdx = 0;
+      ['diode','zener','bjt','scr','ujt'].forEach(k => {
+        document.getElementById('dTab' + k.charAt(0).toUpperCase() + k.slice(1)).classList.toggle('active', k === key);
+      });
+
+      const d = DEVICES[key];
+      const redSel = document.getElementById('selRedPin');
+      const blkSel = document.getElementById('selBlkPin');
+      redSel.innerHTML = d.pins.map(p => `<option value="${p}">${d.pinLabels[p]}</option>`).join('');
+      blkSel.innerHTML = d.pins.map(p => `<option value="${p}">${d.pinLabels[p]}</option>`).join('');
+
+      redSel.value = d.tests[0].r;
+      blkSel.value = d.tests[0].b;
+      document.getElementById('selFault').value = 'ok';
+      updateAll();
+    }
+
+    function swapProbes() {
+      const redSel = document.getElementById('selRedPin');
+      const blkSel = document.getElementById('selBlkPin');
+      const tmp = redSel.value;
+      redSel.value = blkSel.value;
+      blkSel.value = tmp;
+      updateAll();
+    }
+
+    function cycleTestStep() {
+      const d = DEVICES[sim.devKey];
+      sim.stepIdx = (sim.stepIdx + 1) % d.tests.length;
+      document.getElementById('selRedPin').value = d.tests[sim.stepIdx].r;
+      document.getElementById('selBlkPin').value = d.tests[sim.stepIdx].b;
+      updateAll();
+    }
+
+    function evaluateReading() {
+      const d = DEVICES[sim.devKey];
+      const rPin = document.getElementById('selRedPin').value;
+      const bPin = document.getElementById('selBlkPin').value;
+      const fault = document.getElementById('selFault').value;
+
+      if (rPin === bPin) {
+        return { dmm: '0.00 V', bias: 'Same Terminal', health: 'Probes Shorted', rPin, bPin };
+      }
+      if (fault === 'short') {
+        return { dmm: '0.00 V (Beep)', bias: 'Shorted', health: 'FAULTY (Short)', rPin, bPin };
+      }
+      if (fault === 'open') {
+        return { dmm: 'OL', bias: 'Open Circuit', health: 'FAULTY (Open)', rPin, bPin };
+      }
+
+      const match = d.tests.find(t => t.r === rPin && t.b === bPin);
+      if (match) {
+        return { dmm: match.val, bias: match.bias, health: 'GOOD (Healthy)', rPin, bPin };
+      }
+      return { dmm: 'OL', bias: 'High Impedance', health: 'GOOD (Healthy)', rPin, bPin };
+    }
+
+    function updateAll() {
+      const d = DEVICES[sim.devKey];
+      const res = evaluateReading();
+
+      document.getElementById('statDev').innerText = d.name;
+      document.getElementById('statDmm').innerText = res.dmm;
+      document.getElementById('statBias').innerText = res.bias;
+      document.getElementById('statHealth').innerText = res.health;
+      document.getElementById('statHealth').style.color = res.health.includes('FAULTY') ? '#f87171' : '#34d399';
+
+      document.getElementById('refTableBody').innerHTML = d.tests.map(t => {
+        const isAct = t.r === res.rPin && t.b === res.bPin;
+        return `<tr class="${isAct ? 'active-row' : ''}">
+          <td>${t.r}</td><td>${t.b}</td><td><strong>${t.val}</strong></td><td>${t.desc}</td>
+        </tr>`;
+      }).join('');
+
+      drawTestBench('testCanvas', d, res);
+    }
+
+    // ---------------------------------------------------------
+    // DMM DIODE-TEST & DEVICE PACKAGE RENDERER (Non-overlapping wiring)
+    // ---------------------------------------------------------
+    function drawTestBench(canvasId, d, res) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      const cx = 205, cy = 165;
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 13px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.name.toUpperCase(), cx, 26);
+      ctx.font = '10.5px Arial';
+      ctx.fillStyle = '#334155';
+      ctx.fillText(d.pkg, cx, 43);
+
+      // Pin anchor coordinates on device graphic
+      const pinCoords = {};
+
+      if (sim.devKey === 'diode' || sim.devKey === 'zener') {
+        // Horizontal Diode (Anode Left, Cathode Band Right)
+        ctx.strokeStyle = '#475569'; ctx.lineWidth = 3.5;
+        ctx.beginPath(); ctx.moveTo(75, cy); ctx.lineTo(335, cy); ctx.stroke();
+
+        ctx.fillStyle = sim.devKey === 'diode' ? '#1e293b' : '#f97316';
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2;
+        ctx.fillRect(cx - 65, cy - 24, 130, 48);
+        ctx.strokeRect(cx - 65, cy - 24, 130, 48);
+
+        // Cathode Band on Right
+        ctx.fillStyle = sim.devKey === 'diode' ? '#e2e8f0' : '#111827';
+        ctx.fillRect(cx + 36, cy - 23, 18, 46);
+
+        ctx.fillStyle = '#000000'; ctx.font = 'bold 12px Arial';
+        ctx.fillText('Anode (A)', 95, cy - 14);
+        ctx.fillText('Cathode (K)', 315, cy - 14);
+
+        pinCoords['A'] = { x: 95, y: cy };
+        pinCoords['K'] = { x: 315, y: cy };
+
+      } else if (sim.devKey === 'bjt') {
+        // TO-92 BC548 (1:C, 2:B, 3:E)
+        ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#000000'; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy - 35, 42, Math.PI, 0, false);
+        ctx.lineTo(cx + 42, cy + 5);
+        ctx.lineTo(cx - 42, cy + 5);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Arial';
+        ctx.fillText('BC548', cx, cy - 18);
+
+        const xs = [cx - 26, cx, cx + 26];
+        const lbls = ['1: C', '2: B', '3: E'];
+        const keys = ['C', 'B', 'E'];
+        ctx.strokeStyle = '#475569'; ctx.lineWidth = 3;
+        xs.forEach((px, i) => {
+          ctx.beginPath(); ctx.moveTo(px, cy + 5); ctx.lineTo(px, cy + 72); ctx.stroke();
+          ctx.fillStyle = '#000000'; ctx.font = 'bold 10.5px Arial';
+          ctx.fillText(lbls[i], px, cy + 88);
+          pinCoords[keys[i]] = { x: px, y: cy + 55 };
+        });
+
+      } else if (sim.devKey === 'scr') {
+        // TO-220 TYN612 (1:K, 2:A, 3:G)
+        ctx.fillStyle = '#e2e8f0'; ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.8;
+        ctx.fillRect(cx - 38, cy - 68, 76, 22);
+        ctx.strokeRect(cx - 38, cy - 68, 76, 22);
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(cx, cy - 57, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#111827';
+        ctx.fillRect(cx - 38, cy - 46, 76, 52);
+        ctx.strokeRect(cx - 38, cy - 46, 76, 52);
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Arial';
+        ctx.fillText('TYN612', cx, cy - 16);
+
+        const xs = [cx - 24, cx, cx + 24];
+        const lbls = ['1: K', '2: A', '3: G'];
+        const keys = ['K', 'A', 'G'];
+        ctx.strokeStyle = '#475569'; ctx.lineWidth = 3;
+        xs.forEach((px, i) => {
+          ctx.beginPath(); ctx.moveTo(px, cy + 6); ctx.lineTo(px, cy + 72); ctx.stroke();
+          ctx.fillStyle = '#000000'; ctx.font = 'bold 10.5px Arial';
+          ctx.fillText(lbls[i], px, cy + 88);
+          pinCoords[keys[i]] = { x: px, y: cy + 55 };
+        });
+
+      } else {
+        // TO-18 UJT 2N2646 Bottom View
+        const rad = 42;
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(cx, cy - 8, rad + 7, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, cy - 8, rad, 0, Math.PI * 2); ctx.stroke();
+
+        ctx.save();
+        ctx.translate(cx, cy - 8);
+        ctx.rotate((3 * Math.PI) / 4);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(rad, -6, 15, 12);
+        ctx.strokeRect(rad, -6, 15, 12);
+        ctx.restore();
+
+        const uPins = [
+          { k: 'E',  x: cx - 18, y: cy + 10, lbl: 'E (Tab)', ox: -42, oy: 32 },
+          { k: 'B1', x: cx - 18, y: cy - 26, lbl: 'B1',      ox: -36, oy: -32 },
+          { k: 'B2', x: cx + 18, y: cy + 10, lbl: 'B2',      ox: 36,  oy: 32 }
+        ];
+        uPins.forEach(p => {
+          ctx.fillStyle = '#000000';
+          ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.font = 'bold 10.5px Arial';
+          ctx.fillText(p.lbl, cx + p.ox, cy - 8 + p.oy);
+          pinCoords[p.k] = { x: p.x, y: p.y };
+        });
+      }
+
+      // Draw Digital Multimeter on Right (x = 435..685)
+      const mx = 435, my = 34, mw = 250, mh = 262;
+      ctx.fillStyle = '#f8fafc'; ctx.strokeStyle = '#000000'; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.roundRect(mx, my, mw, mh, 12); ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(mx, my, mw, 28);
+      ctx.fillStyle = '#ffffff'; ctx.font = 'bold 10.5px Arial';
+      ctx.fillText('DIGITAL MULTIMETER (DIODE MODE)', mx + mw / 2, my + 18);
+
+      // LCD Display
+      ctx.fillStyle = '#d1fae5'; ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.6;
+      ctx.fillRect(mx + 18, my + 42, mw - 36, 66);
+      ctx.strokeRect(mx + 18, my + 42, mw - 36, 66);
+
+      ctx.fillStyle = '#000000'; ctx.font = 'bold 24px monospace';
+      ctx.fillText(res.dmm, mx + mw / 2, my + 84);
+
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText(`State: ${res.bias}`, mx + mw / 2, my + 132);
+      ctx.fillStyle = res.health.includes('FAULTY') ? '#dc2626' : '#059669';
+      ctx.fillText(`Status: ${res.health}`, mx + mw / 2, my + 154);
+
+      // Rotary Selector pointing to Diode Test Symbol (-|>|-)
+      const dialX = mx + mw / 2, dialY = my + 194;
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.arc(dialX, dialY, 17, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(dialX, dialY); ctx.lineTo(dialX - 11, dialY - 11); ctx.stroke();
+      ctx.fillStyle = '#000000'; ctx.font = 'bold 9.5px Arial';
+      ctx.fillText('►| (Diode)', dialX - 38, dialY - 14);
+
+      // Probe Jacks: VΩmA (+ Red) and COM (- Black)
+      const redJack = { x: mx + 72, y: my + 240 };
+      const blkJack = { x: mx + 178, y: my + 240 };
+
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(redJack.x, redJack.y, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#111827';
+      ctx.beginPath(); ctx.arc(blkJack.x, blkJack.y, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#000000'; ctx.font = 'bold 9px Arial';
+      ctx.fillText('VΩmA (+)', redJack.x, redJack.y + 18);
+      ctx.fillText('COM (−)', blkJack.x, blkJack.y + 18);
+
+      // Orthogonal Non-Overlapping Probe Leads from Jacks to Selected Device Pins
+      const rTarget = pinCoords[res.rPin];
+      const bTarget = pinCoords[res.bPin];
+
+      if (rTarget && bTarget) {
+        // Red Probe Wire (routes via upper-mid corridor y = 92)
+        ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(redJack.x, redJack.y);
+        ctx.lineTo(redJack.x - 15, redJack.y);
+        ctx.lineTo(395, redJack.y);
+        ctx.lineTo(395, 82);
+        ctx.lineTo(rTarget.x, 82);
+        ctx.lineTo(rTarget.x, rTarget.y);
+        ctx.stroke();
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath(); ctx.arc(rTarget.x, rTarget.y, 5, 0, Math.PI * 2); ctx.fill();
+
+        // Black Probe Wire (routes via lower corridor y = 296)
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(blkJack.x, blkJack.y);
+        ctx.lineTo(blkJack.x, 298);
+        ctx.lineTo(bTarget.x, 298);
+        ctx.lineTo(bTarget.x, bTarget.y);
+        ctx.stroke();
+        ctx.fillStyle = '#000000';
+        ctx.beginPath(); ctx.arc(bTarget.x, bTarget.y, 5, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    function renderSheetView() {
+      const d = DEVICES[sim.devKey];
+      const res = evaluateReading();
+      drawTestBench('sheetTestCanvas', d, res);
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Device: ${d.name} | Red Probe (+) → ${res.rPin}, Black Probe (−) → ${res.bPin} | DMM Reading = ${res.dmm} (${res.health})`;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Identified the terminal pinouts and tested the PN diode (1N4007), Zener diode, NPN transistor (BC548), SCR (TYN612), and UJT (2N2646) using the Digital Multimeter in diode-test mode. For active <strong>${d.name}</strong> (Red → ${res.rPin}, Black → ${res.bPin}), measured <strong>${res.dmm}</strong> (${res.bias} — ${res.health}).<br>
+        <strong>Inference:</strong> Healthy semiconductor PN junctions exhibit a forward voltage drop of ~0.55 V to 0.72 V and block current (OL) under reverse bias.
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectDevice('diode');
+    });
+  </script>
+</body>
+</html>

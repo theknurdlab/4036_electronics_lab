@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 3: Single-Stage RC Coupled CE Amplifier | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dso-frame {
+      position: relative;
+      background: #ffffff;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+    }
+    #dsoCanvas { width: 100%; height: 100%; display: block; }
+    .dso-hud-top {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+    .dso-hud-bottom {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      text-align: right;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+
+    .sub-section-bar {
+      background: #0f172a;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #334155;
+    }
+
+    .freq-card {
+      background: rgba(30, 58, 138, 0.25);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin: 10px 12px 0 12px;
+    }
+    .freq-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #93c5fd;
+      margin-bottom: 6px;
+    }
+
+    .control-grid {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      background: #141d2f;
+      border-top: 1px solid var(--border-dark);
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ctrl-box select {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 4px;
+      font-size: 0.74rem;
+      outline: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #141d2f;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.63rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .stat-value {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-top: 2px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+    }
+    #schematicCanvas, #bodeCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 600px;
+      display: block;
+    }
+
+    /* Formatted Amplifier Equations & Component Impact Card */
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      font-size: 0.76rem;
+      line-height: 1.5;
+    }
+    .formula-title {
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .formula-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+    .formula-list li {
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.48;
+    }
+    .formula-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+    .math-chip {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      padding: 2px 7px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 0.85rem;
+      color: #f8fafc;
+      margin: 2px 2px;
+      vertical-align: middle;
+    }
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 3px;
+      font-size: 0.85em;
+      line-height: 1.12;
+    }
+    .fraction-top { border-bottom: 1.2px solid currentColor; padding-bottom: 1px; }
+    .fraction-bottom { padding-top: 1px; }
+
+    /* Worksheet / Lab Manual View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.7rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.74rem;
+      gap: 4px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      line-height: 1.36;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 3px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 3 (M1.03, CO1): Single-Stage RC Coupled CE Amplifier</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">RC Coupled CE Amplifier &amp; Frequency Response Bench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Dual-Channel DSO & Parameter Variations -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: Vin, CH2: Vo • 180° Phase Reversal)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
+            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+          </div>
+        </div>
+
+        <div class="dso-frame">
+          <canvas id="dsoCanvas" width="700" height="380"></canvas>
+
+          <div class="dso-hud-top">
+            <div>TB: <strong id="hudTime">250 µs/div</strong> | Vin: <strong>50 mVpp</strong></div>
+            <div>CH1 (Vin): <strong id="hudCh1Scale">50 mV/div</strong> (Dashed)</div>
+            <div>CH2 (Vo): <strong id="hudCh2Scale">2.0 V/div</strong> (Solid)</div>
+          </div>
+
+          <div class="dso-hud-bottom">
+            <div>Freq (f): <strong id="hudFreq" style="color:#2563eb;">1.00 kHz</strong></div>
+            <div>Output Vo: <strong id="hudVo" style="color:#059669;">3.25 Vpp</strong></div>
+            <div>Voltage Gain: <strong id="hudGain">65.0 (36.3 dB)</strong></div>
+            <div>Phase Shift: <strong id="hudPhase">180.0°</strong></div>
+          </div>
+        </div>
+
+        <!-- Logarithmic Input Frequency Slider -->
+        <div class="freq-card">
+          <div class="freq-header">
+            <span>Function Generator Frequency (10 Hz – 2 MHz Logarithmic Sweep)</span>
+            <span id="freqDisplay" style="font-family:monospace; color:#34d399;">f = 1.00 kHz (Mid-Band)</span>
+          </div>
+          <input type="range" id="freqSlider" min="1" max="6.3" step="0.02" value="3.0" oninput="onFreqSlider(this.value)" style="width:100%; cursor:pointer;">
+          <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:#94a3b8; margin-top:4px;">
+            <span>10 Hz (Low-Freq Roll-Off)</span>
+            <span style="color:#34d399; font-weight:700;">1 kHz – 100 kHz (Flat Mid-Band)</span>
+            <span>2 MHz (High-Freq Roll-Off)</span>
+          </div>
+        </div>
+
+        <!-- Component Parameter Variations (Rc, Re, Ce, RL) & DSO Scales -->
+        <div class="sub-section-bar"><span>Circuit Component Variations (Rc, Re, Ce, RL) &amp; DSO Scales (5 V/div &amp; 10 V/div)</span></div>
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Collector Resistor (Rc)</label>
+            <select id="selRc" onchange="sim.rc = parseFloat(this.value); updateAll()">
+              <option value="2200">2.2 kΩ (Lower Gain)</option>
+              <option value="3300" selected>3.3 kΩ (Standard Design)</option>
+              <option value="4700">4.7 kΩ (Higher Gain)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Emitter Bypass (Ce)</label>
+            <select id="selCe" onchange="sim.ce = this.value; updateAll()">
+              <option value="47e-6" selected>47 µF Connected (High Gain)</option>
+              <option value="10e-6">10 µF (Higher fL Cutoff)</option>
+              <option value="open">Removed / Open (Unbypassed)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Load Resistor (RL)</label>
+            <select id="selRl" onchange="sim.rl = this.value; updateAll()">
+              <option value="open">No Load (Open)</option>
+              <option value="10000" selected>10 kΩ (Standard Load)</option>
+              <option value="4700">4.7 kΩ (Heavy Load)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>CH2 (Vo) Scale</label>
+            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
+              <option value="0.5">0.5 V/div</option>
+              <option value="1.0">1.0 V/div</option>
+              <option value="2.0" selected>2.0 V/div</option>
+              <option value="5.0">5.0 V/div</option>
+              <option value="10.0">10.0 V/div</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="padding: 10px;">
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-label">Mid-Band Gain</div>
+              <div class="stat-value" id="statMidGain" style="color:#60a5fa;">36.3 dB</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Lower Cutoff (fL)</div>
+              <div class="stat-value" id="statFl" style="color:#34d399;">48 Hz</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Upper Cutoff (fH)</div>
+              <div class="stat-value" id="statFh" style="color:#fbbf24;">420 kHz</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Bandwidth (fH − fL)</div>
+              <div class="stat-value" id="statBw" style="color:#c084fc;">420 kHz</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Schematic, Live Frequency Response Plot & Formatted Equations -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>RC COUPLED CE AMPLIFIER &amp; BODE FREQUENCY RESPONSE</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">BC548 • +12 V DC</span>
+        </div>
+
+        <div class="schematic-box" style="margin-bottom:8px;">
+          <canvas id="schematicCanvas" width="600" height="245"></canvas>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="bodeCanvas" width="600" height="165"></canvas>
+        </div>
+
+        <!-- Formatted Amplifier Equations & Component Impact Card -->
+        <div class="formula-card">
+          <div class="formula-title">
+            <span>Amplifier Equations &amp; Component Effects</span>
+            <span style="font-size:0.65rem; color:#94a3b8;">Small-Signal AC Analysis</span>
+          </div>
+          <ul class="formula-list">
+            <li>
+              <strong>Mid-Band Voltage Gain &amp; dB Gain:</strong><br>
+              <span class="math-chip">
+                <i>A</i><sub>v</sub> = 
+                <span class="fraction"><span class="fraction-top"><i>V</i><sub>o</sub></span><span class="fraction-bottom"><i>V</i><sub>in</sub></span></span>
+                = &minus;
+                <span class="fraction"><span class="fraction-top"><i>R</i><sub>C</sub> &parallel; <i>R</i><sub>L</sub></span><span class="fraction-bottom"><i>r</i><sub>e</sub></span></span>
+              </span>
+              &nbsp;
+              <span class="math-chip">Gain (dB) = 20 log<sub>10</sub> |<i>A</i><sub>v</sub>|</span>
+            </li>
+            <li>
+              <strong>Bandwidth &amp; 3-dB Cutoff Frequencies:</strong><br>
+              <span class="math-chip"><i>BW</i> = <i>f</i><sub>H</sub> &minus; <i>f</i><sub>L</sub></span>
+              &nbsp;(Gain drops by <strong>3 dB</strong> or to <strong>0.707 A<sub>v(mid)</sub></strong> at <i>f</i><sub>L</sub> and <i>f</i><sub>H</sub>)
+            </li>
+            <li>
+              <strong>Effect of Removing Bypass Capacitor C<sub>E</sub>:</strong> Without <i>C</i><sub>E</sub>, emitter resistor <i>R</i><sub>E</sub> introduces current-series negative feedback, reducing mid-band gain to <span class="math-chip"><i>A</i><sub>v</sub> &approx; &minus;(<i>R</i><sub>C</sub> &parallel; <i>R</i><sub>L</sub>) / <i>R</i><sub>E</sub></span> while widening bandwidth.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 3 (MODULE M1.03 • CO1)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 3: SINGLE-STAGE RC COUPLED CE AMPLIFIER</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To set up a single-stage RC coupled common-emitter (CE) amplifier using transistor BC548, observe the input and output waveforms, and plot its frequency response curve to determine the bandwidth.<br>
+        <strong>COMPONENTS REQUIRED:</strong> DC Power Supply (+12 V), Function Generator (10 Hz – 2 MHz), DSO, NPN Transistor BC548 (1 no.), Resistors: R<sub>1</sub> = 33 kΩ, R<sub>2</sub> = 8.2 kΩ, R<sub>C</sub> = 3.3 kΩ, R<sub>E</sub> = 1 kΩ, R<sub>L</sub> = 10 kΩ, Capacitors: C<sub>in</sub> = 10 µF, C<sub>out</sub> = 10 µF, C<sub>E</sub> = 47 µF.
+      </div>
+
+      <div class="sheet-section-title">CIRCUIT DIAGRAM, CAPTURED DSO WAVEFORM &amp; FREQUENCY RESPONSE</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.05fr 0.95fr; gap:8px; align-items:center;">
+          <div>
+            <canvas id="sheetSchematicCanvas" width="600" height="245" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.66rem; font-weight:700; margin-top:2px;">Fig. 3.1: Single-Stage RC Coupled CE Amplifier</div>
+          </div>
+          <div>
+            <canvas id="sheetDsoCanvas" width="560" height="230" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetDsoCaption" style="text-align:center; font-size:0.66rem; font-weight:700; margin-top:2px;"></div>
+          </div>
+        </div>
+        <div style="margin-top:6px;">
+          <canvas id="sheetBodeCanvas" width="760" height="145" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+          <div style="text-align:center; font-size:0.66rem; font-weight:700; margin-top:2px;">Fig. 3.3: Frequency Response Curve (Gain in dB vs Frequency on Log Scale)</div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:5px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.69rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 3.1: FREQUENCY RESPONSE OBSERVATIONS (Vin = 50 mVpp)</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Frequency (Hz)</th>
+              <th>20 Hz</th><th>50 Hz</th><th>100 Hz</th><th>500 Hz</th><th>1 kHz</th><th>10 kHz</th><th>100 kHz</th><th>420 kHz</th><th>1 MHz</th>
+            </tr>
+          </thead>
+          <tbody id="sheetTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const sim = {
+      freq: 1000,       // 1 kHz
+      vin: 0.05,        // 50 mVpp
+      rc: 3300,         // 3.3 kΩ
+      ce: '47e-6',      // '47e-6', '10e-6', 'open'
+      rl: '10000',      // 'open', '10000', '4700'
+      ch2Scale: 2.0,    // 2.0 V/div
+      laserMode: true,
+      running: true,
+      t: 0
+    };
+
+    function resetDefaults() {
+      sim.freq = 1000;
+      sim.rc = 3300;
+      sim.ce = '47e-6';
+      sim.rl = '10000';
+      sim.ch2Scale = 2.0;
+      document.getElementById('freqSlider').value = '3.0';
+      document.getElementById('selRc').value = '3300';
+      document.getElementById('selCe').value = '47e-6';
+      document.getElementById('selRl').value = '10000';
+      document.getElementById('selCh2Vdiv').value = '2.0';
+      onCh2ScaleChange('2.0');
+      updateAll();
+    }
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function toggleRun() {
+      sim.running = !sim.running;
+      const btn = document.getElementById('btnRun');
+      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
+      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+    }
+
+    function toggleTheme() {
+      sim.laserMode = !sim.laserMode;
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
+    }
+
+    function onCh2ScaleChange(val) {
+      sim.ch2Scale = parseFloat(val);
+      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
+    }
+
+    function onFreqSlider(logVal) {
+      sim.freq = Math.pow(10, parseFloat(logVal));
+      updateAll();
+    }
+
+    function formatFreq(f) {
+      if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
+      if (f >= 1e3) return (f / 1e3).toFixed(2) + ' kHz';
+      return Math.round(f) + ' Hz';
+    }
+
+    function getAmpPhysics(testFreq) {
+      const rlVal = sim.rl === 'open' ? 1e7 : parseFloat(sim.rl);
+      const rac = (sim.rc * rlVal) / (sim.rc + rlVal);
+      const reDynamic = 38; // ~26mV / 0.7mA
+      const reTotal = sim.ce === 'open' ? (reDynamic + 1000) : reDynamic;
+      const midGain = rac / reTotal;
+
+      // Cutoff frequencies
+      const fL = sim.ce === 'open' ? 16 : (sim.ce === '10e-6' ? 185 : 48);
+      const fH = sim.ce === 'open' ? 1150000 : 420000;
+
+      const lowResp = 1 / Math.sqrt(1 + Math.pow(fL / testFreq, 2));
+      const highResp = 1 / Math.sqrt(1 + Math.pow(testFreq / fH, 2));
+      const gainMag = midGain * lowResp * highResp;
+      const gainDb = 20 * Math.log10(Math.max(1e-4, gainMag));
+
+      // Phase shift: 180 deg inversion + low-freq lead - high-freq lag
+      const phaseLead = (Math.atan(fL / testFreq) * 180) / Math.PI;
+      const phaseLag = (Math.atan(testFreq / fH) * 180) / Math.PI;
+      const totalPhase = 180 + phaseLead - phaseLag;
+
+      return { midGain, fL, fH, gainMag, gainDb, totalPhase };
+    }
+
+    function updateAll() {
+      const p = getAmpPhysics(sim.freq);
+      const vout = sim.vin * p.gainMag;
+      const fStr = formatFreq(sim.freq);
+      const region = sim.freq < p.fL ? 'Low-Freq Roll-Off' : (sim.freq > p.fH ? 'High-Freq Roll-Off' : 'Mid-Band');
+
+      document.getElementById('freqDisplay').innerText = `f = ${fStr} (${region})`;
+      document.getElementById('hudFreq').innerText = fStr;
+      document.getElementById('hudVo').innerText = `${vout.toFixed(2)} Vpp`;
+      document.getElementById('hudGain').innerText = `${p.gainMag.toFixed(1)} (${p.gainDb.toFixed(1)} dB)`;
+      document.getElementById('hudPhase').innerText = `${p.totalPhase.toFixed(1)}°`;
+
+      // Auto timebase label matching 2 cycles across 10 divisions
+      const autoTbMs = (0.2 / sim.freq) * 1000;
+      document.getElementById('hudTime').innerText = autoTbMs >= 1 ? `${autoTbMs.toFixed(2)} ms/div` : `${(autoTbMs * 1000).toFixed(0)} µs/div`;
+
+      document.getElementById('statMidGain').innerText = `${(20 * Math.log10(p.midGain)).toFixed(1)} dB`;
+      document.getElementById('statFl').innerText = formatFreq(p.fL);
+      document.getElementById('statFh').innerText = formatFreq(p.fH);
+      document.getElementById('statBw').innerText = formatFreq(p.fH - p.fL);
+
+      drawCircuitSchematic('schematicCanvas');
+      drawBodePlot('bodeCanvas');
+    }
+
+    // ---------------------------------------------------------
+    // CIRCUIT SCHEMATIC RENDERER (Fig 3.1)
+    // ---------------------------------------------------------
+    function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+      ctx.save();
+      ctx.translate(x1, y1);
+      ctx.rotate(Math.atan2(dy, dx));
+      const lead = Math.max(6, (len - 28) / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(lead, 0);
+      const step = (len - 2 * lead) / (peaks * 2);
+      for (let i = 0; i <= peaks * 2; i++) {
+        const px = lead + i * step;
+        const py = (i === 0 || i === peaks * 2) ? 0 : (i % 2 === 1 ? -w : w);
+        ctx.lineTo(px, py);
+      }
+      ctx.lineTo(len, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawCap(ctx, x1, y1, x2, y2, size, gap) {
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), mid = len / 2;
+      ctx.save();
+      ctx.translate(x1, y1);
+      ctx.rotate(Math.atan2(dy, dx));
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(mid - gap / 2, 0);
+      ctx.moveTo(mid - gap / 2, -size / 2); ctx.lineTo(mid - gap / 2, size / 2);
+      ctx.moveTo(mid + gap / 2, -size / 2); ctx.lineTo(mid + gap / 2, size / 2);
+      ctx.moveTo(mid + gap / 2, 0); ctx.lineTo(len, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawDot(ctx, x, y) {
+      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function drawGround(ctx, x, y) {
+      ctx.beginPath();
+      ctx.moveTo(x, y); ctx.lineTo(x, y + 6);
+      ctx.moveTo(x - 10, y + 6); ctx.lineTo(x + 10, y + 6);
+      ctx.moveTo(x - 6, y + 10); ctx.lineTo(x + 6, y + 10);
+      ctx.moveTo(x - 2, y + 14); ctx.lineTo(x + 2, y + 14);
+      ctx.stroke();
+    }
+
+    function drawCircuitSchematic(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 1.6;
+
+      const vccY = 26, gndY = 218, divX = 165, qX = 285, qY = 122, coutX = 365, rlX = 465;
+
+      // +12 V VCC Rail
+      ctx.beginPath(); ctx.moveTo(divX, vccY); ctx.lineTo(qX, vccY); ctx.stroke();
+      ctx.font = 'bold 10.5px Arial'; ctx.textAlign = 'center';
+      ctx.fillText('+VCC = +12 V', (divX + qX) / 2, 17);
+      drawDot(ctx, divX, vccY);
+      drawDot(ctx, qX, vccY);
+
+      // Voltage Divider Bias (R1 = 33k, R2 = 8.2k)
+      drawZigzag(ctx, divX, vccY, divX, qY, 5, 3);
+      ctx.textAlign = 'right'; ctx.font = 'bold 9.5px Arial';
+      ctx.fillText('R1 = 33k', divX - 8, 74);
+
+      drawZigzag(ctx, divX, qY, divX, gndY, 5, 3);
+      ctx.fillText('R2 = 8.2k', divX - 8, 172);
+      drawDot(ctx, divX, qY);
+
+      // Input Coupling Capacitor Cin
+      ctx.beginPath(); ctx.arc(46, qY, 3, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillText('Vin', 38, qY + 3);
+      drawCap(ctx, 50, qY, divX, qY, 15, 5);
+      ctx.textAlign = 'center';
+      ctx.fillText('Cin = 10µF', 105, qY - 11);
+
+      // Base connection
+      ctx.beginPath(); ctx.moveTo(divX, qY); ctx.lineTo(qX - 10, qY); ctx.stroke();
+
+      // Collector Resistor Rc
+      drawZigzag(ctx, qX, vccY, qX, 92, 5, 3);
+      ctx.textAlign = 'left';
+      ctx.fillText(`Rc = ${(sim.rc/1000).toFixed(1)}k`, qX + 9, 58);
+
+      // NPN Transistor BC548
+      ctx.beginPath(); ctx.arc(qX, qY, 18, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.moveTo(qX - 8, qY - 10); ctx.lineTo(qX - 8, qY + 10); ctx.stroke();
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(qX - 8, qY - 5); ctx.lineTo(qX, qY - 13); ctx.lineTo(qX, 92);
+      ctx.moveTo(qX - 8, qY + 5); ctx.lineTo(qX, qY + 13); ctx.lineTo(qX, 152);
+      ctx.stroke();
+      // Emitter arrow
+      ctx.beginPath();
+      ctx.moveTo(qX, qY + 13); ctx.lineTo(qX - 6, qY + 11); ctx.lineTo(qX - 3, qY + 7); ctx.fill();
+      ctx.fillText('BC548', qX + 22, qY + 3);
+
+      // Emitter Resistor Re & Bypass Capacitor Ce
+      drawZigzag(ctx, qX, 152, qX, gndY, 5, 3);
+      ctx.textAlign = 'right';
+      ctx.fillText('Re = 1k', qX - 9, 186);
+
+      const ceX = 345;
+      if (sim.ce !== 'open') {
+        ctx.beginPath();
+        ctx.moveTo(qX, 148); ctx.lineTo(ceX, 148);
+        ctx.moveTo(ceX, gndY); ctx.lineTo(qX, gndY);
+        ctx.stroke();
+        drawDot(ctx, qX, 148);
+        drawCap(ctx, ceX, 148, ceX, gndY, 15, 5);
+        ctx.textAlign = 'left';
+        ctx.fillText(sim.ce === '47e-6' ? 'Ce = 47µF' : 'Ce = 10µF', ceX + 10, 186);
+      } else {
+        ctx.textAlign = 'left';
+        ctx.font = 'italic 9px Arial';
+        ctx.fillText('(Ce Open)', qX + 10, 186);
+        ctx.font = 'bold 9.5px Arial';
+      }
+
+      // Output Coupling Cout & Load RL
+      const colNodeY = 86;
+      drawDot(ctx, qX, colNodeY);
+      drawCap(ctx, qX, colNodeY, 435, colNodeY, 15, 5);
+      ctx.textAlign = 'center';
+      ctx.fillText('Cout = 10µF', 350, colNodeY - 11);
+
+      ctx.beginPath(); ctx.moveTo(435, colNodeY); ctx.lineTo(525, colNodeY); ctx.stroke();
+      ctx.beginPath(); ctx.arc(529, colNodeY, 3, 0, Math.PI * 2); ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.fillText('Vo', 536, colNodeY + 4);
+
+      if (sim.rl !== 'open') {
+        drawDot(ctx, rlX, colNodeY);
+        drawZigzag(ctx, rlX, colNodeY, rlX, gndY, 5, 4);
+        ctx.fillText(`RL = ${(parseFloat(sim.rl)/1000).toFixed(1)}k`, rlX + 9, 152);
+      }
+
+      // Ground Rail
+      ctx.beginPath(); ctx.moveTo(divX, gndY); ctx.lineTo(rlX, gndY); ctx.stroke();
+      drawDot(ctx, divX, gndY);
+      drawDot(ctx, qX, gndY);
+      if (sim.ce !== 'open') drawDot(ctx, ceX, gndY);
+      if (sim.rl !== 'open') drawDot(ctx, rlX, gndY);
+      drawGround(ctx, qX, gndY);
+    }
+
+    // ---------------------------------------------------------
+    // BODE FREQUENCY RESPONSE PLOT RENDERER
+    // ---------------------------------------------------------
+    function drawBodePlot(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      const padL = 46, padR = 16, padT = 16, padB = 24;
+      const plotW = w - padL - padR, plotH = h - padT - padB;
+
+      // Grid (log10(f) from 1 (10 Hz) to 6.3 (2 MHz), Gain from 0 dB to 45 dB)
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.8;
+      for (let d = 1; d <= 6; d++) {
+        const x = padL + ((d - 1) / 5.3) * plotW;
+        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+        ctx.fillStyle = '#334155'; ctx.font = '9px Arial'; ctx.textAlign = 'center';
+        const lbls = ['10Hz', '100Hz', '1kHz', '10kHz', '100kHz', '1MHz'];
+        ctx.fillText(lbls[d - 1], x, h - 8);
+      }
+
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.2;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+
+      const pNow = getAmpPhysics(sim.freq);
+      const midDb = 20 * Math.log10(pNow.midGain);
+      const maxDb = 45;
+
+      // 3-dB line
+      const y3db = padT + plotH - ((midDb - 3) / maxDb) * plotH;
+      ctx.save();
+      ctx.strokeStyle = '#64748b'; ctx.setLineDash([4, 3]);
+      ctx.beginPath(); ctx.moveTo(padL, y3db); ctx.lineTo(padL + plotW, y3db); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = '#000000'; ctx.font = 'bold 8.5px Arial'; ctx.textAlign = 'left';
+      ctx.fillText(`-3dB (${(midDb - 3).toFixed(1)}dB)`, padL + 4, y3db - 3);
+
+      // Gain Curve
+      ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      for (let i = 0; i <= 150; i++) {
+        const lf = 1 + (i / 150) * 5.3;
+        const f = Math.pow(10, lf);
+        const res = getAmpPhysics(f);
+        const x = padL + (i / 150) * plotW;
+        const y = padT + plotH - (Math.max(0, res.gainDb) / maxDb) * plotH;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Active Frequency Marker Dot
+      const curLf = Math.log10(sim.freq);
+      const curX = padL + ((curLf - 1) / 5.3) * plotW;
+      const curY = padT + plotH - (Math.max(0, pNow.gainDb) / maxDb) * plotH;
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(curX, curY, 4.5, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // ---------------------------------------------------------
+    // DUAL-TRACE DSO RENDERER
+    // ---------------------------------------------------------
+    function drawOscilloscope(canvasId, isLaser, staticSnap) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      const bg = isLaser ? '#ffffff' : '#030712';
+      const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
+      const axis = isLaser ? '#000000' : '#38bdf8';
+      const trIn = isLaser ? '#000000' : '#22d3ee';
+      const trOut = isLaser ? '#000000' : '#fbbf24';
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      const divW = w / 10, divH = h / 8;
+      ctx.strokeStyle = gridMajor; ctx.lineWidth = 0.7;
+      for (let x = 0; x <= 10; x++) { ctx.beginPath(); ctx.moveTo(x * divW, 0); ctx.lineTo(x * divW, h); ctx.stroke(); }
+      for (let y = 0; y <= 8; y++) { ctx.beginPath(); ctx.moveTo(0, y * divH); ctx.lineTo(w, y * divH); ctx.stroke(); }
+
+      ctx.strokeStyle = axis; ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+      ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
+      ctx.stroke();
+
+      const p = getAmpPhysics(sim.freq);
+      const voutPeak = (sim.vin / 2) * p.gainMag;
+      const vinPeak = sim.vin / 2;
+      const ch1Scale = 0.05; // 50 mV/div
+
+      // Display 2 full cycles across 10 divisions
+      const cycles = 2;
+      const phaseShiftRad = (p.totalPhase * Math.PI) / 180;
+      const animShift = staticSnap ? 0 : (sim.t * 4);
+
+      // CH1: Vin (Dashed)
+      ctx.save();
+      ctx.strokeStyle = trIn; ctx.lineWidth = 1.8; ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        const theta = (px / w) * cycles * 2 * Math.PI + animShift;
+        const v1 = vinPeak * Math.sin(theta);
+        const py = (h / 2) - (v1 / ch1Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // CH2: Vo (Solid, 180° inverted)
+      ctx.save();
+      ctx.strokeStyle = trOut; ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        const theta = (px / w) * cycles * 2 * Math.PI + animShift + phaseShiftRad;
+        let v2 = voutPeak * Math.sin(theta);
+        v2 = Math.max(-5.2, Math.min(5.2, v2)); // Supply saturation clamp
+        const py = (h / 2) - (v2 / sim.ch2Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function renderSheetCanvases() {
+      drawCircuitSchematic('sheetSchematicCanvas');
+      drawOscilloscope('sheetDsoCanvas', true, true);
+      drawBodePlot('sheetBodeCanvas');
+
+      const p = getAmpPhysics(sim.freq);
+      const vout = sim.vin * p.gainMag;
+      const fStr = formatFreq(sim.freq);
+      const ceStr = sim.ce === 'open' ? 'Open (Unbypassed)' : (sim.ce === '47e-6' ? '47 µF' : '10 µF');
+      const rlStr = sim.rl === 'open' ? 'Open' : `${(parseFloat(sim.rl)/1000).toFixed(1)} kΩ`;
+
+      document.getElementById('sheetDsoCaption').innerText =
+        `Fig. 3.2: DSO Waveforms at f = ${fStr} (Dashed: Vin = 50 mVpp, Solid: Vo = ${vout.toFixed(2)} Vpp)`;
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Setting: Rc = ${(sim.rc/1000).toFixed(1)} kΩ, Ce = ${ceStr}, RL = ${rlStr} | f = ${fStr} | Vo = ${vout.toFixed(2)} Vpp | Gain = ${p.gainDb.toFixed(1)} dB | BW = ${formatFreq(p.fH - p.fL)}`;
+
+      const freqs = [20, 50, 100, 500, 1000, 10000, 100000, 420000, 1000000];
+      const voCells = freqs.map(f => `<td>${(sim.vin * getAmpPhysics(f).gainMag).toFixed(2)}</td>`).join('');
+      const dbCells = freqs.map(f => `<td>${getAmpPhysics(f).gainDb.toFixed(1)}</td>`).join('');
+
+      document.getElementById('sheetTableBody').innerHTML = `
+        <tr><td><strong>Vo (Vpp)</strong></td>${voCells}</tr>
+        <tr><td><strong>Gain (dB)</strong></td>${dbCells}</tr>
+      `;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Constructed the single-stage RC coupled CE amplifier using BC548. At selected frequency <strong>${fStr}</strong> (Rc = ${(sim.rc/1000).toFixed(1)} kΩ, Ce = ${ceStr}, RL = ${rlStr}), measured output Vo = <strong>${vout.toFixed(2)} Vpp</strong>, gain = <strong>${p.gainDb.toFixed(1)} dB</strong>, and phase shift = <strong>${p.totalPhase.toFixed(1)}°</strong>. Mid-band gain = <strong>${(20*Math.log10(p.midGain)).toFixed(1)} dB</strong>; Lower cutoff fL = <strong>${formatFreq(p.fL)}</strong>; Upper cutoff fH = <strong>${formatFreq(p.fH)}</strong>; Bandwidth = <strong>${formatFreq(p.fH - p.fL)}</strong>.<br>
+        <strong>Inference:</strong> Gain remains constant across the mid-band with 180° phase inversion, falls at low frequencies due to coupling/bypass capacitor reactance, and falls at high frequencies due to transistor junction capacitances.
+      `;
+    }
+
+    let lastTime = performance.now();
+    function mainLoop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (sim.running) sim.t += dt;
+      drawOscilloscope('dsoCanvas', sim.laserMode, false);
+      requestAnimationFrame(mainLoop);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAll();
+      requestAnimationFrame(mainLoop);
+    });
+  </script>
+</body>
+</html>

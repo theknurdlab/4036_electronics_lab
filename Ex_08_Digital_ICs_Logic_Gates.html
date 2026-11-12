@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 8: Digital ICs, Logic Gates & IC Trainer Kit | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-amber { background: var(--accent-amber); color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .gate-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .gate-btn {
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .gate-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .trainer-frame {
+      background: #ffffff;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    #trainerCanvas {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      display: block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 10px;
+      background: #141d2f;
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .switch-btn {
+      width: 100%;
+      padding: 7px 10px;
+      border-radius: 5px;
+      border: 1px solid #475569;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sw-low { background: #0f172a; color: #94a3b8; }
+    .sw-high { background: #dc2626; color: #ffffff; border-color: #f87171; }
+    .ctrl-box select {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 0.78rem;
+      outline: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: #0f172a;
+      border-top: 1px solid var(--border-dark);
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.64rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-top: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+      margin-bottom: 10px;
+    }
+    #pinoutCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 560px;
+      display: block;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid #334155;
+      padding: 6px;
+    }
+    .ref-table th {
+      background: #0f172a;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .active-row {
+      background: rgba(37, 99, 235, 0.35);
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+    .formula-title {
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* Worksheet View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 22px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.72rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      gap: 5px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.73rem;
+      line-height: 1.38;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 8 (M3.01, CO3): Digital ICs, Logic Gates &amp; Digital IC Trainer Kit</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">Digital IC Trainer Kit &amp; Gate Verification Bench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Interactive Digital IC Trainer Kit -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>DIGITAL IC TRAINER KIT (+5 V TTL SUPPLY, DATA SWITCHES &amp; LEDs)</span>
+          </div>
+          <button class="btn btn-amber" style="padding:4px 10px; font-size:0.72rem;" onclick="stepTruthTable()">
+            Step Next Input Combination
+          </button>
+        </div>
+
+        <div style="padding: 10px 12px 0 12px; background:#141d2f;">
+          <div class="gate-tabs">
+            <button id="gTabAND" class="gate-btn active" onclick="selectGate('AND')">(a) AND (7408)</button>
+            <button id="gTabOR" class="gate-btn" onclick="selectGate('OR')">(b) OR (7432)</button>
+            <button id="gTabNOT" class="gate-btn" onclick="selectGate('NOT')">(c) NOT (7404)</button>
+            <button id="gTabXOR" class="gate-btn" onclick="selectGate('XOR')">(d) XOR (7486)</button>
+            <button id="gTabNAND" class="gate-btn" onclick="selectGate('NAND')">(e) NAND (7400)</button>
+            <button id="gTabNOR" class="gate-btn" onclick="selectGate('NOR')">(f) NOR (7402)</button>
+          </div>
+        </div>
+
+        <div class="trainer-frame">
+          <canvas id="trainerCanvas" width="720" height="350"></canvas>
+        </div>
+
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Trainer Power (+5 V VCC)</label>
+            <button id="btnPower" class="switch-btn sw-high" onclick="togglePower()">POWER: ON (+5.0 V)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Data Switch A (Input A)</label>
+            <button id="btnSwA" class="switch-btn sw-low" onclick="toggleInput('A')">SW-A = 0 (LOW / 0 V)</button>
+          </div>
+
+          <div class="ctrl-box" id="boxSwB">
+            <label>Data Switch B (Input B)</label>
+            <button id="btnSwB" class="switch-btn sw-low" onclick="toggleInput('B')">SW-B = 0 (LOW / 0 V)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Gate Unit inside IC</label>
+            <select id="selGateUnit" onchange="sim.gateUnit = parseInt(this.value); updateAll()">
+              <option value="1" selected>Gate 1 (Pins 1, 2 → 3)</option>
+              <option value="2">Gate 2 (Pins 4, 5 → 6)</option>
+              <option value="3">Gate 3 (Pins 9, 10 → 8)</option>
+              <option value="4">Gate 4 (Pins 12, 13 → 11)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">Selected IC</div>
+            <div class="stat-value" id="statIc" style="color:#60a5fa;">IC 7408 (AND)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Boolean Expression</div>
+            <div class="stat-value" id="statExpr" style="color:#fbbf24;">Y = A · B</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Gate Pins</div>
+            <div class="stat-value" id="statPins" style="color:#c084fc; font-size:0.8rem;">In: 1, 2 | Out: 3</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Output LED (Y)</div>
+            <div class="stat-value" id="statOut" style="color:#34d399;">0 (OFF / 0.1 V)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: 14-Pin DIP Pinout Diagram & Live Truth Table -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>14-PIN DIP INTERNAL PINOUT DIAGRAM</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">Pin 14 = +5V, Pin 7 = GND</span>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="pinoutCanvas" width="560" height="230"></canvas>
+        </div>
+
+        <div class="panel-head" style="margin:4px -14px 8px -14px;">
+          <span>TRUTH TABLE VERIFICATION</span>
+          <span style="font-size:0.7rem; color:#34d399;">Active Row Highlighted</span>
+        </div>
+
+        <table class="ref-table">
+          <thead id="truthHead"></thead>
+          <tbody id="truthBody"></tbody>
+        </table>
+
+        <div class="formula-card">
+          <div class="formula-title">Trainer Kit &amp; TTL IC Guidelines</div>
+          <div><strong>• Power Connections:</strong> Always connect Pin 14 to <strong>+5 V</strong> and Pin 7 to <strong>GND</strong> on all 14-pin 74xx TTL ICs.</div>
+          <div><strong>• 7402 NOR Pinout Note:</strong> Unlike 7408/7432/7400/7486 (where pins 1, 2 are inputs and 3 is output), IC 7402 has <strong>Pin 1 as Output</strong> and <strong>Pins 2, 3 as Inputs</strong>.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 8 (MODULE M3.01 • CO3)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 8: FAMILIARIZATION OF DIGITAL ICs, LOGIC GATES AND THE DIGITAL IC TRAINER KIT</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To familiarise with logic-gate IC packages and the digital IC trainer kit and to verify the truth tables of (a) AND, (b) OR, (c) NOT, (d) XOR, (e) NAND, and (f) NOR gates.<br>
+        <strong>APPARATUS / COMPONENTS:</strong> Digital IC Trainer Kit (+5 V supply, data switches, LEDs), IC 7408 (AND), IC 7432 (OR), IC 7404 (NOT), IC 7486 (XOR), IC 7400 (NAND), IC 7402 (NOR), Breadboard &amp; connecting wires.
+      </div>
+
+      <div class="sheet-section-title">CAPTURED TRAINER KIT &amp; SELECTED GATE PINOUT (FOR ACTIVE SELECTION)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.15fr 0.85fr; gap:10px; align-items:center;">
+          <div>
+            <canvas id="sheetTrainerCanvas" width="720" height="350" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetTrainerCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
+          </div>
+          <div>
+            <canvas id="sheetPinoutCanvas" width="560" height="230" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetPinoutCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
+          </div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 8.1: VERIFIED TRUTH TABLES OF BASIC &amp; UNIVERSAL LOGIC GATES</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Input A</th><th>Input B</th>
+              <th>AND (7408)<br>Y = A·B</th>
+              <th>OR (7432)<br>Y = A+B</th>
+              <th>XOR (7486)<br>Y = A⊕B</th>
+              <th>NAND (7400)<br>Y = (A·B)'</th>
+              <th>NOR (7402)<br>Y = (A+B)'</th>
+              <th>NOT (7404)<br>Y = A' (on A)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1 (for A=0)</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1 (for A=0)</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0 (for A=1)</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0 (for A=1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const GATES = {
+      AND: {
+        ic: 'IC 7408', title: 'Quad 2-Input AND Gate', expr: 'Y = A · B', single: false,
+        eval: (a, b) => (a & b),
+        units: [
+          { in1: 1, in2: 2, out: 3 },
+          { in1: 4, in2: 5, out: 6 },
+          { in1: 9, in2: 10, out: 8 },
+          { in1: 12, in2: 13, out: 11 }
+        ]
+      },
+      OR: {
+        ic: 'IC 7432', title: 'Quad 2-Input OR Gate', expr: 'Y = A + B', single: false,
+        eval: (a, b) => (a | b),
+        units: [
+          { in1: 1, in2: 2, out: 3 },
+          { in1: 4, in2: 5, out: 6 },
+          { in1: 9, in2: 10, out: 8 },
+          { in1: 12, in2: 13, out: 11 }
+        ]
+      },
+      NOT: {
+        ic: 'IC 7404', title: 'Hex Inverter (NOT Gate)', expr: 'Y = Ā', single: true,
+        eval: (a, b) => (a ? 0 : 1),
+        units: [
+          { in1: 1, out: 2 },
+          { in1: 3, out: 4 },
+          { in1: 5, out: 6 },
+          { in1: 9, out: 8 },
+          { in1: 11, out: 10 },
+          { in1: 13, out: 12 }
+        ]
+      },
+      XOR: {
+        ic: 'IC 7486', title: 'Quad 2-Input XOR Gate', expr: 'Y = A ⊕ B', single: false,
+        eval: (a, b) => (a ^ b),
+        units: [
+          { in1: 1, in2: 2, out: 3 },
+          { in1: 4, in2: 5, out: 6 },
+          { in1: 9, in2: 10, out: 8 },
+          { in1: 12, in2: 13, out: 11 }
+        ]
+      },
+      NAND: {
+        ic: 'IC 7400', title: 'Quad 2-Input NAND Gate', expr: "Y = (A · B)'", single: false,
+        eval: (a, b) => ((a & b) ? 0 : 1),
+        units: [
+          { in1: 1, in2: 2, out: 3 },
+          { in1: 4, in2: 5, out: 6 },
+          { in1: 9, in2: 10, out: 8 },
+          { in1: 12, in2: 13, out: 11 }
+        ]
+      },
+      NOR: {
+        ic: 'IC 7402', title: 'Quad 2-Input NOR Gate', expr: "Y = (A + B)'", single: false,
+        eval: (a, b) => ((a | b) ? 0 : 1),
+        units: [
+          { in1: 2, in2: 3, out: 1 },
+          { in1: 5, in2: 6, out: 4 },
+          { in1: 8, in2: 9, out: 10 },
+          { in1: 11, in2: 12, out: 13 }
+        ]
+      }
+    };
+
+    const sim = {
+      gate: 'AND',
+      power: true,
+      a: 0,
+      b: 0,
+      gateUnit: 1
+    };
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function selectGate(gKey) {
+      sim.gate = gKey;
+      sim.gateUnit = 1;
+      ['AND','OR','NOT','XOR','NAND','NOR'].forEach(k => {
+        document.getElementById('gTab' + k).classList.toggle('active', k === gKey);
+      });
+
+      const g = GATES[gKey];
+      const unitSel = document.getElementById('selGateUnit');
+      unitSel.innerHTML = g.units.map((u, idx) => {
+        const pinDesc = g.single ? `Pin ${u.in1} → ${u.out}` : `Pins ${u.in1}, ${u.in2} → ${u.out}`;
+        return `<option value="${idx + 1}">Gate ${idx + 1} (${pinDesc})</option>`;
+      }).join('');
+
+      document.getElementById('boxSwB').style.opacity = g.single ? '0.45' : '1';
+      updateAll();
+    }
+
+    function togglePower() {
+      sim.power = !sim.power;
+      const btn = document.getElementById('btnPower');
+      btn.innerText = sim.power ? 'POWER: ON (+5.0 V)' : 'POWER: OFF (0 V)';
+      btn.className = sim.power ? 'switch-btn sw-high' : 'switch-btn sw-low';
+      updateAll();
+    }
+
+    function toggleInput(which) {
+      if (which === 'A') sim.a = sim.a ? 0 : 1;
+      else sim.b = sim.b ? 0 : 1;
+      updateAll();
+    }
+
+    function stepTruthTable() {
+      const g = GATES[sim.gate];
+      if (g.single) {
+        sim.a = sim.a ? 0 : 1;
+      } else {
+        const cur = (sim.a << 1) | sim.b;
+        const nxt = (cur + 1) & 3;
+        sim.a = (nxt >> 1) & 1;
+        sim.b = nxt & 1;
+      }
+      updateAll();
+    }
+
+    function updateAll() {
+      const g = GATES[sim.gate];
+      const u = g.units[sim.gateUnit - 1] || g.units[0];
+      const y = sim.power ? g.eval(sim.a, sim.b) : 0;
+
+      const btnA = document.getElementById('btnSwA');
+      btnA.innerText = sim.a ? 'SW-A = 1 (HIGH / +5 V)' : 'SW-A = 0 (LOW / 0 V)';
+      btnA.className = sim.a ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      const btnB = document.getElementById('btnSwB');
+      btnB.innerText = sim.b ? 'SW-B = 1 (HIGH / +5 V)' : 'SW-B = 0 (LOW / 0 V)';
+      btnB.className = sim.b ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      document.getElementById('statIc').innerText = `${g.ic} (${sim.gate})`;
+      document.getElementById('statExpr').innerText = g.expr;
+      document.getElementById('statPins').innerText = g.single ? `In: ${u.in1} | Out: ${u.out}` : `In: ${u.in1}, ${u.in2} | Out: ${u.out}`;
+      document.getElementById('statOut').innerText = y ? '1 (ON / +4.8 V)' : '0 (OFF / 0.1 V)';
+      document.getElementById('statOut').style.color = y ? '#34d399' : '#94a3b8';
+
+      renderTruthTable(g, y);
+      drawTrainerKit('trainerCanvas', g, u, y);
+      drawDipPinout('pinoutCanvas', g, u);
+    }
+
+    function renderTruthTable(g, y) {
+      const head = document.getElementById('truthHead');
+      const body = document.getElementById('truthBody');
+      if (g.single) {
+        head.innerHTML = `<tr><th>Input A</th><th>Output Y = Ā</th><th>LED State</th></tr>`;
+        body.innerHTML = [0, 1].map(aVal => {
+          const outVal = g.eval(aVal, 0);
+          const active = sim.power && sim.a === aVal;
+          return `<tr class="${active ? 'active-row' : ''}"><td>${aVal}</td><td>${outVal}</td><td>${outVal ? 'ON (Lit)' : 'OFF'}</td></tr>`;
+        }).join('');
+      } else {
+        head.innerHTML = `<tr><th>Input A</th><th>Input B</th><th>Output ${g.expr}</th><th>LED State</th></tr>`;
+        const combos = [[0,0],[0,1],[1,0],[1,1]];
+        body.innerHTML = combos.map(([aVal, bVal]) => {
+          const outVal = g.eval(aVal, bVal);
+          const active = sim.power && sim.a === aVal && sim.b === bVal;
+          return `<tr class="${active ? 'active-row' : ''}"><td>${aVal}</td><td>${bVal}</td><td>${outVal}</td><td>${outVal ? 'ON (Lit)' : 'OFF'}</td></tr>`;
+        }).join('');
+      }
+    }
+
+    // ---------------------------------------------------------
+    // LOGIC SYMBOL RENDERER
+    // ---------------------------------------------------------
+    function drawGateSymbol(ctx, type, cx, cy, scale) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 2.4;
+
+      if (type === 'NOT') {
+        ctx.beginPath();
+        ctx.moveTo(-28, -22); ctx.lineTo(-28, 22); ctx.lineTo(18, 0); ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(24, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      } else if (type === 'AND' || type === 'NAND') {
+        ctx.beginPath();
+        ctx.moveTo(-28, -24); ctx.lineTo(0, -24);
+        ctx.arc(0, 0, 24, -Math.PI / 2, Math.PI / 2, false);
+        ctx.lineTo(-28, 24); ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        if (type === 'NAND') {
+          ctx.beginPath(); ctx.arc(30, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+      } else if (type === 'OR' || type === 'NOR') {
+        ctx.beginPath();
+        ctx.moveTo(-30, -24);
+        ctx.quadraticCurveTo(-8, -24, 24, 0);
+        ctx.quadraticCurveTo(-8, 24, -30, 24);
+        ctx.quadraticCurveTo(-18, 0, -30, -24);
+        ctx.fill(); ctx.stroke();
+        if (type === 'NOR') {
+          ctx.beginPath(); ctx.arc(30, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+      } else if (type === 'XOR') {
+        ctx.beginPath();
+        ctx.moveTo(-36, -24);
+        ctx.quadraticCurveTo(-24, 0, -36, 24);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(-28, -24);
+        ctx.quadraticCurveTo(-6, -24, 24, 0);
+        ctx.quadraticCurveTo(-6, 24, -28, 24);
+        ctx.quadraticCurveTo(-16, 0, -28, -24);
+        ctx.fill(); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // ---------------------------------------------------------
+    // DIGITAL IC TRAINER KIT CANVAS RENDERER
+    // ---------------------------------------------------------
+    function drawTrainerKit(canvasId, g, u, y) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      // Outer Trainer Kit Chassis
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2.6;
+      ctx.strokeRect(14, 14, w - 28, h - 28);
+
+      // Top Trainer Banner
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(14, 14, w - 28, 30);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(`DIGITAL IC TRAINER KIT • ${g.ic} (${g.title.toUpperCase()}) • ${g.expr}`, w / 2, 33);
+
+      // Power Supply Indicator (Top Left)
+      ctx.fillStyle = sim.power ? '#16a34a' : '#94a3b8';
+      ctx.beginPath(); ctx.arc(46, 68, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.6; ctx.stroke();
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText(sim.power ? '+5 V VCC: ON (Pin 14 = +5V, Pin 7 = GND)' : 'POWER OFF (0 V)', 62, 72);
+
+      // Left Panel: Data Switches A and B
+      const drawToggleSwitch = (x, yPos, label, val, disabled) => {
+        ctx.save();
+        if (disabled) ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2;
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(x, yPos, 66, 78);
+        ctx.strokeRect(x, yPos, 66, 78);
+
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 11px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, x + 33, yPos - 7);
+        ctx.font = '9px Arial';
+        ctx.fillText('1 (+5V)', x + 33, yPos + 13);
+        ctx.fillText('0 (GND)', x + 33, yPos + 71);
+
+        // Toggle lever
+        ctx.fillStyle = val ? '#dc2626' : '#334155';
+        const leverY = val ? yPos + 18 : yPos + 42;
+        ctx.fillRect(x + 21, leverY, 24, 18);
+        ctx.strokeRect(x + 21, leverY, 24, 18);
+
+        // Patch terminal
+        ctx.fillStyle = val ? '#dc2626' : '#000000';
+        ctx.beginPath(); ctx.arc(x + 84, yPos + 39, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      };
+
+      drawToggleSwitch(42, 112, 'DATA SW-A', sim.a, false);
+      drawToggleSwitch(42, 232, 'DATA SW-B', sim.b, g.single);
+
+      // Center: Logic Gate Symbol & Pin Numbers
+      const gateCx = 365, gateCy = 205;
+      drawGateSymbol(ctx, sim.gate, gateCx, gateCy, 1.35);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${g.ic} (Gate ${sim.gateUnit})`, gateCx, gateCy - 52);
+      ctx.font = 'bold 13px monospace';
+      ctx.fillText(g.expr, gateCx, gateCy + 58);
+
+      // Wires from Switches to Gate Inputs
+      ctx.lineWidth = 2.4;
+      if (g.single) {
+        ctx.strokeStyle = sim.a && sim.power ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(126, 151); ctx.lineTo(240, 151); ctx.lineTo(240, gateCy); ctx.lineTo(327, gateCy);
+        ctx.stroke();
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 11px Arial';
+        ctx.fillText(`Pin ${u.in1}`, 306, gateCy - 8);
+      } else {
+        // Input A wire
+        ctx.strokeStyle = sim.a && sim.power ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(126, 151); ctx.lineTo(245, 151); ctx.lineTo(245, gateCy - 16); ctx.lineTo(327, gateCy - 16);
+        ctx.stroke();
+
+        // Input B wire
+        ctx.strokeStyle = sim.b && sim.power ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(126, 271); ctx.lineTo(245, 271); ctx.lineTo(245, gateCy + 16); ctx.lineTo(327, gateCy + 16);
+        ctx.stroke();
+
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 11px Arial';
+        ctx.fillText(`Pin ${u.in1}`, 306, gateCy - 23);
+        ctx.fillText(`Pin ${u.in2}`, 306, gateCy + 29);
+      }
+
+      // Output Wire to Output LED Indicator on Right
+      const outStartX = (sim.gate === 'NAND' || sim.gate === 'NOR' || sim.gate === 'NOT') ? gateCx + 48 : gateCx + 33;
+      const ledX = 595, ledY = gateCy;
+      ctx.strokeStyle = y ? '#dc2626' : '#000000';
+      ctx.beginPath();
+      ctx.moveTo(outStartX, gateCy); ctx.lineTo(ledX - 32, ledY);
+      ctx.stroke();
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText(`Pin ${u.out}`, outStartX + 24, gateCy - 10);
+
+      // Output LED Monitor Box
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(ledX - 32, ledY - 58, 92, 116);
+      ctx.strokeRect(ledX - 32, ledY - 58, 92, 116);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText('OUTPUT LED', ledX + 14, ledY - 40);
+
+      // Glowing or Off LED Circle
+      if (y) {
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath(); ctx.arc(ledX + 14, ledY - 4, 20, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2.2; ctx.stroke();
+        // Rays around lit LED for clear B&W print visibility
+        for (let r = 0; r < 8; r++) {
+          const ang = (r * Math.PI) / 4;
+          ctx.beginPath();
+          ctx.moveTo(ledX + 14 + Math.cos(ang)*24, ledY - 4 + Math.sin(ang)*24);
+          ctx.lineTo(ledX + 14 + Math.cos(ang)*30, ledY - 4 + Math.sin(ang)*30);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = '#e2e8f0';
+        ctx.beginPath(); ctx.arc(ledX + 14, ledY - 4, 20, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2; ctx.stroke();
+      }
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 12px monospace';
+      ctx.fillText(y ? 'LOGIC 1 (ON)' : 'LOGIC 0 (OFF)', ledX + 14, ledY + 42);
+    }
+
+    // ---------------------------------------------------------
+    // 14-PIN DIP IC INTERNAL PINOUT DIAGRAM RENDERER
+    // ---------------------------------------------------------
+    function drawDipPinout(canvasId, g, activeUnit) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 2;
+
+      const icX = 75, icY = 48, icW = 410, icH = 132;
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${g.ic} — ${g.title} (Top View, Horizontal Notch Left)`, w / 2, 20);
+
+      // IC Package Body
+      ctx.strokeRect(icX, icY, icW, icH);
+      // Left Notch
+      ctx.beginPath();
+      ctx.arc(icX, icY + icH / 2, 14, -Math.PI / 2, Math.PI / 2, false);
+      ctx.stroke();
+
+      // Top Pins (14 down to 8) & Bottom Pins (1 up to 7)
+      const topPins = [14, 13, 12, 11, 10, 9, 8];
+      const botPins = [1, 2, 3, 4, 5, 6, 7];
+      const stepX = icW / 7;
+
+      const activePins = [activeUnit.in1, activeUnit.out];
+      if (activeUnit.in2) activePins.push(activeUnit.in2);
+
+      for (let i = 0; i < 7; i++) {
+        const px = icX + stepX * (i + 0.5);
+
+        // Top Pin
+        const tp = topPins[i];
+        const isTopAct = activePins.includes(tp);
+        ctx.fillStyle = isTopAct ? '#2563eb' : '#ffffff';
+        ctx.fillRect(px - 11, icY - 16, 22, 16);
+        ctx.strokeRect(px - 11, icY - 16, 22, 16);
+        ctx.fillStyle = isTopAct ? '#ffffff' : '#000000';
+        ctx.font = 'bold 10px Arial';
+        ctx.fillText(tp, px, icY - 4);
+
+        // Bottom Pin
+        const bp = botPins[i];
+        const isBotAct = activePins.includes(bp);
+        ctx.fillStyle = isBotAct ? '#2563eb' : '#ffffff';
+        ctx.fillRect(px - 11, icY + icH, 22, 16);
+        ctx.strokeRect(px - 11, icY + icH, 22, 16);
+        ctx.fillStyle = isBotAct ? '#ffffff' : '#000000';
+        ctx.fillText(bp, px, icY + icH + 12);
+      }
+
+      // VCC and GND internal labels
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText('VCC (+5 V)', icX + stepX * 0.5, icY + 18);
+      ctx.fillText('GND (0 V)', icX + stepX * 6.5, icY + icH - 10);
+
+      // Center IC Number & Gate Legend
+      ctx.font = 'bold 18px Arial';
+      ctx.fillText(`${g.ic} (${sim.gate})`, icX + icW / 2, icY + icH / 2 + 6);
+
+      ctx.font = '10.5px Arial';
+      const unitStrs = g.units.map((u, idx) =>
+        g.single ? `G${idx+1}:(${u.in1}→${u.out})` : `G${idx+1}:(${u.in1},${u.in2}→${u.out})`
+      );
+      ctx.fillText(unitStrs.join('   '), w / 2, h - 10);
+    }
+
+    function renderSheetCanvases() {
+      const g = GATES[sim.gate];
+      const u = g.units[sim.gateUnit - 1] || g.units[0];
+      const y = sim.power ? g.eval(sim.a, sim.b) : 0;
+
+      drawTrainerKit('sheetTrainerCanvas', g, u, y);
+      drawDipPinout('sheetPinoutCanvas', g, u);
+
+      document.getElementById('sheetTrainerCaption').innerText =
+        `Fig. 8.1: Trainer Kit Setup for ${g.ic} (${sim.gate} Gate)`;
+      document.getElementById('sheetPinoutCaption').innerText =
+        `Fig. 8.2: ${g.ic} Pin Configuration (Active Gate ${sim.gateUnit} Highlighted)`;
+
+      const inDesc = g.single ? `A = ${sim.a}` : `A = ${sim.a}, B = ${sim.b}`;
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Gate: ${g.ic} (${g.title}) | Gate Unit ${sim.gateUnit} | Inputs: ${inDesc} | Output Y = ${y} (LED ${y ? 'ON' : 'OFF'})`;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Familiarized with the Digital IC Trainer Kit and verified the truth tables of AND (7408), OR (7432), NOT (7404), XOR (7486), NAND (7400), and NOR (7402) gates. For selected <strong>${g.ic} (${sim.gate})</strong> with <strong>${inDesc}</strong>, observed output <strong>Y = ${y}</strong>.<br>
+        <strong>Inference:</strong> All six TTL logic gates operate at +5 V VCC (Pin 14) and GND (Pin 7) and accurately satisfy their respective Boolean truth tables.
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectGate('AND');
+    });
+  </script>
+</body>
+</html>

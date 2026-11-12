@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 5: Inverting Amplifier using Op-Amp 741 | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dso-frame {
+      position: relative;
+      background: #ffffff;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      display: flex;
+    }
+    #dsoCanvas { width: 100%; height: 100%; display: block; }
+    .dso-hud-top {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+    .dso-hud-bottom {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      pointer-events: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.35;
+      text-align: right;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #94a3b8;
+    }
+
+    .sub-section-bar {
+      background: #0f172a;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #334155;
+    }
+
+    .control-grid {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      background: #141d2f;
+      border-top: 1px solid var(--border-dark);
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ctrl-box select {
+      width: 100%;
+      background: #0f172a;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      border-radius: 4px;
+      padding: 4px;
+      font-size: 0.74rem;
+      outline: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #141d2f;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.63rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .stat-value {
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-top: 2px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+    }
+    #schematicCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 600px;
+      display: block;
+    }
+
+    /* Formatted Design Calculation & Virtual Ground Analysis Card */
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      font-size: 0.76rem;
+      line-height: 1.5;
+    }
+    .formula-title {
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .formula-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+    .formula-list li {
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.48;
+    }
+    .formula-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+    .math-chip {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      padding: 2px 7px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 0.85rem;
+      color: #f8fafc;
+      margin: 2px 2px;
+      vertical-align: middle;
+    }
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 3px;
+      font-size: 0.85em;
+      line-height: 1.12;
+    }
+    .fraction-top { border-bottom: 1.2px solid currentColor; padding-bottom: 1px; }
+    .fraction-bottom { padding-top: 1px; }
+
+    /* Worksheet / Lab Manual View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.7rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.74rem;
+      gap: 4px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      line-height: 1.36;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 3px 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 5 (M2.01, CO2): Inverting Amplifier using Op-Amp 741</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">Virtual Op-Amp 741 Inverting Amplifier &amp; DSO Workbench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Dual-Channel DSO -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: Vin, CH2: Vo • 180° Out of Phase)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
+            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+          </div>
+        </div>
+
+        <div class="dso-frame">
+          <canvas id="dsoCanvas" width="700" height="410"></canvas>
+
+          <div class="dso-hud-top">
+            <div>TB: <strong id="hudTime">250 µs/div</strong> | TRIG: <strong>CH1 EDGE</strong></div>
+            <div>CH1 (Vin): <strong id="hudCh1Scale">0.5 V/div</strong> (Dashed)</div>
+            <div>CH2 (Vo): <strong id="hudCh2Scale">2.0 V/div</strong> (Solid, 180° Inverted)</div>
+          </div>
+
+          <div class="dso-hud-bottom">
+            <div>Input Vin: <strong id="hudVin">1.00 Vpp</strong></div>
+            <div>Output Vo: <strong id="hudVo" style="color:#059669;">10.00 Vpp</strong></div>
+            <div>Voltage Gain Av: <strong id="hudGain" style="color:#2563eb;">−10.00</strong></div>
+            <div>Phase Shift: <strong id="hudPhase">180.0° (Inverted)</strong></div>
+          </div>
+        </div>
+
+        <!-- DSO Scales -->
+        <div class="sub-section-bar"><span>Oscilloscope Timebase &amp; Voltage Scales (Includes 5 V/div &amp; 10 V/div)</span></div>
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Time / Division</label>
+            <select id="selTimeDiv" onchange="onTimebaseChange(this.value)">
+              <option value="0.0001">100 µs/div</option>
+              <option value="0.00025" selected>250 µs/div</option>
+              <option value="0.0005">500 µs/div</option>
+              <option value="0.001">1.0 ms/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>CH1 (Vin) Scale</label>
+            <select id="selCh1Vdiv" onchange="onCh1ScaleChange(this.value)">
+              <option value="0.2">0.2 V/div</option>
+              <option value="0.5" selected>0.5 V/div</option>
+              <option value="1.0">1.0 V/div</option>
+              <option value="2.0">2.0 V/div</option>
+              <option value="5.0">5.0 V/div</option>
+              <option value="10.0">10.0 V/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>CH2 (Vo) Scale</label>
+            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
+              <option value="0.5">0.5 V/div</option>
+              <option value="1.0">1.0 V/div</option>
+              <option value="2.0" selected>2.0 V/div</option>
+              <option value="5.0">5.0 V/div</option>
+              <option value="10.0">10.0 V/div</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input Signal Vin (pp)</label>
+            <select id="selVin" onchange="sim.vin = parseFloat(this.value); updateAll()">
+              <option value="0.5">0.5 Vpp</option>
+              <option value="1.0" selected>1.0 Vpp (Standard)</option>
+              <option value="2.0">2.0 Vpp</option>
+              <option value="3.0">3.0 Vpp (Saturation Clip)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Circuit Component Variations -->
+        <div class="sub-section-bar"><span>Circuit Component Variations (Rf, Ri, Dual Supply ±VCC)</span></div>
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Feedback Resistor (Rf)</label>
+            <select id="selRf" onchange="sim.rf = parseFloat(this.value); updateAll()">
+              <option value="2200">2.2 kΩ (Av = −2.2)</option>
+              <option value="4700">4.7 kΩ (Table 5.1: Av = −4.7)</option>
+              <option value="10000" selected>10.0 kΩ (Design Av = −10)</option>
+              <option value="22000">22.0 kΩ (Saturation Test)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input Resistor (Ri)</label>
+            <select id="selRi" onchange="sim.ri = parseFloat(this.value); updateAll()">
+              <option value="1000" selected>1.0 kΩ (Standard)</option>
+              <option value="2200">2.2 kΩ</option>
+              <option value="4700">4.7 kΩ</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Dual Supply (±VCC)</label>
+            <select id="selVcc" onchange="sim.vcc = parseFloat(this.value); updateAll()">
+              <option value="15" selected>±15 V (Sat ±13 V)</option>
+              <option value="12">±12 V (Sat ±10 V)</option>
+              <option value="9">±9 V (Sat ±7.2 V)</option>
+            </select>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Input Frequency</label>
+            <select id="selFreq" onchange="sim.freq = parseFloat(this.value); updateAll()">
+              <option value="500">500 Hz</option>
+              <option value="1000" selected>1.0 kHz (Standard)</option>
+              <option value="2000">2.0 kHz</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="padding: 10px;">
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-label">Theoretical Gain</div>
+              <div class="stat-value" id="statTheorGain" style="color:#60a5fa;">−10.00</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Practical Gain</div>
+              <div class="stat-value" id="statPracGain" style="color:#34d399;">−10.00</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Input Impedance Zin</div>
+              <div class="stat-value" id="statZin" style="color:#fbbf24;">1.0 kΩ (= Ri)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Output Status</div>
+              <div class="stat-value" id="statSatStatus" style="color:#c084fc; font-size:0.78rem;">Linear (No Clip)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Schematic, IC 741 Pinout & Formatted Equations -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 12px -14px;">
+          <span>INVERTING AMPLIFIER &amp; IC 741 PINOUT</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">Laser-Friendly B&amp;W</span>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="schematicCanvas" width="600" height="310"></canvas>
+        </div>
+
+        <!-- Formatted Design Calculation & Virtual Ground Analysis Card -->
+        <div class="formula-card">
+          <div class="formula-title">
+            <span>Design Calculation &amp; Virtual Ground Analysis</span>
+            <span style="font-size:0.65rem; color:#94a3b8;">IC 741C Closed-Loop</span>
+          </div>
+          <ul class="formula-list">
+            <li>
+              <strong>Closed-Loop Voltage Gain:</strong><br>
+              <span class="math-chip">
+                <i>A</i><sub>v</sub> = 
+                <span class="fraction"><span class="fraction-top"><i>V</i><sub>o</sub></span><span class="fraction-bottom"><i>V</i><sub>in</sub></span></span>
+                = &minus;
+                <span class="fraction"><span class="fraction-top"><i>R</i><sub>f</sub></span><span class="fraction-bottom"><i>R</i><sub>i</sub></span></span>
+                = &minus;
+                <span class="fraction"><span class="fraction-top" id="fRfVal">10.0 k&Omega;</span><span class="fraction-bottom" id="fRiVal">1.0 k&Omega;</span></span>
+                = <strong id="fGainVal">&minus;10.00</strong>
+              </span>
+            </li>
+            <li>
+              <strong>Virtual Ground &amp; Phase Inversion:</strong> Non-inverting Pin 3 is grounded (<span class="math-chip"><i>V</i><sub>3</sub> = 0 V</span>), holding inverting Pin 2 at virtual ground (<span class="math-chip"><i>V</i><sub>2</sub> &approx; 0 V</span>). Consequently, <span class="math-chip"><i>Z</i><sub>in</sub> = <i>R</i><sub>i</sub></span> and output <i>V</i><sub>o</sub> is inverted by <strong>180&deg;</strong>.
+            </li>
+            <li>
+              <strong>IC 741 Power &amp; Output Pins:</strong> Pin 7 = <strong>+V<sub>CC</sub> (+15 V)</strong>, Pin 4 = <strong>&minus;V<sub>EE</sub> (&minus;15 V)</strong>, Pin 6 = <strong>Output V<sub>o</sub></strong>.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 5 (MODULE M2.01 • CO2)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 5: INVERTING AMPLIFIER USING OP-AMP 741</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To design and set up an inverting amplifier with op-amp IC 741C for a gain of −10, plot the waveforms and measure the gain.<br>
+        <strong>COMPONENTS REQUIRED:</strong> Regulated Dual Power Supply (±15 V), Function Generator (0–1 MHz), DSO, Op-Amp IC 741C (1 no.), Resistors Ri = 1 kΩ, Rf = 10 kΩ (and 4.7 kΩ), Breadboard &amp; probes.
+      </div>
+
+      <div class="sheet-section-title">CIRCUIT DIAGRAM &amp; CAPTURED DSO WAVEFORM (FOR SELECTED PARAMETERS)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.05fr 0.95fr; gap:10px; align-items:center;">
+          <div>
+            <canvas id="sheetSchematicCanvas" width="600" height="310" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 5.1 &amp; 5.2: Inverting Amplifier &amp; IC 741 Pinout</div>
+          </div>
+          <div>
+            <canvas id="sheetDsoCanvas" width="560" height="290" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetDsoCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
+          </div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 5.1: INPUT, OUTPUT, GAIN AND PHASE DIFFERENCE</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>Condition / Rf / Ri</th>
+              <th>Vin (Vpp)</th>
+              <th>Vo (Vpp)</th>
+              <th>Theoretical Gain (−Rf/Ri)</th>
+              <th>Practical Gain (−Vo/Vin)</th>
+              <th>Phase Difference (°)</th>
+            </tr>
+          </thead>
+          <tbody id="sheetTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">DESIGN CALCULATION, RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const sim = {
+      rf: 10000,
+      ri: 1000,
+      vin: 1.0,        // 1.0 Vpp
+      vcc: 15,         // ±15 V
+      freq: 1000,      // 1 kHz
+      timeDiv: 0.00025,// 250 us/div
+      ch1Scale: 0.5,   // 0.5 V/div
+      ch2Scale: 2.0,   // 2.0 V/div
+      laserMode: true,
+      running: true,
+      t: 0
+    };
+
+    function resetDefaults() {
+      sim.rf = 10000; sim.ri = 1000; sim.vin = 1.0; sim.vcc = 15; sim.freq = 1000;
+      sim.timeDiv = 0.00025; sim.ch1Scale = 0.5; sim.ch2Scale = 2.0;
+      document.getElementById('selRf').value = '10000';
+      document.getElementById('selRi').value = '1000';
+      document.getElementById('selVcc').value = '15';
+      document.getElementById('selFreq').value = '1000';
+      document.getElementById('selTimeDiv').value = '0.00025';
+      document.getElementById('selCh1Vdiv').value = '0.5';
+      document.getElementById('selCh2Vdiv').value = '2.0';
+      document.getElementById('selVin').value = '1.0';
+      onTimebaseChange('0.00025');
+      onCh1ScaleChange('0.5');
+      onCh2ScaleChange('2.0');
+      updateAll();
+    }
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function toggleRun() {
+      sim.running = !sim.running;
+      const btn = document.getElementById('btnRun');
+      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
+      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+    }
+
+    function toggleTheme() {
+      sim.laserMode = !sim.laserMode;
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
+    }
+
+    function onTimebaseChange(val) {
+      sim.timeDiv = parseFloat(val);
+      document.getElementById('hudTime').innerText = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + ' ms/div' : (sim.timeDiv * 1e6).toFixed(0) + ' µs/div';
+    }
+    function onCh1ScaleChange(val) {
+      sim.ch1Scale = parseFloat(val);
+      document.getElementById('hudCh1Scale').innerText = sim.ch1Scale.toFixed(1) + ' V/div';
+    }
+    function onCh2ScaleChange(val) {
+      sim.ch2Scale = parseFloat(val);
+      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
+    }
+
+    function getOpAmpMetrics() {
+      const theorGain = sim.rf / sim.ri;
+      const satLimit = sim.vcc - 2.0; // ±13 V for ±15 V supply
+      const idealVoutPeak = (sim.vin / 2) * theorGain;
+      const clipped = idealVoutPeak > satLimit;
+      const actualVoutPeak = Math.min(satLimit, idealVoutPeak);
+      const actualVoutPP = actualVoutPeak * 2;
+      const pracGain = actualVoutPP / sim.vin;
+      return { theorGain, satLimit, idealVoutPeak, actualVoutPeak, actualVoutPP, pracGain, clipped };
+    }
+
+    function updateAll() {
+      const m = getOpAmpMetrics();
+      document.getElementById('hudVin').innerText = sim.vin.toFixed(2) + ' Vpp';
+      document.getElementById('hudVo').innerText = m.actualVoutPP.toFixed(2) + ' Vpp';
+      document.getElementById('hudGain').innerText = '−' + m.pracGain.toFixed(2);
+      document.getElementById('statTheorGain').innerText = '−' + m.theorGain.toFixed(2);
+      document.getElementById('statPracGain').innerText = '−' + m.pracGain.toFixed(2);
+      document.getElementById('statZin').innerText = `${(sim.ri/1000).toFixed(1)} kΩ (= Ri)`;
+      document.getElementById('statSatStatus').innerText = m.clipped ? `Clipped (±${m.satLimit}V)` : 'Linear (No Clip)';
+      document.getElementById('statSatStatus').style.color = m.clipped ? '#f59e0b' : '#34d399';
+
+      document.getElementById('fRfVal').innerText = (sim.rf / 1000).toFixed(1) + ' kΩ';
+      document.getElementById('fRiVal').innerText = (sim.ri / 1000).toFixed(1) + ' kΩ';
+      document.getElementById('fGainVal').innerText = '−' + m.theorGain.toFixed(2);
+
+      drawCircuitAndPinout('schematicCanvas');
+    }
+
+    // ---------------------------------------------------------
+    // SCHEMATIC & IC 741 PINOUT RENDERER (Fig 5.1 & 5.2)
+    // ---------------------------------------------------------
+    function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+      ctx.save();
+      ctx.translate(x1, y1);
+      ctx.rotate(Math.atan2(dy, dx));
+      const lead = Math.max(8, (len - 36) / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(lead, 0);
+      const step = (len - 2 * lead) / (peaks * 2);
+      for (let i = 0; i <= peaks * 2; i++) {
+        const px = lead + i * step;
+        const py = (i === 0 || i === peaks * 2) ? 0 : (i % 2 === 1 ? -w : w);
+        ctx.lineTo(px, py);
+      }
+      ctx.lineTo(len, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawDot(ctx, x, y) {
+      ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function drawGround(ctx, x, y) {
+      ctx.beginPath();
+      ctx.moveTo(x, y); ctx.lineTo(x, y + 8);
+      ctx.moveTo(x - 11, y + 8); ctx.lineTo(x + 11, y + 8);
+      ctx.moveTo(x - 7, y + 12); ctx.lineTo(x + 7, y + 12);
+      ctx.moveTo(x - 3, y + 16); ctx.lineTo(x + 3, y + 16);
+      ctx.stroke();
+    }
+
+    function drawCircuitAndPinout(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 1.8;
+
+      // Left Side: Inverting Amplifier Schematic
+      const invY = 135, nonInvY = 190, outY = 162;
+      const opX = 215, outNodeX = 335, fbY = 58, sumNodeX = 165, gndY = 248;
+
+      // 1. Vin terminal -> Ri -> Summing Node (Pin 2)
+      const vinTermX = 48;
+      ctx.beginPath(); ctx.arc(vinTermX, invY, 3.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText('Vin', 22, invY + 4);
+
+      drawZigzag(ctx, vinTermX + 4, invY, sumNodeX, invY, 6, 4);
+      ctx.textAlign = 'center';
+      ctx.fillText(`Ri = ${(sim.ri/1000).toFixed(1)} kΩ`, (vinTermX + sumNodeX) / 2, invY - 14);
+
+      ctx.beginPath(); ctx.moveTo(sumNodeX, invY); ctx.lineTo(opX, invY); ctx.stroke();
+      drawDot(ctx, sumNodeX, invY);
+
+      // 2. Feedback loop (Rf) from sumNodeX to Output node
+      ctx.beginPath();
+      ctx.moveTo(sumNodeX, invY); ctx.lineTo(sumNodeX, fbY); ctx.lineTo(195, fbY);
+      ctx.moveTo(295, fbY); ctx.lineTo(outNodeX, fbY); ctx.lineTo(outNodeX, outY);
+      ctx.stroke();
+      drawZigzag(ctx, 195, fbY, 295, fbY, 6, 4);
+      ctx.fillText(`Rf = ${(sim.rf/1000).toFixed(1)} kΩ`, 245, fbY - 14);
+
+      // 3. Non-Inverting Pin 3 grounded
+      ctx.beginPath();
+      ctx.moveTo(opX, nonInvY); ctx.lineTo(165, nonInvY); ctx.lineTo(165, gndY);
+      ctx.stroke();
+      drawGround(ctx, 165, gndY);
+
+      // 4. Op-Amp Triangle
+      ctx.beginPath();
+      ctx.moveTo(opX, 112);
+      ctx.lineTo(opX, 212);
+      ctx.lineTo(305, outY);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.font = 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('−', opX + 12, invY + 4);
+      ctx.fillText('+', opX + 12, nonInvY + 4);
+      ctx.font = 'bold 10px Arial';
+      ctx.fillText('2', opX - 8, invY - 6);
+      ctx.fillText('3', opX - 8, nonInvY - 6);
+      ctx.fillText('6', 310, outY - 7);
+      ctx.fillText('IC 741', opX + 36, outY + 4);
+
+      // Power Rails (+VCC Pin 7, -VEE Pin 4)
+      ctx.beginPath();
+      ctx.moveTo(255, 134); ctx.lineTo(255, 95);
+      ctx.moveTo(245, 95); ctx.lineTo(265, 95);
+      ctx.moveTo(255, 190); ctx.lineTo(255, 232);
+      ctx.moveTo(245, 232); ctx.lineTo(265, 232);
+      ctx.stroke();
+      ctx.fillText(`+${sim.vcc} V (7)`, 255, 86);
+      ctx.fillText(`−${sim.vcc} V (4)`, 255, 244);
+
+      // Output Vo
+      ctx.beginPath(); ctx.moveTo(305, outY); ctx.lineTo(372, outY); ctx.stroke();
+      drawDot(ctx, outNodeX, outY);
+      ctx.beginPath(); ctx.arc(376, outY, 3.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 11px Arial';
+      ctx.fillText('Vo', 384, outY + 4);
+
+      // Divider Line
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(415, 20); ctx.lineTo(415, h - 20); ctx.stroke();
+
+      // Right Side: IC 741 8-Pin DIP Top View
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 2;
+      const icX = 485, icY = 65, icW = 54, icH = 175;
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('IC 741 (Top View)', icX + icW / 2, 42);
+
+      ctx.strokeRect(icX, icY, icW, icH);
+      ctx.beginPath(); ctx.arc(icX + icW / 2, icY, 9, 0, Math.PI); ctx.stroke();
+
+      ctx.save();
+      ctx.translate(icX + icW / 2, icY + icH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.font = 'bold 16px Arial';
+      ctx.fillText('IC 741', 0, 5);
+      ctx.restore();
+
+      const leftPins = ['1: Offset', '2: Inv (−)', '3: Non-Inv (+)', '4: −VEE'];
+      const rightPins = ['8: NC', '7: +VCC', '6: Output', '5: Offset'];
+      ctx.font = '9.5px Arial';
+      for (let i = 0; i < 4; i++) {
+        const py = icY + 26 + i * 40;
+        ctx.strokeRect(icX - 10, py - 6, 10, 12);
+        ctx.textAlign = 'right';
+        ctx.fillText(leftPins[i], icX - 14, py + 3);
+
+        ctx.strokeRect(icX + icW, py - 6, 10, 12);
+        ctx.textAlign = 'left';
+        ctx.fillText(rightPins[i], icX + icW + 14, py + 3);
+      }
+    }
+
+    // ---------------------------------------------------------
+    // DUAL-TRACE DSO RENDERER
+    // ---------------------------------------------------------
+    function drawOscilloscope(canvasId, isLaser, staticSnap) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      const bg = isLaser ? '#ffffff' : '#030712';
+      const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
+      const gridMinor = isLaser ? '#e2e8f0' : '#0f172a';
+      const axis = isLaser ? '#000000' : '#38bdf8';
+      const tr1 = isLaser ? '#000000' : '#22d3ee';
+      const tr2 = isLaser ? '#000000' : '#fbbf24';
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      const divW = w / 10, divH = h / 8;
+      ctx.strokeStyle = gridMinor;
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < 10; x++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo((x + s/5)*divW, 0); ctx.lineTo((x + s/5)*divW, h); ctx.stroke();
+        }
+      }
+      for (let y = 0; y < 8; y++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo(0, (y + s/5)*divH); ctx.lineTo(w, (y + s/5)*divH); ctx.stroke();
+        }
+      }
+
+      ctx.strokeStyle = gridMajor;
+      ctx.lineWidth = 0.8;
+      for (let x = 0; x <= 10; x++) { ctx.beginPath(); ctx.moveTo(x * divW, 0); ctx.lineTo(x * divW, h); ctx.stroke(); }
+      for (let y = 0; y <= 8; y++) { ctx.beginPath(); ctx.moveTo(0, y * divH); ctx.lineTo(w, y * divH); ctx.stroke(); }
+
+      ctx.strokeStyle = axis;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+      ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
+      ctx.stroke();
+
+      const m = getOpAmpMetrics();
+      const totalTime = 10 * sim.timeDiv;
+      const dt = totalTime / w;
+      const omega = 2 * Math.PI * sim.freq;
+      const t0 = staticSnap ? 0 : (sim.t % (1 / sim.freq));
+
+      // CH1: Vin (Dashed)
+      ctx.save();
+      ctx.strokeStyle = tr1;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        const v1 = (sim.vin / 2) * Math.sin(omega * (t0 + px * dt));
+        const py = (h / 2) - (v1 / sim.ch1Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // CH2: Vo (Solid, 180 deg Inverted, clipped at ±satLimit)
+      ctx.save();
+      ctx.strokeStyle = tr2;
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      for (let px = 0; px < w; px++) {
+        let v2 = -m.idealVoutPeak * Math.sin(omega * (t0 + px * dt));
+        v2 = Math.max(-m.satLimit, Math.min(m.satLimit, v2));
+        const py = (h / 2) - (v2 / sim.ch2Scale) * divH;
+        if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      if (staticSnap) {
+        const tbStr = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + 'ms/d' : (sim.timeDiv * 1e6).toFixed(0) + 'µs/d';
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fillRect(6, 6, 330, 20);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 0.8;
+        ctx.strokeRect(6, 6, 330, 20);
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(`TB:${tbStr} | CH1:${sim.ch1Scale.toFixed(1)}V/d | CH2:${sim.ch2Scale.toFixed(1)}V/d`, 11, 19);
+      }
+    }
+
+    function renderSheetCanvases() {
+      drawCircuitAndPinout('sheetSchematicCanvas');
+      drawOscilloscope('sheetDsoCanvas', true, true);
+
+      const m = getOpAmpMetrics();
+      const rfK = (sim.rf / 1000).toFixed(1);
+      const riK = (sim.ri / 1000).toFixed(1);
+
+      document.getElementById('sheetDsoCaption').innerText =
+        `Fig. 5.4: Captured Waveforms (CH1 Dashed: Vin = ${sim.vin.toFixed(2)} Vpp, CH2 Solid: Vo = ${m.actualVoutPP.toFixed(2)} Vpp)`;
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Condition: Rf = ${rfK} kΩ | Ri = ${riK} kΩ | Supply = ±${sim.vcc} V | Vin = ${sim.vin.toFixed(2)} Vpp | Vo = ${m.actualVoutPP.toFixed(2)} Vpp | Gain = −${m.pracGain.toFixed(2)} (180° Inverted)`;
+
+      document.getElementById('sheetTableBody').innerHTML = `
+        <tr>
+          <td><strong>Selected: ${rfK} kΩ / ${riK} kΩ</strong></td>
+          <td>${sim.vin.toFixed(2)} V</td>
+          <td>${m.actualVoutPP.toFixed(2)} V</td>
+          <td>−${m.theorGain.toFixed(2)}</td>
+          <td>−${m.pracGain.toFixed(2)}</td>
+          <td>180.0°</td>
+        </tr>
+        <tr>
+          <td>Standard: 10.0 kΩ / 1.0 kΩ</td>
+          <td>1.00 V</td>
+          <td>10.00 V</td>
+          <td>−10.00</td>
+          <td>−10.00</td>
+          <td>180.0°</td>
+        </tr>
+        <tr>
+          <td>Alternate: 4.7 kΩ / 1.0 kΩ</td>
+          <td>1.00 V</td>
+          <td>4.70 V</td>
+          <td>−4.70</td>
+          <td>−4.70</td>
+          <td>180.0°</td>
+        </tr>
+      `;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Design Calculation:</strong> <i>A</i><sub>v</sub> = &minus;(<i>R</i><sub>f</sub> / <i>R</i><sub>i</sub>) = &minus;(${rfK} k&Omega; / ${riK} k&Omega;) = <strong>&minus;${m.theorGain.toFixed(2)}</strong>.<br>
+        <strong>Result:</strong> Designed and tested the inverting amplifier using IC 741 with Rf = <strong>${rfK} kΩ</strong>, Ri = <strong>${riK} kΩ</strong>, and ±${sim.vcc} V supply. For Vin = <strong>${sim.vin.toFixed(2)} Vpp</strong>, observed output Vo = <strong>${m.actualVoutPP.toFixed(2)} Vpp</strong> (${m.clipped ? 'saturated at ±' + m.satLimit + ' V' : 'undistorted'}), practical voltage gain = <strong>−${m.pracGain.toFixed(2)}</strong>, and phase difference = <strong>180° (inverted)</strong>.<br>
+        <strong>Inference:</strong> The output signal is amplified by a factor of (Rf/Ri) and inverted by 180° relative to the input, with input impedance equal to Ri.
+      `;
+    }
+
+    let lastTime = performance.now();
+    function mainLoop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (sim.running) sim.t += dt;
+      drawOscilloscope('dsoCanvas', sim.laserMode, false);
+      requestAnimationFrame(mainLoop);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAll();
+      requestAnimationFrame(mainLoop);
+    });
+  </script>
+</body>
+</html>

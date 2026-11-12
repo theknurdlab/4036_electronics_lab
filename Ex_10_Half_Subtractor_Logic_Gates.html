@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ex 10: Half Subtractor using Logic Gates | SSM Polytechnic College</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-dark: #1e293b;
+      --border-dark: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 2px solid #374151;
+      padding: 12px 20px;
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .college-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-loc {
+      font-size: 0.65rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .dept-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+    .course-title {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 1px;
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-blue); color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-emerald { background: var(--accent-emerald); color: #ffffff; }
+    .btn-emerald:hover { background: #047857; }
+    .btn-secondary { background: #374151; color: #e5e7eb; border: 1px solid #4b5563; }
+    .btn-secondary:hover { background: #4b5563; }
+    .btn-amber { background: var(--accent-amber); color: #ffffff; }
+    .btn-amber:hover { background: #b45309; }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 2px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-bottom-color: #1e293b;
+      margin-bottom: -2px;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mode-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    }
+
+    .panel {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-head {
+      background: #172033;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .circuit-frame {
+      background: #ffffff;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    #circuitCanvas {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      display: block;
+    }
+
+    .control-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      background: #141d2f;
+    }
+    .ctrl-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .ctrl-box label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .switch-btn {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid #475569;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sw-low { background: #0f172a; color: #94a3b8; }
+    .sw-high { background: #dc2626; color: #ffffff; border-color: #f87171; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: #0f172a;
+      border-top: 1px solid var(--border-dark);
+    }
+    @media (min-width: 640px) {
+      .stat-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.64rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-top: 3px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .schematic-box {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #475569;
+      margin-bottom: 10px;
+    }
+    #pinoutCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 560px;
+      display: block;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+      text-align: center;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid #334155;
+      padding: 6px;
+    }
+    .ref-table th {
+      background: #0f172a;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .active-row {
+      background: rgba(37, 99, 235, 0.35);
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .formula-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+    .formula-title {
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    /* Worksheet View */
+    #worksheet-view {
+      display: none;
+      background: #ffffff;
+      color: #000000;
+      padding: 22px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    #worksheet-view.active { display: block; }
+    .sheet-header {
+      border-bottom: 2px solid #000000;
+      text-align: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .sheet-header h1 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.72rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #000000;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      gap: 5px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+    }
+    .sheet-section-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e5e7eb;
+      border: 1px solid #000000;
+      padding: 3px 8px;
+      margin-top: 8px;
+    }
+    .sheet-body-box {
+      border: 1px solid #000000;
+      border-top: none;
+      padding: 6px 8px;
+      font-size: 0.73rem;
+      line-height: 1.38;
+    }
+    .lab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .lab-table th, .lab-table td {
+      border: 1px solid #000000;
+      padding: 4px;
+    }
+    .lab-table th { background: #f3f4f6; font-weight: 700; }
+
+    /* Developer Credit Footer */
+    .dev-footer {
+      background: #111827;
+      border-top: 1px solid #374151;
+      color: #9ca3af;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      margin-top: auto;
+    }
+    .dev-footer strong { color: #e5e7eb; }
+    .sheet-credit {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed #6b7280;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #374151;
+    }
+
+    @media print {
+      .dev-footer { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, .tab-nav, #workbench-view, .no-print { display: none !important; }
+      #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div>
+        <div class="college-title">
+          <span>SSM POLYTECHNIC COLLEGE</span>
+          <span class="badge-loc">TIRUR</span>
+        </div>
+        <div class="dept-title">DEPARTMENT OF ELECTRICAL ENGINEERING &amp; ELECTRIC VEHICLE TECHNOLOGY</div>
+        <div class="course-title">Electronics Lab (4036) • Ex. No. 10 (M3.03, CO3): Half Subtractor using Logic Gates</div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tab-nav no-print">
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">Half Subtractor Logic &amp; IC Trainer Workbench</button>
+      <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
+    </div>
+
+    <!-- 1. INTERACTIVE WORKBENCH -->
+    <div id="workbench-view" class="workbench-grid">
+
+      <!-- Left Column: Logic Diagram & Live Signals -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+            <span>HALF SUBTRACTOR COMBINATIONAL CIRCUIT SIMULATOR</span>
+          </div>
+          <button class="btn btn-amber" style="padding:4px 10px; font-size:0.72rem;" onclick="stepInputs()">
+            Step Next Input (A, B)
+          </button>
+        </div>
+
+        <div style="padding: 10px 12px 0 12px; background:#141d2f;">
+          <div class="mode-tabs">
+            <button id="mTabBasic" class="mode-btn active" onclick="selectMode('basic')">Fig. 10.1(a): Using XOR (7486), NOT (7404) &amp; AND (7408)</button>
+            <button id="mTabNand" class="mode-btn" onclick="selectMode('nand')">Fig. 10.1(b): Using NAND Gates Only (7400 × 2)</button>
+          </div>
+        </div>
+
+        <div class="circuit-frame">
+          <canvas id="circuitCanvas" width="720" height="350"></canvas>
+        </div>
+
+        <div class="control-grid">
+          <div class="ctrl-box">
+            <label>Trainer Power (+5 V VCC)</label>
+            <button id="btnPower" class="switch-btn sw-high" onclick="togglePower()">POWER: ON (+5.0 V)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Minuend Bit A (Switch A)</label>
+            <button id="btnSwA" class="switch-btn sw-low" onclick="toggleInput('A')">A = 0 (LOW / 0 V)</button>
+          </div>
+
+          <div class="ctrl-box">
+            <label>Subtrahend Bit B (Switch B)</label>
+            <button id="btnSwB" class="switch-btn sw-low" onclick="toggleInput('B')">B = 0 (LOW / 0 V)</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">Binary Subtraction</div>
+            <div class="stat-value" id="statMath" style="color:#60a5fa;">0 − 0 = 0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Difference (D = A ⊕ B)</div>
+            <div class="stat-value" id="statDiff" style="color:#34d399;">0 (LED OFF)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Borrow (Bor = A' · B)</div>
+            <div class="stat-value" id="statBor" style="color:#fbbf24;">0 (LED OFF)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">ICs Used</div>
+            <div class="stat-value" id="statIcs" style="color:#c084fc; font-size:0.76rem;">7486 + 7404 + 7408</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: IC Pinouts & Truth Table -->
+      <div class="panel" style="padding:14px;">
+        <div class="panel-head" style="margin:-14px -14px 10px -14px;">
+          <span>IC PIN CONFIGURATION (VCC = PIN 14, GND = PIN 7)</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">14-Pin DIP</span>
+        </div>
+
+        <div class="schematic-box">
+          <canvas id="pinoutCanvas" width="560" height="225"></canvas>
+        </div>
+
+        <div class="panel-head" style="margin:4px -14px 8px -14px;">
+          <span>HALF SUBTRACTOR TRUTH TABLE</span>
+          <span style="font-size:0.7rem; color:#34d399;">Live State Highlighted</span>
+        </div>
+
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Minuend A</th>
+              <th>Subtrahend B</th>
+              <th>Difference (D = A ⊕ B)</th>
+              <th>Borrow (Bor = A' · B)</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody id="truthBody"></tbody>
+        </table>
+
+        <div class="formula-card">
+          <div class="formula-title">Boolean Expressions &amp; NAND Realization</div>
+          <div><strong>• Standard Form:</strong> D = A ⊕ B &nbsp;|&nbsp; B<sub>or</sub> = A' · B (Borrow = 1 only when A = 0 and B = 1)</div>
+          <div><strong>• 5-NAND Gate Form:</strong> Gate 1 computes (AB)'; Gate 2 computes (A·(AB)')'; Gate 3 computes (B·(AB)')' = A'·B (inverted); Gate 4 produces D = A ⊕ B; Gate 5 has both inputs tied together to invert Gate 3's output into B<sub>or</sub> = A' · B.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. PRINTABLE LABORATORY MANUAL (A4) -->
+    <div id="worksheet-view">
+      <div class="sheet-header">
+        <h1>SEETHI SAHIB MEMORIAL POLYTECHNIC COLLEGE, TIRUR</h1>
+        <h2>DEPARTMENT OF ELECTRICAL ENGINEERING AND ELECTRIC VEHICLE TECHNOLOGY</h2>
+        <p>ELECTRONICS LAB (4036) • EX. NO: 10 (MODULE M3.03 • CO3)</p>
+      </div>
+
+      <div class="student-info-grid">
+        <div><strong>Name of Student:</strong> ____________________________________</div>
+        <div><strong>Register No:</strong> ___________________________</div>
+        <div><strong>Date of Conduction:</strong> __________________</div>
+        <div><strong>Batch &amp; Group:</strong> _______________________</div>
+      </div>
+
+      <div class="sheet-section-title">EXPERIMENT 10: HALF SUBTRACTOR USING LOGIC GATES</div>
+      <div class="sheet-body-box">
+        <strong>AIM:</strong> To design and set up a half subtractor using (a) XOR and AND gates (with a NOT gate) and (b) NAND gates only, and verify its truth table.<br>
+        <strong>APPARATUS / COMPONENTS:</strong> Digital IC Trainer Kit (+5 V supply, switches, LEDs), IC 7486 (Quad XOR), IC 7404 (Hex NOT), IC 7408 (Quad AND), IC 7400 (Quad NAND, 2 nos.), Breadboard &amp; connecting wires.
+      </div>
+
+      <div class="sheet-section-title">CAPTURED LOGIC DIAGRAM &amp; IC PINOUTS (FOR SELECTED REALIZATION)</div>
+      <div class="sheet-body-box" style="background:#ffffff;">
+        <div style="display:grid; grid-template-columns: 1.15fr 0.85fr; gap:10px; align-items:center;">
+          <div>
+            <canvas id="sheetCircuitCanvas" width="720" height="350" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div id="sheetCircuitCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
+          </div>
+          <div>
+            <canvas id="sheetPinoutCanvas" width="560" height="225" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 10.2: Gate IC Pin Configuration (VCC = 14, GND = 7)</div>
+          </div>
+        </div>
+        <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
+      </div>
+
+      <div class="sheet-section-title">TABLE 10.1 (XOR, NOT &amp; AND GATES) &amp; TABLE 10.2 (NAND GATES ONLY)</div>
+      <div class="sheet-body-box" style="padding:0;">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th rowspan="2">Input A</th>
+              <th rowspan="2">Input B</th>
+              <th colspan="2">Table 10.1: Using XOR (7486), NOT (7404) &amp; AND (7408)</th>
+              <th colspan="2">Table 10.2: Using NAND Gates Only (5 × 7400)</th>
+            </tr>
+            <tr>
+              <th>Difference (D)</th><th>Borrow (Bor)</th>
+              <th>Difference (D)</th><th>Borrow (Bor)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sheet-section-title">RESULT &amp; INFERENCE</div>
+      <div class="sheet-body-box" id="sheetResultBox"></div>
+
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
+        <div>Student Signature: _______________________</div>
+        <div>Signature of Staff-in-Charge: _______________________</div>
+      </div>
+      <div class="sheet-credit">
+        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+      </div>
+    </div>
+  </main>
+
+  <footer class="dev-footer no-print">
+    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+  </footer>
+
+  <script>
+    const sim = {
+      mode: 'basic', // 'basic' (XOR+NOT+AND) or 'nand' (5 NAND gates)
+      power: true,
+      a: 0,
+      b: 0
+    };
+
+    function switchView(view) {
+      const simTab = document.getElementById('workbench-view');
+      const sheetTab = document.getElementById('worksheet-view');
+      const navSim = document.getElementById('tabSimNav');
+      const navSheet = document.getElementById('tabSheetNav');
+      if (view === 'sim') {
+        simTab.style.display = 'grid';
+        sheetTab.classList.remove('active');
+        navSim.classList.add('active');
+        navSheet.classList.remove('active');
+      } else {
+        simTab.style.display = 'none';
+        sheetTab.classList.add('active');
+        navSheet.classList.add('active');
+        navSim.classList.remove('active');
+        renderSheetCanvases();
+      }
+    }
+
+    function selectMode(mode) {
+      sim.mode = mode;
+      document.getElementById('mTabBasic').classList.toggle('active', mode === 'basic');
+      document.getElementById('mTabNand').classList.toggle('active', mode === 'nand');
+      updateAll();
+    }
+
+    function togglePower() {
+      sim.power = !sim.power;
+      const btn = document.getElementById('btnPower');
+      btn.innerText = sim.power ? 'POWER: ON (+5.0 V)' : 'POWER: OFF (0 V)';
+      btn.className = sim.power ? 'switch-btn sw-high' : 'switch-btn sw-low';
+      updateAll();
+    }
+
+    function toggleInput(which) {
+      if (which === 'A') sim.a = sim.a ? 0 : 1;
+      else sim.b = sim.b ? 0 : 1;
+      updateAll();
+    }
+
+    function stepInputs() {
+      const cur = (sim.a << 1) | sim.b;
+      const nxt = (cur + 1) & 3;
+      sim.a = (nxt >> 1) & 1;
+      sim.b = nxt & 1;
+      updateAll();
+    }
+
+    function updateAll() {
+      const d = sim.power ? (sim.a ^ sim.b) : 0;
+      const bor = sim.power ? ((sim.a === 0 && sim.b === 1) ? 1 : 0) : 0;
+
+      const btnA = document.getElementById('btnSwA');
+      btnA.innerText = sim.a ? 'A = 1 (HIGH / +5 V)' : 'A = 0 (LOW / 0 V)';
+      btnA.className = sim.a ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      const btnB = document.getElementById('btnSwB');
+      btnB.innerText = sim.b ? 'B = 1 (HIGH / +5 V)' : 'B = 0 (LOW / 0 V)';
+      btnB.className = sim.b ? 'switch-btn sw-high' : 'switch-btn sw-low';
+
+      document.getElementById('statMath').innerText = bor ? `${sim.a} − ${sim.b} = 1 (Bor 1)` : `${sim.a} − ${sim.b} = ${d}`;
+      document.getElementById('statDiff').innerText = d ? '1 (LED ON)' : '0 (LED OFF)';
+      document.getElementById('statDiff').style.color = d ? '#34d399' : '#94a3b8';
+      document.getElementById('statBor').innerText = bor ? '1 (LED ON)' : '0 (LED OFF)';
+      document.getElementById('statBor').style.color = bor ? '#fbbf24' : '#94a3b8';
+      document.getElementById('statIcs').innerText = sim.mode === 'basic' ? '7486 + 7404 + 7408' : 'IC 7400 (2 Nos.)';
+
+      renderTruthTable();
+      drawHalfSubtractorDiagram('circuitCanvas', sim.mode, sim.a, sim.b, d, bor);
+      drawPinoutReference('pinoutCanvas', sim.mode);
+    }
+
+    function renderTruthTable() {
+      const combos = [
+        [0, 0, '0 − 0 = 0'],
+        [0, 1, '0 − 1 → Borrow 1'],
+        [1, 0, '1 − 0 = 1'],
+        [1, 1, '1 − 1 = 0']
+      ];
+      document.getElementById('truthBody').innerHTML = combos.map(([aVal, bVal, desc]) => {
+        const dVal = aVal ^ bVal;
+        const borVal = (aVal === 0 && bVal === 1) ? 1 : 0;
+        const active = sim.power && sim.a === aVal && sim.b === bVal;
+        return `<tr class="${active ? 'active-row' : ''}"><td>${aVal}</td><td>${bVal}</td><td>${dVal}</td><td>${borVal}</td><td>${desc}</td></tr>`;
+      }).join('');
+    }
+
+    // ---------------------------------------------------------
+    // GATE SYMBOLS & WIRE HELPERS
+    // ---------------------------------------------------------
+    function drawDot(ctx, x, y) {
+      ctx.beginPath(); ctx.arc(x, y, 3.8, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function drawJumperWire(ctx, x1, y1, x2, y2, jumpX, active) {
+      ctx.save();
+      ctx.strokeStyle = active ? '#dc2626' : '#000000';
+      ctx.lineWidth = 2.2;
+      const r = 8;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      if (jumpX !== null) {
+        ctx.lineTo(jumpX - r, y1);
+        ctx.arc(jumpX, y1, r, Math.PI, 0, false);
+      }
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawXOR(ctx, cx, cy) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(-34, -22); ctx.quadraticCurveTo(-22, 0, -34, 22);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-26, -22);
+      ctx.quadraticCurveTo(-4, -22, 24, 0);
+      ctx.quadraticCurveTo(-4, 22, -26, 22);
+      ctx.quadraticCurveTo(-14, 0, -26, -22);
+      ctx.fill(); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawNOT(ctx, cx, cy) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(-18, -15); ctx.lineTo(-18, 15); ctx.lineTo(12, 0); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(17, 0, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawAND(ctx, cx, cy, isNand) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(-24, -20); ctx.lineTo(0, -20);
+      ctx.arc(0, 0, 20, -Math.PI / 2, Math.PI / 2, false);
+      ctx.lineTo(-24, 20); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+      if (isNand) {
+        ctx.beginPath(); ctx.arc(25, 0, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawLedIndicator(ctx, x, y, label, state) {
+      ctx.save();
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.8;
+      ctx.fillStyle = state ? '#dc2626' : '#e2e8f0';
+      ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+      if (state) {
+        for (let i = 0; i < 8; i++) {
+          const ang = (i * Math.PI) / 4;
+          ctx.beginPath();
+          ctx.moveTo(x + Math.cos(ang)*16, y + Math.sin(ang)*16);
+          ctx.lineTo(x + Math.cos(ang)*21, y + Math.sin(ang)*21);
+          ctx.stroke();
+        }
+      }
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${label} = ${state}`, x + 24, y + 4);
+      ctx.restore();
+    }
+
+    function drawHalfSubtractorDiagram(canvasId, mode, a, b, d, bor) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 13px Arial';
+      ctx.textAlign = 'center';
+
+      const actA = sim.power && a === 1;
+      const actB = sim.power && b === 1;
+
+      if (mode === 'basic') {
+        ctx.fillText('Fig. 10.1(a): Half Subtractor using XOR (7486), NOT (7404) & AND (7408)', w / 2, 24);
+
+        const inAX = 85, inAY = 92;
+        const inBX = 85, inBY = 262;
+        const tapAX = 150, tapBX = 205;
+        const notX = 275, notY = 212;
+        const gateX = 415, xorY = 104, andY = 250;
+
+        // Input Terminals
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.arc(inAX, inAY, 5, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(inBX, inBY, 5, 0, Math.PI * 2); ctx.stroke();
+        ctx.font = 'bold 13px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText(`Input A = ${a}`, inAX - 12, inAY + 4);
+        ctx.fillText(`Input B = ${b}`, inBX - 12, inBY + 4);
+
+        // Input A bus to XOR Pin 1 & drop down to NOT gate input
+        ctx.strokeStyle = actA ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(inAX + 5, inAY); ctx.lineTo(gateX - 24, inAY);
+        ctx.moveTo(tapAX, inAY); ctx.lineTo(tapAX, notY); ctx.lineTo(notX - 18, notY);
+        ctx.stroke();
+        ctx.fillStyle = actA ? '#dc2626' : '#000000';
+        drawDot(ctx, tapAX, inAY);
+
+        // Input B bus to AND Pin 2 & rise up to XOR Pin 2 (clean non-overlapping routing)
+        ctx.strokeStyle = actB ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(inBX + 5, inBY); ctx.lineTo(gateX - 24, inBY);
+        ctx.moveTo(tapBX, inBY); ctx.lineTo(tapBX, xorY + 12); ctx.lineTo(gateX - 24, xorY + 12);
+        ctx.stroke();
+        ctx.fillStyle = actB ? '#dc2626' : '#000000';
+        drawDot(ctx, tapBX, inBY);
+
+        // NOT Gate (IC 7404) & wire A' to AND Pin 1
+        drawNOT(ctx, notX, notY);
+        const notOut = sim.power ? (a === 0 ? 1 : 0) : 0;
+        ctx.strokeStyle = notOut ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(notX + 22, notY); ctx.lineTo(340, notY); ctx.lineTo(340, andY - 12); ctx.lineTo(gateX - 24, andY - 12);
+        ctx.stroke();
+
+        // Draw XOR and AND Gates
+        drawXOR(ctx, gateX, xorY);
+        drawAND(ctx, gateX, andY, false);
+
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 10.5px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('7404 (NOT)', notX, notY - 22);
+        ctx.fillText('1 → 2', notX, notY + 26);
+
+        ctx.fillText('IC 7486 (XOR)', gateX, xorY - 30);
+        ctx.fillText('Pin 1', gateX - 42, xorY - 16);
+        ctx.fillText('Pin 2', gateX - 42, xorY + 22);
+        ctx.fillText('Pin 3', gateX + 42, xorY - 8);
+
+        ctx.fillText('IC 7408 (AND)', gateX, andY - 28);
+        ctx.fillText('Pin 1', gateX - 42, andY - 16);
+        ctx.fillText('Pin 2', gateX - 42, andY + 22);
+        ctx.fillText('Pin 3', gateX + 42, andY - 8);
+
+        // Outputs D & Bor to LEDs
+        ctx.strokeStyle = d ? '#dc2626' : '#000000';
+        ctx.beginPath(); ctx.moveTo(gateX + 24, xorY); ctx.lineTo(565, xorY); ctx.stroke();
+        drawLedIndicator(ctx, 580, xorY, 'Diff (D)', d);
+
+        ctx.strokeStyle = bor ? '#dc2626' : '#000000';
+        ctx.beginPath(); ctx.moveTo(gateX + 20, andY); ctx.lineTo(565, andY); ctx.stroke();
+        drawLedIndicator(ctx, 580, andY, 'Borrow (Bor)', bor);
+
+      } else {
+        // Fig. 10.1(b): Half Subtractor using 5 NAND Gates (IC 7400 x 2)
+        ctx.fillText('Fig. 10.1(b): Half Subtractor using 5 NAND Gates Only (IC 7400 × 2)', w / 2, 24);
+
+        const nand1 = (sim.power && !(a & b)) ? 1 : 0;
+        const nand2 = (sim.power && !(a & nand1)) ? 1 : 0;
+        const nand3 = (sim.power && !(b & nand1)) ? 1 : 0;
+
+        const g1X = 195, g1Y = 175;
+        const g2X = 335, g2Y = 100;
+        const g3X = 335, g3Y = 235;
+        const g4X = 480, g4Y = 167;
+        const g5X = 480, g5Y = 292;
+
+        // Inputs A & B
+        ctx.strokeStyle = '#000000'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(65, 90, 5, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(65, 245, 5, 0, Math.PI * 2); ctx.stroke();
+        ctx.font = 'bold 12px Arial'; ctx.textAlign = 'right';
+        ctx.fillText(`A=${a}`, 55, 94);
+        ctx.fillText(`B=${b}`, 55, 249);
+
+        // Wire A to G2 top & G1 top
+        ctx.strokeStyle = actA ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(70, 90); ctx.lineTo(g2X - 24, 90);
+        ctx.moveTo(120, 90); ctx.lineTo(120, g1Y - 10); ctx.lineTo(g1X - 24, g1Y - 10);
+        ctx.stroke();
+        ctx.fillStyle = actA ? '#dc2626' : '#000000'; drawDot(ctx, 120, 90);
+
+        // Wire B to G3 bottom & G1 bottom
+        ctx.strokeStyle = actB ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(70, 245); ctx.lineTo(g3X - 24, 245);
+        ctx.moveTo(120, 245); ctx.lineTo(120, g1Y + 10); ctx.lineTo(g1X - 24, g1Y + 10);
+        ctx.stroke();
+        ctx.fillStyle = actB ? '#dc2626' : '#000000'; drawDot(ctx, 120, 245);
+
+        // G1 Output (AB)' splits to G2 bottom and G3 top
+        const splitX = 255;
+        ctx.strokeStyle = nand1 ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(g1X + 30, g1Y); ctx.lineTo(splitX, g1Y);
+        ctx.moveTo(splitX, g2Y + 10); ctx.lineTo(splitX, g3Y - 10);
+        ctx.moveTo(splitX, g2Y + 10); ctx.lineTo(g2X - 24, g2Y + 10);
+        ctx.moveTo(splitX, g3Y - 10); ctx.lineTo(g3X - 24, g3Y - 10);
+        ctx.stroke();
+        ctx.fillStyle = nand1 ? '#dc2626' : '#000000';
+        drawDot(ctx, splitX, g1Y);
+
+        // G2 Output to G4 top
+        ctx.strokeStyle = nand2 ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(g2X + 30, g2Y); ctx.lineTo(405, g2Y); ctx.lineTo(405, g4Y - 10); ctx.lineTo(g4X - 24, g4Y - 10);
+        ctx.stroke();
+
+        // G3 Output splits to G4 bottom AND tied inputs of G5 (Borrow = A'·B)
+        const borTapX = 392;
+        ctx.strokeStyle = nand3 ? '#dc2626' : '#000000';
+        ctx.beginPath();
+        ctx.moveTo(g3X + 30, g3Y); ctx.lineTo(405, g3Y); ctx.lineTo(405, g4Y + 10); ctx.lineTo(g4X - 24, g4Y + 10);
+        ctx.moveTo(borTapX, g3Y); ctx.lineTo(borTapX, g5Y + 10);
+        ctx.moveTo(borTapX, g5Y - 10); ctx.lineTo(g5X - 24, g5Y - 10);
+        ctx.moveTo(borTapX, g5Y + 10); ctx.lineTo(g5X - 24, g5Y + 10);
+        ctx.stroke();
+        ctx.fillStyle = nand3 ? '#dc2626' : '#000000';
+        drawDot(ctx, borTapX, g3Y);
+        drawDot(ctx, borTapX, g5Y - 10);
+
+        // Draw 5 NAND gates
+        [ [g1X, g1Y, 'G1'], [g2X, g2Y, 'G2'], [g3X, g3Y, 'G3'], [g4X, g4Y, 'G4'], [g5X, g5Y, 'G5'] ].forEach(([gx, gy, lbl]) => {
+          drawAND(ctx, gx, gy, true);
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 9.5px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(lbl, gx - 4, gy + 3);
+        });
+
+        // Final Outputs D and Bor
+        ctx.strokeStyle = d ? '#dc2626' : '#000000';
+        ctx.beginPath(); ctx.moveTo(g4X + 30, g4Y); ctx.lineTo(575, g4Y); ctx.stroke();
+        drawLedIndicator(ctx, 590, g4Y, 'Diff (D)', d);
+
+        ctx.strokeStyle = bor ? '#dc2626' : '#000000';
+        ctx.beginPath(); ctx.moveTo(g5X + 30, g5Y); ctx.lineTo(575, g5Y); ctx.stroke();
+        drawLedIndicator(ctx, 590, g5Y, 'Borrow (Bor)', bor);
+      }
+    }
+
+    function drawPinoutReference(canvasId, mode) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#000000';
+      ctx.fillStyle = '#000000';
+      ctx.lineWidth = 1.8;
+
+      if (mode === 'basic') {
+        const ics = [
+          { name: '7486 (XOR)', x: 95,  not: false },
+          { name: '7404 (NOT)', x: 280, not: true  },
+          { name: '7408 (AND)', x: 465, not: false }
+        ];
+        ics.forEach(ic => {
+          const bx = ic.x - 28, by = 38, bw = 56, bh = 165;
+          ctx.font = 'bold 10.5px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(ic.name, ic.x, 20);
+          ctx.strokeRect(bx, by, bw, bh);
+          ctx.beginPath(); ctx.arc(ic.x, by, 7, 0, Math.PI); ctx.stroke();
+
+          const leftLabels = ic.not
+            ? ['1: 1A', '2: 1Y', '3: 2A', '4: 2Y', '5: 3A', '6: 3Y', '7: GND']
+            : ['1: 1A', '2: 1B', '3: 1Y', '4: 2A', '5: 2B', '6: 2Y', '7: GND'];
+          const rightLabels = ic.not
+            ? ['14: VCC', '13: 6A', '12: 6Y', '11: 5A', '10: 5Y', '9: 4A', '8: 4Y']
+            : ['14: VCC', '13: 4B', '12: 4A', '11: 4Y', '10: 3B', '9: 3A', '8: 3Y'];
+          ctx.font = '8.5px Arial';
+          for (let i = 0; i < 7; i++) {
+            const py = by + 16 + i * 22;
+            ctx.strokeRect(bx - 7, py - 4, 7, 8);
+            ctx.textAlign = 'right';
+            ctx.fillText(leftLabels[i], bx - 10, py + 3);
+
+            ctx.strokeRect(bx + bw, py - 4, 7, 8);
+            ctx.textAlign = 'left';
+            ctx.fillText(rightLabels[i], bx + bw + 10, py + 3);
+          }
+        });
+      } else {
+        const ics = [
+          { name: 'IC 7400 #1 (Gates 1–4)', x: 135 },
+          { name: 'IC 7400 #2 (Gate 5)', x: 415 }
+        ];
+        ics.forEach(ic => {
+          const bx = ic.x - 36, by = 38, bw = 72, bh = 165;
+          ctx.font = 'bold 11px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(ic.name, ic.x, 20);
+          ctx.strokeRect(bx, by, bw, bh);
+          ctx.beginPath(); ctx.arc(ic.x, by, 8, 0, Math.PI); ctx.stroke();
+
+          const leftLabels = ['1: 1A', '2: 1B', '3: 1Y', '4: 2A', '5: 2B', '6: 2Y', '7: GND'];
+          const rightLabels = ['14: VCC', '13: 4B', '12: 4A', '11: 4Y', '10: 3B', '9: 3A', '8: 3Y'];
+          ctx.font = '9px Arial';
+          for (let i = 0; i < 7; i++) {
+            const py = by + 16 + i * 22;
+            ctx.strokeRect(bx - 8, py - 4, 8, 8);
+            ctx.textAlign = 'right';
+            ctx.fillText(leftLabels[i], bx - 12, py + 3);
+
+            ctx.strokeRect(bx + bw, py - 4, 8, 8);
+            ctx.textAlign = 'left';
+            ctx.fillText(rightLabels[i], bx + bw + 12, py + 3);
+          }
+        });
+      }
+    }
+
+    function renderSheetCanvases() {
+      const d = sim.power ? (sim.a ^ sim.b) : 0;
+      const bor = sim.power ? ((sim.a === 0 && sim.b === 1) ? 1 : 0) : 0;
+      drawHalfSubtractorDiagram('sheetCircuitCanvas', sim.mode, sim.a, sim.b, d, bor);
+      drawPinoutReference('sheetPinoutCanvas', sim.mode);
+
+      const modeTitle = sim.mode === 'basic'
+        ? 'Fig. 10.1(a): Half Subtractor using XOR (7486), NOT (7404) & AND (7408)'
+        : 'Fig. 10.1(b): Half Subtractor using 5 NAND Gates Only (IC 7400 × 2)';
+      document.getElementById('sheetCircuitCaption').innerText = modeTitle;
+
+      document.getElementById('sheetSelectedBanner').innerText =
+        `Selected Mode: ${sim.mode === 'basic' ? 'XOR + NOT + AND Gates' : 'NAND Gates Only'} | Inputs: A = ${sim.a}, B = ${sim.b} | Difference (D) = ${d}, Borrow (Bor) = ${bor}`;
+
+      document.getElementById('sheetResultBox').innerHTML = `
+        <strong>Result:</strong> Designed and verified the Half Subtractor circuit using (${sim.mode === 'basic' ? 'XOR, NOT & AND gates' : 'NAND gates only'}). For inputs <strong>A = ${sim.a}, B = ${sim.b}</strong>, observed <strong>Difference (D) = ${d}</strong> and <strong>Borrow (Bor) = ${bor}</strong>, matching the theoretical truth tables (Tables 10.1 &amp; 10.2).<br>
+        <strong>Inference:</strong> A half subtractor performs single-bit binary subtraction producing Difference (D = A ⊕ B) and Borrow (Bor = A' · B), generating a borrow output only when A = 0 and B = 1.
+      `;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateAll();
+    });
+  </script>
+</body>
+</html>
