@@ -33,7 +33,7 @@
       padding: 12px 20px;
     }
     .header-content {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -97,7 +97,7 @@
 
     main {
       flex: 1;
-      max-width: 1280px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
       padding: 16px;
@@ -136,8 +136,8 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 1024px) {
-      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    @media (min-width: 1080px) {
+      .workbench-grid { grid-template-columns: 7.4fr 4.6fr; }
     }
 
     .panel {
@@ -162,6 +162,46 @@
       gap: 8px;
     }
 
+    .dso-chassis {
+      background: linear-gradient(180deg, #27303f 0%, #1b222e 100%);
+      border-bottom: 2px solid #0f172a;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .dso-chassis { grid-template-columns: 1.45fr 1fr; }
+    }
+
+    .dso-bezel {
+      background: #0b0f17;
+      border: 3px solid #3f4b5e;
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .dso-screen-top-bar {
+      background: #111827;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    .dso-trig-badge {
+      background: #059669;
+      color: #ffffff;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 9.5px;
+    }
     .dso-frame {
       position: relative;
       background: #ffffff;
@@ -170,34 +210,205 @@
       display: flex;
     }
     #dsoCanvas { width: 100%; height: 100%; display: block; }
-    .dso-hud-top {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      pointer-events: none;
+
+    .dso-measure-strip {
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      padding: 5px 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #94a3b8;
     }
-    .dso-hud-bottom {
-      position: absolute;
-      bottom: 8px;
-      right: 10px;
-      pointer-events: none;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      text-align: right;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
+    .dso-meas-cell {
+      background: #1e293b;
+      border-left: 3px solid #38bdf8;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .dso-meas-cell.ch1 { border-left-color: #22d3ee; }
+    .dso-meas-cell.ch2 { border-left-color: #eab308; }
+    .dso-meas-cell.freq { border-left-color: #10b981; }
+    .dso-meas-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; }
+    .dso-meas-val { font-size: 11px; font-weight: 800; color: #f8fafc; }
+
+    .dso-controls-deck {
+      background: #1e2634;
+      border: 1px solid #3b4659;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .dso-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 5px;
+    }
+    .dso-brand {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+    }
+    .dso-softkeys {
+      display: flex;
+      gap: 4px;
+    }
+    .dso-hw-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #64748b;
+      border-bottom: 2px solid #0f172a;
       border-radius: 4px;
-      border: 1px solid #94a3b8;
+      padding: 3px 7px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .dso-hw-btn:active { transform: translateY(1px); }
+    .dso-hw-btn.run-active { background: #059669; border-color: #34d399; }
+    .dso-hw-btn.run-paused { background: #dc2626; border-color: #f87171; }
+    .dso-hw-btn.auto-btn { background: #2563eb; border-color: #60a5fa; }
+
+    .dso-knob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .dso-module-box {
+      background: #151c27;
+      border: 1px solid #2e3849;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .dso-module-box.ch1-box { border-top: 2.5px solid #22d3ee; }
+    .dso-module-box.ch2-box { border-top: 2.5px solid #eab308; }
+    .dso-module-box.horiz-box { border-top: 2.5px solid #38bdf8; }
+    .dso-module-box.pot-box { border-top: 2.5px solid #10b981; }
+
+    .dso-mod-title {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .rotary-knob-wrap {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 2px auto;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rotary-knob {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #475569, #1e293b 70%, #0f172a 100%);
+      border: 2px solid #94a3b8;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.25);
+      position: relative;
+      transition: transform 0.12s ease-out;
+    }
+    .rotary-knob::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 2px;
+    }
+    .rotary-knob.ch1-knob::after { background: #22d3ee; }
+    .rotary-knob.ch2-knob::after { background: #eab308; }
+    .rotary-knob.pot-knob::after { background: #10b981; }
+
+    .knob-step-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .step-mini-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 3px;
+      width: 20px;
+      height: 18px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .step-mini-btn:hover { background: #475569; }
+    .knob-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #f8fafc;
+      background: #0b0f17;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #334155;
+      min-width: 64px;
+    }
+
+    .freq-tuner-strip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .freq-tuner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+    }
+    .freq-lcd {
+      background: #022c22;
+      border: 1px solid #059669;
+      color: #34d399;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+    .pot-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pot-slider-row input[type="range"] {
+      flex: 1;
+      cursor: pointer;
+      accent-color: #10b981;
     }
 
     .sub-section-bar {
@@ -214,7 +425,7 @@
     .control-grid {
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
       gap: 8px;
       background: #141d2f;
       border-top: 1px solid var(--border-dark);
@@ -233,7 +444,7 @@
       margin-bottom: 4px;
       text-transform: uppercase;
     }
-    .ctrl-box select, .ctrl-box input[type="range"] {
+    .ctrl-box select {
       width: 100%;
       background: #0f172a;
       color: #f1f5f9;
@@ -244,35 +455,11 @@
       outline: none;
     }
 
-    .pot-card {
-      background: rgba(30, 58, 138, 0.25);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin: 10px 12px 0 12px;
-    }
-    .pot-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #93c5fd;
-      margin-bottom: 6px;
-    }
-    .pot-desc {
-      font-size: 0.73rem;
-      color: #38bdf8;
-      margin-top: 5px;
-      line-height: 1.35;
-      font-style: italic;
-    }
-
     .stat-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     @media (min-width: 640px) {
       .stat-row { grid-template-columns: repeat(4, 1fr); }
@@ -317,28 +504,33 @@
       background: #111827;
       border: 1px solid #374151;
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       margin-top: 10px;
       font-size: 0.76rem;
-      line-height: 1.45;
+      line-height: 1.5;
     }
     .formula-title {
-      font-weight: 700;
+      font-weight: 800;
       color: #38bdf8;
       text-transform: uppercase;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     .formula-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
       color: #e2e8f0;
     }
     .formula-list li {
-      padding-left: 12px;
+      padding-left: 14px;
       position: relative;
       line-height: 1.48;
     }
@@ -347,18 +539,20 @@
       position: absolute;
       left: 0;
       color: #38bdf8;
-      font-weight: 800;
+      font-weight: 900;
+      font-size: 0.95rem;
     }
     .math-chip {
       display: inline-block;
       background: #1e293b;
       border: 1px solid #334155;
-      border-radius: 4px;
-      padding: 1px 6px;
+      border-radius: 5px;
+      padding: 2px 7px;
       font-family: "Cambria Math", "Times New Roman", serif;
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       color: #f8fafc;
-      margin: 1px 2px;
+      margin: 2px 2px;
+      vertical-align: middle;
     }
     .fraction {
       display: inline-flex;
@@ -367,12 +561,11 @@
       text-align: center;
       padding: 0 3px;
       font-size: 0.85em;
-      line-height: 1.1;
+      line-height: 1.12;
     }
     .fraction-top { border-bottom: 1.2px solid currentColor; padding-bottom: 1px; }
     .fraction-bottom { padding-top: 1px; }
 
-    /* Worksheet / Lab Manual View */
     #worksheet-view {
       display: none;
       background: #ffffff;
@@ -429,24 +622,24 @@
     }
     .lab-table th { background: #f3f4f6; font-weight: 700; }
 
-    /* Developer Credit Footer */
     .dev-footer {
       background: #111827;
       border-top: 1px solid #374151;
-      color: #9ca3af;
+      color: #e5e7eb;
+      font-weight: 700;
       text-align: center;
       padding: 10px 16px;
       font-size: 0.75rem;
       margin-top: auto;
     }
-    .dev-footer strong { color: #e5e7eb; }
     .sheet-credit {
       margin-top: 10px;
       padding-top: 6px;
       border-top: 1px dashed #6b7280;
       text-align: center;
       font-size: 0.7rem;
-      color: #374151;
+      font-weight: 700;
+      color: #111827;
     }
 
     @media print {
@@ -454,7 +647,7 @@
       body { background: #ffffff !important; color: #000000 !important; }
       header, .tab-nav, #workbench-view, .no-print { display: none !important; }
       #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
-      @page { size: A4 portrait; margin: 8mm 10mm; }
+      @page { size: A4 portrait; margin: 10mm 12mm; }
     }
   </style>
 </head>
@@ -473,7 +666,7 @@
 
       <div class="btn-group no-print">
         <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
-        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
         <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
       </div>
     </div>
@@ -487,60 +680,127 @@
 
     <!-- 1. INTERACTIVE WORKBENCH -->
     <div id="workbench-view" class="workbench-grid">
-
-      <!-- Left Column: Dual-Channel DSO (Vs, Vload = CH1 - CH2, Vc, Vak) -->
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
-            <span>DUAL-CHANNEL OSCILLOSCOPE (FULL 0°–180° RC PHASE CONTROL)</span>
+            <span>DIGITAL STORAGE OSCILLOSCOPE (FULL 0°–180° RC PHASE CONTROL)</span>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
-            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Screen</button>
           </div>
         </div>
 
-        <div class="dso-frame">
-          <canvas id="dsoCanvas" width="700" height="410"></canvas>
+        <div class="dso-chassis">
+          <div class="dso-bezel">
+            <div class="dso-screen-top-bar">
+              <div><span class="dso-trig-badge" id="dsoTrigStatus">TRIG'D</span> &nbsp;CH1 AC &nbsp;MATH CH1−CH2</div>
+              <div id="dsoTopTime">M 5.0 ms</div>
+              <div style="color:#38bdf8;">f = <strong id="dsoTopFreq">50 Hz</strong></div>
+            </div>
 
-          <div class="dso-hud-top">
-            <div>TB: <strong id="hudTime">5.0 ms/div</strong> | AC: <strong>12 V RMS, 50 Hz (17.0 Vpk)</strong></div>
-            <div>CH1 (Vs): <strong id="hudCh1Scale">10.0 V/div</strong> (Dashed Sine)</div>
-            <div>CH2 / MATH: <strong id="hudCh2Scale">10.0 V/div</strong> (Solid Trace)</div>
+            <div class="dso-frame">
+              <canvas id="dsoCanvas" width="640" height="400"></canvas>
+            </div>
+
+            <div class="dso-measure-strip">
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Firing α</div>
+                <div class="dso-meas-val" id="dsoMeasAlpha">60.0°</div>
+              </div>
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Delay tα</div>
+                <div class="dso-meas-val" id="dsoMeasDelay">3.33 ms</div>
+              </div>
+              <div class="dso-meas-cell ch1">
+                <div class="dso-meas-lbl">CH1 Vpk (Vs)</div>
+                <div class="dso-meas-val" id="dsoMeasVs">17.0 V</div>
+              </div>
+              <div class="dso-meas-cell ch2">
+                <div class="dso-meas-lbl">Avg Load Vdc</div>
+                <div class="dso-meas-val" id="dsoMeasVdc">4.05 V</div>
+              </div>
+            </div>
           </div>
 
-          <div class="dso-hud-bottom">
-            <div>Firing Angle (α): <strong id="hudAlpha" style="color:#2563eb;">60.0° (3.33 ms)</strong></div>
-            <div>Conduction Angle (θ): <strong id="hudTheta" style="color:#059669;">120.0° (6.67 ms)</strong></div>
-            <div>Avg Load Voltage (Vdc): <strong id="hudVdc">4.05 V</strong></div>
-            <div>Time Constant (τ = R·C): <strong id="hudTau">4.33 ms</strong></div>
+          <div class="dso-controls-deck">
+            <div class="dso-deck-header">
+              <span class="dso-brand">DSO-1052B • 50 MHz</span>
+              <div class="dso-softkeys">
+                <button class="dso-hw-btn auto-btn" onclick="autoSetDso()" title="Auto-scale">AUTO</button>
+                <button class="dso-hw-btn run-active" id="btnRun" onclick="toggleRun()">RUN/STOP</button>
+                <button class="dso-hw-btn" onclick="resetDefaults()">DEFAULT</button>
+              </div>
+            </div>
+
+            <div class="dso-knob-grid">
+              <div class="dso-module-box ch1-box">
+                <div class="dso-mod-title">CH1 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh1(1)">
+                  <div class="rotary-knob ch1-knob" id="knobCh1"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh1(-1)">−</button>
+                  <span class="knob-readout" id="lblCh1Scale">10.0 V</span>
+                  <button class="step-mini-btn" onclick="stepCh1(1)">+</button>
+                </div>
+              </div>
+
+              <div class="dso-module-box ch2-box">
+                <div class="dso-mod-title">CH2 / MATH V/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh2(1)">
+                  <div class="rotary-knob ch2-knob" id="knobCh2"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh2(-1)">−</button>
+                  <span class="knob-readout" id="lblCh2Scale">10.0 V</span>
+                  <button class="step-mini-btn" onclick="stepCh2(1)">+</button>
+                </div>
+              </div>
+
+              <div class="dso-module-box horiz-box">
+                <div class="dso-mod-title">SEC/DIV (TIME)</div>
+                <div class="rotary-knob-wrap" onclick="stepTime(1)">
+                  <div class="rotary-knob" id="knobTime"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepTime(-1)">−</button>
+                  <span class="knob-readout" id="lblTimeScale">5.0 ms</span>
+                  <button class="step-mini-btn" onclick="stepTime(1)">+</button>
+                </div>
+              </div>
+
+              <div class="dso-module-box pot-box">
+                <div class="dso-mod-title">10k POT (R2)</div>
+                <div class="rotary-knob-wrap" onclick="stepPot(500)">
+                  <div class="rotary-knob pot-knob" id="knobPot"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepPot(-200)">−</button>
+                  <span class="knob-readout" id="lblPotKnob">3.3 kΩ</span>
+                  <button class="step-mini-btn" onclick="stepPot(200)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="freq-tuner-strip">
+              <div class="freq-tuner-top">
+                <span>Phase Potentiometer R2 (0°–180° Control)</span>
+                <span class="freq-lcd" id="lcdPotReadout">α = 60.0° | τ = 4.33 ms</span>
+              </div>
+              <div class="pot-slider-row">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">0Ω</span>
+                <input type="range" id="potSlider" min="0" max="10000" step="100" value="3333" oninput="onPotChange(this.value)">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">10kΩ</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- 10 kΩ RC Phase Control Potentiometer Slider (Full 0° to 180°) -->
-        <div class="pot-card">
-          <div class="pot-header">
-            <span>Phase-Shift Potentiometer R<sub>2</sub> (10 kΩ Linear Pot)</span>
-            <span id="potDisplay" style="font-family:monospace; color:#34d399;">R2 = 3.33 kΩ (α = 60.0°)</span>
-          </div>
-          <input type="range" id="potSlider" min="0" max="10000" step="100" value="3333" oninput="onPotChange(this.value)" style="width:100%; cursor:pointer;">
-          <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:#94a3b8; margin-top:4px;">
-            <span>0 Ω (α = 0° Full Half-Wave)</span>
-            <span style="color:#34d399; font-weight:700;">Full 0° – 180° Firing Angle Range</span>
-            <span>10 kΩ (α = 180° Zero Output)</span>
-          </div>
-          <div class="pot-desc" id="potDesc">
-            Unlike R-triggering (limited to 90°), capacitor C delays the gate voltage phase across the full 0° to 180° range.
-          </div>
-        </div>
-
-        <!-- DSO Scales, Capacitor C & Trace Selection -->
-        <div class="sub-section-bar"><span>Oscilloscope Probe Mode, Timing Capacitor C &amp; Scales</span></div>
+        <div class="sub-section-bar"><span>DSO Channel Math Probe View &amp; Timing Capacitor C</span></div>
         <div class="control-grid">
           <div class="ctrl-box">
-            <label>CH2 / Math Display</label>
+            <label>CH2 / Math Trace Display</label>
             <select id="selProbeView" onchange="sim.probeView = this.value; updateAll()">
               <option value="vload" selected>Math (CH1−CH2): Load Voltage VL</option>
               <option value="vc">CH2: Capacitor Voltage Vc (Phase Lag)</option>
@@ -558,20 +818,18 @@
           </div>
 
           <div class="ctrl-box">
-            <label>CH1 (Vs) Scale</label>
-            <select id="selCh1Vdiv" onchange="onCh1ScaleChange(this.value)">
-              <option value="2.0">2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0" selected>10.0 V/div</option>
+            <label>Load Resistor (RL)</label>
+            <select id="selRl" onchange="sim.rl = parseFloat(this.value); updateAll()">
+              <option value="100" selected>100 Ω / 5 W (Standard)</option>
+              <option value="220">220 Ω / 5 W</option>
             </select>
           </div>
 
           <div class="ctrl-box">
-            <label>CH2 Scale</label>
-            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
-              <option value="2.0">2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0" selected>10.0 V/div</option>
+            <label>AC Supply Frequency</label>
+            <select id="selFreq" onchange="sim.freq = parseFloat(this.value); updateAll()">
+              <option value="50" selected>50 Hz (Mains Standard)</option>
+              <option value="60">60 Hz</option>
             </select>
           </div>
         </div>
@@ -598,7 +856,7 @@
         </div>
       </div>
 
-      <!-- Right Column: RC Trigger Schematic & Design Equations -->
+      <!-- Right Column: Schematic & Design Equations -->
       <div class="panel" style="padding:14px;">
         <div class="panel-head" style="margin:-14px -14px 12px -14px;">
           <span>SCR RC HALF-WAVE TRIGGER CIRCUIT &amp; PINOUT</span>
@@ -613,7 +871,7 @@
           <div class="formula-title">RC Phase-Control Principle &amp; Design Equations</div>
           <ul class="formula-list">
             <li>
-              <strong>Charging &amp; Reset Diodes:</strong> During the positive half-cycle, capacitor <i>C</i> charges through <i>R</i><sub>1</sub> + <i>R</i><sub>2</sub>; when <i>V</i><sub>C</sub> reaches <i>V</i><sub>D1</sub> + <i>V</i><sub>GT</sub> (&approx; 1.5 V), the SCR fires at <strong>&alpha; (0&deg; to 180&deg;)</strong>. During the negative half-cycle, diode <i>D</i><sub>2</sub> resets <i>C</i> to <strong>&minus;0.7 V</strong> so every cycle starts identically.
+              <strong>Charging &amp; Reset Diodes:</strong> During the positive half-cycle, capacitor <i>C</i> charges through <i>R</i><sub>1</sub> + <i>R</i><sub>2</sub>; when <i>V</i><sub>C</sub> reaches <i>V</i><sub>D1</sub> + <i>V</i><sub>GT</sub> (&approx; 1.5 V), the SCR fires at <strong>&alpha; (0&deg; to 180&deg;)</strong>. During the negative half-cycle, diode <i>D</i><sub>2</sub> resets <i>C</i> to <strong>&minus;0.7 V</strong>.
             </li>
             <li>
               <strong>Firing Delay &amp; Average Load Voltage:</strong><br>
@@ -700,45 +958,97 @@
         <div>Signature of Staff-in-Charge: _______________________</div>
       </div>
       <div class="sheet-credit">
-        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+        <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
       </div>
     </div>
   </main>
 
   <footer class="dev-footer no-print">
-    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+    <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
   </footer>
 
   <script>
+    const CH1_SCALES = [2.0, 5.0, 10.0, 20.0];
+    const CH2_SCALES = [2.0, 5.0, 10.0, 20.0];
+    const TIME_SCALES = [0.002, 0.005, 0.01];
+
     const sim = {
-      r2: 3333,           // 10k pot setting (0 to 10000 ohms -> 0° to 180°)
-      c: 1.0e-6,          // 1.0 uF timing capacitor
-      probeView: 'vload', // 'vload', 'vc', 'vak'
-      timeDiv: 0.005,     // 5.0 ms/div
-      ch1Scale: 10.0,     // 10.0 V/div
-      ch2Scale: 10.0,     // 10.0 V/div
-      laserMode: true,
+      r2: 3333,
+      c: 1.0e-6,
+      probeView: 'vload',
+      ch1Idx: 2,
+      ch2Idx: 2,
+      timeIdx: 1,
+      laserMode: false,
       running: true,
       t: 0
     };
 
-    const VM = 12 * Math.SQRT2; // 16.97 V peak (12 V RMS)
-    const FREQ = 50;            // 50 Hz (T = 20 ms)
+    function getCh1Scale() { return CH1_SCALES[sim.ch1Idx]; }
+    function getCh2Scale() { return CH2_SCALES[sim.ch2Idx]; }
+    function getTimeDiv()  { return TIME_SCALES[sim.timeIdx]; }
+    function getVm()       { return 12 * Math.SQRT2; }
+
+    function stepCh1(dir) {
+      sim.ch1Idx = Math.max(0, Math.min(CH1_SCALES.length - 1, sim.ch1Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepCh2(dir) {
+      sim.ch2Idx = Math.max(0, Math.min(CH2_SCALES.length - 1, sim.ch2Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepTime(dir) {
+      sim.timeIdx = Math.max(0, Math.min(TIME_SCALES.length - 1, sim.timeIdx + dir));
+      updateKnobVisuals();
+    }
+    function stepPot(deltaOhms) {
+      const nextR = Math.max(0, Math.min(10000, sim.r2 + deltaOhms));
+      sim.r2 = nextR;
+      document.getElementById('potSlider').value = String(nextR);
+      updateAll();
+    }
+    function onPotChange(val) {
+      sim.r2 = parseFloat(val);
+      updateAll();
+    }
+
+    function autoSetDso() {
+      sim.ch1Idx = 2; sim.ch2Idx = 2; sim.timeIdx = 1;
+      updateKnobVisuals();
+    }
+
+    function updateKnobVisuals() {
+      const ch1Deg = -120 + (sim.ch1Idx / (CH1_SCALES.length - 1)) * 240;
+      const ch2Deg = -120 + (sim.ch2Idx / (CH2_SCALES.length - 1)) * 240;
+      const timeDeg = -120 + (sim.timeIdx / (TIME_SCALES.length - 1)) * 240;
+      const potDeg = -135 + (sim.r2 / 10000) * 270;
+
+      document.getElementById('knobCh1').style.transform = `rotate(${ch1Deg}deg)`;
+      document.getElementById('knobCh2').style.transform = `rotate(${ch2Deg}deg)`;
+      document.getElementById('knobTime').style.transform = `rotate(${timeDeg}deg)`;
+      document.getElementById('knobPot').style.transform = `rotate(${potDeg}deg)`;
+
+      const c1 = getCh1Scale();
+      const c2 = getCh2Scale();
+      const td = getTimeDiv();
+
+      document.getElementById('lblCh1Scale').innerText = `${c1.toFixed(1)} V`;
+      document.getElementById('lblCh2Scale').innerText = `${c2.toFixed(1)} V`;
+      const tdStr = `${(td * 1000).toFixed(1)} ms`;
+      document.getElementById('lblTimeScale').innerText = tdStr;
+      document.getElementById('dsoTopTime').innerText = `M ${tdStr}`;
+    }
 
     function resetDefaults() {
       sim.r2 = 3333;
       sim.c = 1.0e-6;
       sim.probeView = 'vload';
-      sim.timeDiv = 0.005;
-      sim.ch1Scale = 10.0;
-      sim.ch2Scale = 10.0;
+      sim.ch1Idx = 2;
+      sim.ch2Idx = 2;
+      sim.timeIdx = 1;
       document.getElementById('potSlider').value = '3333';
       document.getElementById('selCap').value = '1.0e-6';
       document.getElementById('selProbeView').value = 'vload';
-      document.getElementById('selCh1Vdiv').value = '10.0';
-      document.getElementById('selCh2Vdiv').value = '10.0';
-      onCh1ScaleChange('10.0');
-      onCh2ScaleChange('10.0');
       updateAll();
     }
 
@@ -764,34 +1074,21 @@
     function toggleRun() {
       sim.running = !sim.running;
       const btn = document.getElementById('btnRun');
-      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
-      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+      const trig = document.getElementById('dsoTrigStatus');
+      btn.className = sim.running ? 'dso-hw-btn run-active' : 'dso-hw-btn run-paused';
+      trig.innerText = sim.running ? "TRIG'D" : "STOP";
+      trig.style.background = sim.running ? "#059669" : "#dc2626";
     }
 
     function toggleTheme() {
       sim.laserMode = !sim.laserMode;
-      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
-    }
-
-    function onCh1ScaleChange(val) {
-      sim.ch1Scale = parseFloat(val);
-      document.getElementById('hudCh1Scale').innerText = sim.ch1Scale.toFixed(1) + ' V/div';
-    }
-    function onCh2ScaleChange(val) {
-      sim.ch2Scale = parseFloat(val);
-      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
-    }
-    function onPotChange(val) {
-      sim.r2 = parseFloat(val);
-      updateAll();
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'DSO Color Screen' : 'Laser-Friendly B&W Screen';
     }
 
     function getRcPhysics() {
-      const rTotal = 1000 + sim.r2; // R1 (1k) + R2 (pot)
-      const tau = rTotal * sim.c;    // RC time constant in seconds
+      const rTotal = 1000 + sim.r2;
+      const tau = rTotal * sim.c;
       const tauMs = tau * 1000;
-
-      // Full 0° to 180° RC firing angle control across R2 = 0 Ω to 10 kΩ
       const capScale = sim.c / 1.0e-6;
       const rawDeg = (sim.r2 / 10000) * 180 * Math.pow(capScale, 0.35);
       const alphaDeg = Math.min(180, Math.max(0, rawDeg));
@@ -800,30 +1097,31 @@
 
       const tAlphaMs = (alphaDeg / 360) * 20;
       const tThetaMs = (thetaDeg / 360) * 20;
-      const vdc = (VM / (2 * Math.PI)) * (1 + Math.cos(alphaRad));
+      const vdc = (getVm() / (2 * Math.PI)) * (1 + Math.cos(alphaRad));
 
       return { rTotal, tauMs, alphaDeg, thetaDeg, tAlphaMs, tThetaMs, vdc };
     }
 
     function updateAll() {
       const p = getRcPhysics();
-      document.getElementById('potDisplay').innerText = `R2 = ${(sim.r2/1000).toFixed(2)} kΩ (α = ${p.alphaDeg.toFixed(1)}°)`;
-      document.getElementById('hudAlpha').innerText = `${p.alphaDeg.toFixed(1)}° (${p.tAlphaMs.toFixed(2)} ms)`;
-      document.getElementById('hudTheta').innerText = `${p.thetaDeg.toFixed(1)}° (${p.tThetaMs.toFixed(2)} ms)`;
-      document.getElementById('hudVdc').innerText = `${p.vdc.toFixed(2)} V`;
-      document.getElementById('hudTau').innerText = `${p.tauMs.toFixed(2)} ms`;
+      const r2K = (sim.r2 / 1000).toFixed(2);
 
+      document.getElementById('lblPotKnob').innerText = `${r2K} kΩ`;
+      document.getElementById('dsoMeasAlpha').innerText = `${p.alphaDeg.toFixed(1)}°`;
+      document.getElementById('dsoMeasDelay').innerText = `${p.tAlphaMs.toFixed(2)} ms`;
+      document.getElementById('dsoMeasVs').innerText = `${getVm().toFixed(1)} V`;
+      document.getElementById('dsoMeasVdc').innerText = `${p.vdc.toFixed(2)} V`;
+
+      document.getElementById('lcdPotReadout').innerText = `α = ${p.alphaDeg.toFixed(1)}° | τ = ${p.tauMs.toFixed(2)} ms`;
       document.getElementById('statAlpha').innerText = `${p.alphaDeg.toFixed(1)}°`;
       document.getElementById('statTalpha').innerText = `${p.tAlphaMs.toFixed(2)} ms`;
       document.getElementById('statTheta').innerText = `${p.thetaDeg.toFixed(1)}°`;
       document.getElementById('statVdc').innerText = `${p.vdc.toFixed(2)} V`;
 
+      updateKnobVisuals();
       drawRcSchematic('schematicCanvas');
     }
 
-    // ---------------------------------------------------------
-    // SCHEMATIC RENDERER (Fig 14.1: RC Trigger Circuit)
-    // ---------------------------------------------------------
     function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
       const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
       ctx.save();
@@ -875,7 +1173,7 @@
 
       const topY = 42, botY = 268, srcX = 64, rcX = 158, nodeY = 186, scrX = 355;
 
-      // 12 V AC Source
+      // AC Source
       ctx.beginPath(); ctx.arc(srcX, 155, 18, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(srcX - 9, 155);
@@ -926,7 +1224,6 @@
       drawDot(ctx, d2X, nodeY);
       drawDot(ctx, d2X, botY);
 
-      // Upward-pointing Diode D2 triangle
       ctx.beginPath();
       ctx.moveTo(d2X - 8, 234); ctx.lineTo(d2X + 8, 234); ctx.lineTo(d2X, 218); ctx.closePath();
       ctx.fill();
@@ -953,7 +1250,7 @@
       drawZigzag(ctx, scrX, topY, scrX, 130, 6, 4);
       ctx.textAlign = 'left';
       ctx.font = 'bold 10.5px Arial';
-      ctx.fillText('RL = 100 Ω', scrX + 12, 85);
+      ctx.fillText(`RL = ${sim.rl} Ω`, scrX + 12, 85);
 
       // SCR Symbol (TYN612)
       const scrTop = 148, scrBot = 178;
@@ -963,7 +1260,7 @@
       ctx.fill();
       ctx.beginPath();
       ctx.moveTo(scrX - 14, scrBot); ctx.lineTo(scrX + 14, scrBot);
-      ctx.moveTo(332, nodeY); ctx.lineTo(scrX - 6, scrBot);
+      ctx.moveTo(332, nodeY); ctx.lineTo(332, scrBot); ctx.lineTo(scrX - 6, scrBot);
       ctx.moveTo(scrX, scrBot); ctx.lineTo(scrX, botY);
       ctx.stroke();
 
@@ -971,10 +1268,11 @@
       ctx.font = '9px Arial';
       ctx.fillText('A (2)', scrX + 16, 147);
       ctx.fillText('K (1)', scrX + 16, 185);
-      ctx.fillText('G (3)', scrX - 28, 202);
+      ctx.fillText('G (3)', scrX - 30, 202);
 
       ctx.font = 'bold 9px Arial';
-      ctx.fillText('Common Cathode (DSO GND)', scrX - 65, botY + 14);
+      ctx.textAlign = 'center';
+      ctx.fillText('Common Cathode (DSO GND)', scrX - 45, botY + 15);
 
       // Divider & TO-220 Pinout on Right
       ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1;
@@ -1008,9 +1306,6 @@
       });
     }
 
-    // ---------------------------------------------------------
-    // DUAL-TRACE DSO RENDERER (Vs, VL = CH1 - CH2, Vc, Vak)
-    // ---------------------------------------------------------
     function drawOscilloscope(canvasId, isLaser, staticSnap) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
@@ -1050,13 +1345,20 @@
       ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
       ctx.stroke();
 
+      ctx.fillStyle = isLaser ? '#000000' : '#22d3ee';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('1>', 3, h / 2 - 3);
+      ctx.fillStyle = isLaser ? '#000000' : '#eab308';
+      ctx.fillText('M>', 3, h / 2 + 11);
+
       const phys = getRcPhysics();
-      const totalTime = 10 * sim.timeDiv;
+      const ch1Scale = getCh1Scale();
+      const ch2Scale = getCh2Scale();
+      const totalTime = 10 * getTimeDiv();
       const dt = totalTime / w;
-      const period = 1 / FREQ;
+      const period = 1 / 50;
       const t0 = staticSnap ? 0 : (sim.t % period);
 
-      // CH1: Input AC Supply Vs (Dashed Sine Wave)
       ctx.save();
       ctx.strokeStyle = trVs;
       ctx.lineWidth = 1.8;
@@ -1064,8 +1366,8 @@
       ctx.beginPath();
       for (let px = 0; px < w; px++) {
         const t = t0 + px * dt;
-        const vs = VM * Math.sin(2 * Math.PI * FREQ * t);
-        const py = (h / 2) - (vs / sim.ch1Scale) * divH;
+        const vs = getVm() * Math.sin(2 * Math.PI * 50 * t);
+        const py = (h / 2) - (vs / ch1Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
@@ -1074,7 +1376,7 @@
       const getInstant = (t) => {
         const phase = ((t % period) / period) * 360;
         const rad = (phase * Math.PI) / 180;
-        const vs = VM * Math.sin(rad);
+        const vs = getVm() * Math.sin(rad);
         let vl = 0;
         if (phys.alphaDeg < 180 && phase >= phys.alphaDeg && phase <= 180) {
           vl = Math.max(0, vs - (phys.alphaDeg === 0 ? 0 : 0.8));
@@ -1094,7 +1396,6 @@
         return { vl, vak, vc };
       };
 
-      // CH2 / Math Trace (Solid)
       ctx.save();
       ctx.strokeStyle = trCh2;
       ctx.lineWidth = 2.5;
@@ -1102,19 +1403,20 @@
       for (let px = 0; px < w; px++) {
         const inst = getInstant(t0 + px * dt);
         const val = sim.probeView === 'vload' ? inst.vl : (sim.probeView === 'vc' ? inst.vc : inst.vak);
-        const py = (h / 2) - (val / sim.ch2Scale) * divH;
+        const py = (h / 2) - (val / ch2Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
       if (staticSnap) {
-        const tbStr = (sim.timeDiv * 1000).toFixed(1) + 'ms/d';
+        const td = getTimeDiv();
+        const tbStr = `${(td * 1000).toFixed(1)}ms/d`;
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(6, 6, 330, 20);
         ctx.strokeStyle = '#000'; ctx.lineWidth = 0.8; ctx.strokeRect(6, 6, 330, 20);
         ctx.fillStyle = '#000'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'left';
-        ctx.fillText(`TB:${tbStr} | CH1:${sim.ch1Scale.toFixed(1)}V/d | CH2:${sim.ch2Scale.toFixed(1)}V/d`, 11, 19);
+        ctx.fillText(`TB:${tbStr} | CH1:${ch1Scale.toFixed(1)}V/d | CH2:${ch2Scale.toFixed(1)}V/d`, 11, 19);
       }
     }
 
@@ -1171,7 +1473,7 @@
           <td>10.00 ms</td>
           <td>0.0°</td>
           <td>0.00 ms</td>
-          <td>0.00 V</td>
+          <td>0.00 ms</td>
         </tr>
       `;
 

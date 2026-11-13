@@ -33,7 +33,7 @@
       padding: 12px 20px;
     }
     .header-content {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -97,7 +97,7 @@
 
     main {
       flex: 1;
-      max-width: 1280px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
       padding: 16px;
@@ -136,8 +136,8 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 1024px) {
-      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    @media (min-width: 1080px) {
+      .workbench-grid { grid-template-columns: 7.4fr 4.6fr; }
     }
 
     .panel {
@@ -162,6 +162,49 @@
       gap: 8px;
     }
 
+    /* =====================================================================
+       REALISTIC DIGITAL STORAGE OSCILLOSCOPE (DSO) FRONT PANEL STYLING
+       ===================================================================== */
+    .dso-chassis {
+      background: linear-gradient(180deg, #27303f 0%, #1b222e 100%);
+      border-bottom: 2px solid #0f172a;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .dso-chassis { grid-template-columns: 1.45fr 1fr; }
+    }
+
+    .dso-bezel {
+      background: #0b0f17;
+      border: 3px solid #3f4b5e;
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .dso-screen-top-bar {
+      background: #111827;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    .dso-trig-badge {
+      background: #059669;
+      color: #ffffff;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 9.5px;
+    }
     .dso-frame {
       position: relative;
       background: #ffffff;
@@ -170,34 +213,209 @@
       display: flex;
     }
     #dsoCanvas { width: 100%; height: 100%; display: block; }
-    .dso-hud-top {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      pointer-events: none;
+
+    /* On-Screen Digital Frequency & Amplitude Readout Bar (DSO Measure Strip) */
+    .dso-measure-strip {
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      padding: 5px 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #94a3b8;
     }
-    .dso-hud-bottom {
-      position: absolute;
-      bottom: 8px;
-      right: 10px;
-      pointer-events: none;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      text-align: right;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
+    .dso-meas-cell {
+      background: #1e293b;
+      border-left: 3px solid #38bdf8;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .dso-meas-cell.ch1 { border-left-color: #22d3ee; }
+    .dso-meas-cell.ch2 { border-left-color: #eab308; }
+    .dso-meas-cell.freq { border-left-color: #10b981; }
+    .dso-meas-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; }
+    .dso-meas-val { font-size: 11px; font-weight: 800; color: #f8fafc; }
+
+    /* DSO Hardware Control Deck */
+    .dso-controls-deck {
+      background: #1e2634;
+      border: 1px solid #3b4659;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .dso-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 5px;
+    }
+    .dso-brand {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+    }
+    .dso-softkeys {
+      display: flex;
+      gap: 4px;
+    }
+    .dso-hw-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #64748b;
+      border-bottom: 2px solid #0f172a;
       border-radius: 4px;
-      border: 1px solid #94a3b8;
+      padding: 3px 7px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .dso-hw-btn:active { transform: translateY(1px); }
+    .dso-hw-btn.run-active { background: #059669; border-color: #34d399; }
+    .dso-hw-btn.run-paused { background: #dc2626; border-color: #f87171; }
+    .dso-hw-btn.auto-btn { background: #2563eb; border-color: #60a5fa; }
+
+    .dso-knob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .dso-module-box {
+      background: #151c27;
+      border: 1px solid #2e3849;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .dso-module-box.ch1-box { border-top: 2.5px solid #22d3ee; }
+    .dso-module-box.ch2-box { border-top: 2.5px solid #eab308; }
+    .dso-module-box.horiz-box { border-top: 2.5px solid #38bdf8; }
+    .dso-module-box.fg-box { border-top: 2.5px solid #10b981; }
+
+    .dso-mod-title {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    /* Realistic Rotary Knob Styling */
+    .rotary-knob-wrap {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 2px auto;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rotary-knob {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #475569, #1e293b 70%, #0f172a 100%);
+      border: 2px solid #94a3b8;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.25);
+      position: relative;
+      transition: transform 0.12s ease-out;
+    }
+    .rotary-knob::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 2px;
+    }
+    .rotary-knob.ch1-knob::after { background: #22d3ee; }
+    .rotary-knob.ch2-knob::after { background: #eab308; }
+    .rotary-knob.fg-knob::after { background: #10b981; }
+
+    .knob-step-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .step-mini-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 3px;
+      width: 20px;
+      height: 18px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .step-mini-btn:hover { background: #475569; }
+    .knob-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #f8fafc;
+      background: #0b0f17;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #334155;
+      min-width: 64px;
+    }
+
+    /* Function Generator Input Frequency Dial & Digital LCD Display */
+    .freq-tuner-strip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .freq-tuner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+    }
+    .freq-lcd {
+      background: #022c22;
+      border: 1px solid #059669;
+      color: #34d399;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .pot-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pot-slider-row input[type="range"] {
+      flex: 1;
+      cursor: pointer;
+      accent-color: #10b981;
     }
 
     .sub-section-bar {
@@ -214,7 +432,7 @@
     .control-grid {
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 8px;
       background: #141d2f;
       border-top: 1px solid var(--border-dark);
@@ -233,7 +451,7 @@
       margin-bottom: 4px;
       text-transform: uppercase;
     }
-    .ctrl-box select, .ctrl-box input[type="range"] {
+    .ctrl-box select {
       width: 100%;
       background: #0f172a;
       color: #f1f5f9;
@@ -248,7 +466,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     @media (min-width: 640px) {
       .stat-row { grid-template-columns: repeat(4, 1fr); }
@@ -261,13 +479,13 @@
       text-align: center;
     }
     .stat-label {
-      font-size: 0.64rem;
+      font-size: 0.63rem;
       color: #94a3b8;
       text-transform: uppercase;
       font-weight: 600;
     }
     .stat-value {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 800;
       margin-top: 2px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -289,42 +507,71 @@
       display: block;
     }
 
+    /* Formatted Unity-Gain Buffer & Impedance Isolation Card */
     .formula-card {
       background: #111827;
       border: 1px solid #374151;
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       margin-top: 10px;
-      font-size: 0.78rem;
-      line-height: 1.45;
+      font-size: 0.76rem;
+      line-height: 1.5;
     }
     .formula-title {
-      font-weight: 700;
+      font-weight: 800;
       color: #38bdf8;
       text-transform: uppercase;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-    .math-line {
-      font-family: "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
-      font-size: 0.92rem;
-      color: #f8fafc;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #1e293b;
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      justify-content: space-between;
+    }
+    .formula-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+    .formula-list li {
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.48;
+    }
+    .formula-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+    .math-chip {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      padding: 2px 7px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 0.85rem;
+      color: #f8fafc;
+      margin: 2px 2px;
+      vertical-align: middle;
     }
     .fraction {
       display: inline-flex;
       flex-direction: column;
       vertical-align: middle;
       text-align: center;
-      padding: 0 4px;
-      font-size: 0.9em;
+      padding: 0 3px;
+      font-size: 0.85em;
+      line-height: 1.12;
     }
-    .fraction-top { border-bottom: 1.5px solid currentColor; padding-bottom: 1px; }
+    .fraction-top { border-bottom: 1.2px solid currentColor; padding-bottom: 1px; }
     .fraction-bottom { padding-top: 1px; }
 
     /* Worksheet / Lab Manual View */
@@ -332,7 +579,7 @@
       display: none;
       background: #ffffff;
       color: #000000;
-      padding: 22px;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
@@ -343,21 +590,21 @@
       padding-bottom: 8px;
       margin-bottom: 10px;
     }
-    .sheet-header h1 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; }
-    .sheet-header h2 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
-    .sheet-header p { font-size: 0.72rem; font-weight: 600; color: #374151; margin-top: 2px; }
+    .sheet-header h1 { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; }
+    .sheet-header h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    .sheet-header p { font-size: 0.7rem; font-weight: 600; color: #374151; margin-top: 2px; }
     .student-info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       border: 1px solid #000000;
       padding: 6px 10px;
-      font-size: 0.75rem;
-      gap: 5px;
+      font-size: 0.74rem;
+      gap: 4px;
       margin-bottom: 8px;
       background: #f9fafb;
     }
     .sheet-section-title {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       text-transform: uppercase;
       background: #e5e7eb;
@@ -369,18 +616,18 @@
       border: 1px solid #000000;
       border-top: none;
       padding: 6px 8px;
-      font-size: 0.73rem;
-      line-height: 1.38;
+      font-size: 0.72rem;
+      line-height: 1.36;
     }
     .lab-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-align: center;
     }
     .lab-table th, .lab-table td {
       border: 1px solid #000000;
-      padding: 4px;
+      padding: 3px 4px;
     }
     .lab-table th { background: #f3f4f6; font-weight: 700; }
 
@@ -388,14 +635,12 @@
     .dev-footer {
       background: #111827;
       border-top: 1px solid #374151;
-      color: #9ca3af;
+      color: #e5e7eb;
+      font-weight: 700;
       text-align: center;
       padding: 10px 16px;
       font-size: 0.75rem;
       margin-top: auto;
-    }
-    .dev-footer strong {
-      color: #e5e7eb;
     }
     .sheet-credit {
       margin-top: 10px;
@@ -403,7 +648,8 @@
       border-top: 1px dashed #6b7280;
       text-align: center;
       font-size: 0.7rem;
-      color: #374151;
+      font-weight: 700;
+      color: #111827;
     }
 
     @media print {
@@ -445,88 +691,136 @@
     <!-- 1. INTERACTIVE WORKBENCH -->
     <div id="workbench-view" class="workbench-grid">
 
-      <!-- Left Column: Dual-Channel DSO -->
+      <!-- Left Column: Realistic DSO Instrument + Buffer Controls -->
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
-            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: Vi, CH2: Vo)</span>
+            <span>DIGITAL STORAGE OSCILLOSCOPE (CH1: Vi, CH2: Vo • Unity Gain Buffer)</span>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
-            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Screen</button>
           </div>
         </div>
 
-        <div class="dso-frame">
-          <canvas id="dsoCanvas" width="700" height="420"></canvas>
+        <!-- Realistic DSO Instrument Chassis -->
+        <div class="dso-chassis">
+          <!-- Left: DSO Screen Bezel & Live On-Screen Frequency/Amplitude Measure Strip -->
+          <div class="dso-bezel">
+            <div class="dso-screen-top-bar">
+              <div><span class="dso-trig-badge" id="dsoTrigStatus">TRIG'D</span> &nbsp;CH1 AC &nbsp;CH2 DC</div>
+              <div id="dsoTopTime">M 250µs</div>
+              <div style="color:#38bdf8;">f = <strong id="dsoTopFreq">1.00 kHz</strong></div>
+            </div>
 
-          <div class="dso-hud-top">
-            <div>TB: <strong id="hudTime">250 µs/div</strong> | TRIG: <strong>CH1 EDGE</strong></div>
-            <div>CH1 (Vi): <strong id="hudCh1Scale">0.5 V/div</strong> (Solid Thick)</div>
-            <div>CH2 (Vo): <strong id="hudCh2Scale">0.5 V/div</strong> (Dashed Overlay)</div>
+            <div class="dso-frame">
+              <canvas id="dsoCanvas" width="640" height="400"></canvas>
+            </div>
+
+            <!-- Live Digital Measure Readouts Built into Screen Bottom -->
+            <div class="dso-measure-strip">
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Freq (fin)</div>
+                <div class="dso-meas-val" id="dsoMeasFreq">1.00 kHz</div>
+              </div>
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Period (T)</div>
+                <div class="dso-meas-val" id="dsoMeasPeriod">1.00 ms</div>
+              </div>
+              <div class="dso-meas-cell ch1">
+                <div class="dso-meas-lbl">CH1 Vpp (Vi)</div>
+                <div class="dso-meas-val" id="dsoMeasVin">2.00 V</div>
+              </div>
+              <div class="dso-meas-cell ch2">
+                <div class="dso-meas-lbl">CH2 Vpp (Vo)</div>
+                <div class="dso-meas-val" id="dsoMeasVo">2.00 V</div>
+              </div>
+            </div>
           </div>
 
-          <div class="dso-hud-bottom">
-            <div>Input Vi: <strong id="hudVin">2.00 Vpp</strong></div>
-            <div>Output Vo: <strong id="hudVo" style="color:#059669;">2.00 Vpp</strong></div>
-            <div>Voltage Gain Av: <strong id="hudGain" style="color:#2563eb;">1.00</strong></div>
-            <div>Phase Shift: <strong id="hudPhase">0.0° (Identical)</strong></div>
-          </div>
-        </div>
+          <!-- Right: DSO Rotary Knobs, Auto-Set, Run/Stop & Function Generator Frequency Knob -->
+          <div class="dso-controls-deck">
+            <div class="dso-deck-header">
+              <span class="dso-brand">DSO-1052B • 50 MHz</span>
+              <div class="dso-softkeys">
+                <button class="dso-hw-btn auto-btn" onclick="autoSetDso()" title="Auto-scale Timebase and Volts/Div">AUTO</button>
+                <button class="dso-hw-btn run-active" id="btnRun" onclick="toggleRun()">RUN/STOP</button>
+                <button class="dso-hw-btn" onclick="resetDefaults()">DEFAULT</button>
+              </div>
+            </div>
 
-        <!-- DSO Scales -->
-        <div class="sub-section-bar"><span>Oscilloscope Timebase &amp; Voltage Scales (Includes 5 V/div &amp; 10 V/div)</span></div>
-        <div class="control-grid">
-          <div class="ctrl-box">
-            <label>Time / Division</label>
-            <select id="selTimeDiv" onchange="onTimebaseChange(this.value)">
-              <option value="0.0001">100 µs/div</option>
-              <option value="0.00025" selected>250 µs/div</option>
-              <option value="0.0005">500 µs/div</option>
-              <option value="0.001">1.0 ms/div</option>
-            </select>
-          </div>
+            <!-- 4 Rotary Knobs: CH1 Volts/Div, CH2 Volts/Div, Horizontal Sec/Div, FG Input Freq Knob -->
+            <div class="dso-knob-grid">
+              <!-- CH1 Volts/Div Knob -->
+              <div class="dso-module-box ch1-box">
+                <div class="dso-mod-title">CH1 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh1(1)" title="Click knob or +/- to adjust CH1 Volts/Div">
+                  <div class="rotary-knob ch1-knob" id="knobCh1"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh1(-1)">−</button>
+                  <span class="knob-readout" id="lblCh1Scale">0.5 V</span>
+                  <button class="step-mini-btn" onclick="stepCh1(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>CH1 (Vi) Scale</label>
-            <select id="selCh1Vdiv" onchange="onCh1ScaleChange(this.value)">
-              <option value="0.2">0.2 V/div</option>
-              <option value="0.5" selected>0.5 V/div</option>
-              <option value="1.0">1.0 V/div</option>
-              <option value="2.0">2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0">10.0 V/div</option>
-            </select>
-          </div>
+              <!-- CH2 Volts/Div Knob -->
+              <div class="dso-module-box ch2-box">
+                <div class="dso-mod-title">CH2 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh2(1)" title="Click knob or +/- to adjust CH2 Volts/Div">
+                  <div class="rotary-knob ch2-knob" id="knobCh2"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh2(-1)">−</button>
+                  <span class="knob-readout" id="lblCh2Scale">0.5 V</span>
+                  <button class="step-mini-btn" onclick="stepCh2(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>CH2 (Vo) Scale</label>
-            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
-              <option value="0.2">0.2 V/div</option>
-              <option value="0.5" selected>0.5 V/div</option>
-              <option value="1.0">1.0 V/div</option>
-              <option value="2.0">2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0">10.0 V/div</option>
-            </select>
-          </div>
+              <!-- Horizontal Sec/Div Knob -->
+              <div class="dso-module-box horiz-box">
+                <div class="dso-mod-title">SEC/DIV (TIME)</div>
+                <div class="rotary-knob-wrap" onclick="stepTime(1)" title="Click knob or +/- to adjust Time/Div">
+                  <div class="rotary-knob" id="knobTime"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepTime(-1)">−</button>
+                  <span class="knob-readout" id="lblTimeScale">250 µs</span>
+                  <button class="step-mini-btn" onclick="stepTime(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>Input Signal Vi (pp)</label>
-            <select id="selVin" onchange="sim.vin = parseFloat(this.value); updateAll()">
-              <option value="1.0">1.0 Vpp</option>
-              <option value="2.0" selected>2.0 Vpp (Standard)</option>
-              <option value="5.0">5.0 Vpp</option>
-              <option value="10.0">10.0 Vpp</option>
-              <option value="28.0">28.0 Vpp (Saturation Clip)</option>
-            </select>
+              <!-- Function Generator Input Frequency Knob -->
+              <div class="dso-module-box fg-box">
+                <div class="dso-mod-title">INPUT FREQ KNOB</div>
+                <div class="rotary-knob-wrap" onclick="stepFreq(250)" title="Click knob or +/- to step Input Frequency">
+                  <div class="rotary-knob fg-knob" id="knobFreq"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepFreq(-100)">−</button>
+                  <span class="knob-readout" id="lblFreqKnob">1.00 kHz</span>
+                  <button class="step-mini-btn" onclick="stepFreq(100)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Function Generator Frequency Fine-Tune Slider & LCD Readout -->
+            <div class="freq-tuner-strip">
+              <div class="freq-tuner-top">
+                <span>Function Gen Input Frequency</span>
+                <span class="freq-lcd" id="lcdFreqReadout">fin = 1.00 kHz</span>
+              </div>
+              <div class="pot-slider-row">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">100Hz</span>
+                <input type="range" id="freqSlider" min="100" max="5000" step="50" value="1000" oninput="onFreqSlider(this.value)">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">5kHz</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Buffer Isolation & Load Test Controls -->
-        <div class="sub-section-bar"><span>Buffer Load Isolation Test (No Load vs RL = 1 kΩ &amp; Direct Source Loading)</span></div>
+        <div class="sub-section-bar"><span>Buffer Load Isolation Test (No Load vs RL = 1 kΩ, Input Vi &amp; Direct Source Loading)</span></div>
         <div class="control-grid">
           <div class="ctrl-box">
             <label>Load Resistor (RL)</label>
@@ -546,19 +840,21 @@
           </div>
 
           <div class="ctrl-box">
-            <label>Dual Supply (±VCC)</label>
-            <select id="selVcc" onchange="sim.vcc = parseFloat(this.value); updateAll()">
-              <option value="15" selected>±15 V (Sat ±13 V)</option>
-              <option value="12">±12 V (Sat ±10 V)</option>
+            <label>Input Signal Vi (pp)</label>
+            <select id="selVin" onchange="sim.vin = parseFloat(this.value); updateAll()">
+              <option value="1.0">1.0 Vpp</option>
+              <option value="2.0" selected>2.0 Vpp (Standard)</option>
+              <option value="5.0">5.0 Vpp</option>
+              <option value="10.0">10.0 Vpp</option>
+              <option value="28.0">28.0 Vpp (Saturation Clip)</option>
             </select>
           </div>
 
           <div class="ctrl-box">
-            <label>Input Frequency</label>
-            <select id="selFreq" onchange="sim.freq = parseFloat(this.value); updateAll()">
-              <option value="500">500 Hz</option>
-              <option value="1000" selected>1.0 kHz (Standard)</option>
-              <option value="2000">2.0 kHz</option>
+            <label>Dual Supply (±VCC)</label>
+            <select id="selVcc" onchange="sim.vcc = parseFloat(this.value); updateAll()">
+              <option value="15" selected>±15 V (Sat ±13 V)</option>
+              <option value="12">±12 V (Sat ±10 V)</option>
             </select>
           </div>
         </div>
@@ -585,7 +881,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Schematic & IC 741 Pinout -->
+      <!-- Right Column: Schematic, IC 741 Pinout & Formatted Equations -->
       <div class="panel" style="padding:14px;">
         <div class="panel-head" style="margin:-14px -14px 12px -14px;">
           <span>VOLTAGE FOLLOWER &amp; IC 741 PINOUT</span>
@@ -596,26 +892,30 @@
           <canvas id="schematicCanvas" width="600" height="310"></canvas>
         </div>
 
+        <!-- Formatted Unity-Gain Buffer & Impedance Isolation Card -->
         <div class="formula-card">
-          <div class="formula-title">Unity-Gain Buffer Equation &amp; Impedance Isolation</div>
-          <div class="math-line">
-            <i>A</i><sub>v</sub> = 1 + 
-            <span class="fraction">
-              <span class="fraction-top"><i>R</i><sub>f</sub></span>
-              <span class="fraction-bottom"><i>R</i><sub>i</sub></span>
-            </span>
-            = 1 + 
-            <span class="fraction">
-              <span class="fraction-top">0 &Omega; (Direct Short)</span>
-              <span class="fraction-bottom">&infin; (Open)</span>
-            </span>
-            = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>
+          <div class="formula-title">
+            <span>Unity-Gain Buffer Equation &amp; Impedance Isolation</span>
+            <span style="font-size:0.65rem; color:#94a3b8;">IC 741C Buffer</span>
           </div>
-          <div style="margin-top:8px; font-size:0.74rem; color:#cbd5e1; line-height:1.45;">
-            • <strong>100% Voltage-Series Negative Feedback:</strong> Output Pin 6 is wired directly to Inverting Pin 2 (&beta; = 1), forcing <i>V</i><sub>o</sub> to track <i>V</i><sub>i</sub> identically in amplitude and phase (0&deg;).<br>
-            • <strong>Why Output Does Not Drop with R<sub>L</sub> = 1 k&Omega;:</strong> Because of its ultra-high input impedance (~2 M&Omega;) and very low closed-loop output impedance (&lt;1 &Omega;), the buffer isolates high-impedance sources from low-impedance loads.<br>
-            • <strong>Try "Without Buffer":</strong> Toggle Buffer Mode to observe how a 10 k&Omega; sensor/source collapses to 0.18 V<sub>pp</sub> across a 1 k&Omega; load without the voltage follower!
-          </div>
+          <ul class="formula-list">
+            <li>
+              <strong>Closed-Loop Voltage Gain:</strong><br>
+              <span class="math-chip">
+                <i>A</i><sub>v</sub> = 1 + 
+                <span class="fraction"><span class="fraction-top"><i>R</i><sub>f</sub></span><span class="fraction-bottom"><i>R</i><sub>i</sub></span></span>
+                = 1 + 
+                <span class="fraction"><span class="fraction-top">0 &Omega; (Short)</span><span class="fraction-bottom">&infin; (Open)</span></span>
+                = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>
+              </span>
+            </li>
+            <li>
+              <strong>100% Voltage-Series Negative Feedback:</strong> Output Pin 6 is wired directly to Inverting Pin 2 (&beta; = 1), forcing <i>V</i><sub>o</sub> to track <i>V</i><sub>i</sub> identically in amplitude and phase (<strong>0&deg;</strong>).
+            </li>
+            <li>
+              <strong>Impedance Isolation Under Load (R<sub>L</sub> = 1 k&Omega;):</strong> High input impedance (&gt; 2 M&Omega;) and very low closed-loop output impedance (&lt; 1 &Omega;) prevent source loading. Toggle <strong>Without Buffer</strong> to see a 10 k&Omega; source drop to 0.18 V<sub>pp</sub> across 1 k&Omega;.
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -651,9 +951,7 @@
           </div>
           <div>
             <canvas id="sheetDsoCanvas" width="560" height="290" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
-            <div id="sheetDsoCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">
-              Fig. 7.4: Observed DSO Waveforms (CH1 Solid: Vi, CH2 Dashed: Vo)
-            </div>
+            <div id="sheetDsoCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
           </div>
         </div>
         <div id="sheetSelectedBanner" style="margin-top:6px; padding:4px 8px; background:#f3f4f6; border:1px solid #000; font-size:0.7rem; font-family:monospace; text-align:center;"></div>
@@ -678,49 +976,120 @@
       <div class="sheet-section-title">DESIGN CALCULATION, RESULT &amp; INFERENCE</div>
       <div class="sheet-body-box" id="sheetResultBox"></div>
 
-      <div style="border-top:2px solid #000000; margin-top:12px; padding-top:8px; display:flex; justify-content:space-between; font-size:0.75rem;">
+      <div style="border-top:2px solid #000000; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:0.75rem;">
         <div>Student Signature: _______________________</div>
         <div>Signature of Staff-in-Charge: _______________________</div>
       </div>
       <div class="sheet-credit">
-        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+        <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
       </div>
     </div>
   </main>
 
   <footer class="dev-footer no-print">
-    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+    <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
   </footer>
 
   <script>
+    const CH1_SCALES = [0.2, 0.5, 1.0, 2.0, 5.0, 10.0];
+    const CH2_SCALES = [0.2, 0.5, 1.0, 2.0, 5.0, 10.0];
+    const TIME_SCALES = [0.0001, 0.00025, 0.0005, 0.001, 0.0025];
+
     const sim = {
       vin: 2.0,        // 2.0 Vpp
       load: 'open',    // 'open', '1000', '470'
       buffered: true,  // true = Op-Amp 741 buffer active; false = direct 10k source loading demo
       vcc: 15,         // ±15 V
-      freq: 1000,      // 1 kHz
-      timeDiv: 0.00025,// 250 us/div
-      ch1Scale: 0.5,   // 0.5 V/div
-      ch2Scale: 0.5,   // 0.5 V/div
-      laserMode: true,
+      freq: 1000,      // 1.0 kHz
+      ch1Idx: 1,       // 0.5 V/div
+      ch2Idx: 1,       // 0.5 V/div
+      timeIdx: 1,      // 250 us/div
+      laserMode: false,
       running: true,
       t: 0
     };
 
+    function getCh1Scale() { return CH1_SCALES[sim.ch1Idx]; }
+    function getCh2Scale() { return CH2_SCALES[sim.ch2Idx]; }
+    function getTimeDiv()  { return TIME_SCALES[sim.timeIdx]; }
+
+    function formatFreq(f) {
+      return f >= 1000 ? `${(f / 1000).toFixed(2)} kHz` : `${Math.round(f)} Hz`;
+    }
+
+    function stepCh1(dir) {
+      sim.ch1Idx = Math.max(0, Math.min(CH1_SCALES.length - 1, sim.ch1Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepCh2(dir) {
+      sim.ch2Idx = Math.max(0, Math.min(CH2_SCALES.length - 1, sim.ch2Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepTime(dir) {
+      sim.timeIdx = Math.max(0, Math.min(TIME_SCALES.length - 1, sim.timeIdx + dir));
+      updateKnobVisuals();
+    }
+    function stepFreq(deltaHz) {
+      const nextF = Math.max(100, Math.min(5000, sim.freq + deltaHz));
+      sim.freq = nextF;
+      document.getElementById('freqSlider').value = String(nextF);
+      updateAll();
+    }
+    function onFreqSlider(val) {
+      sim.freq = parseFloat(val);
+      updateAll();
+    }
+
+    function autoSetDso() {
+      const m = getFollowerMetrics();
+      const pickScaleIdx = (vpp) => {
+        if (vpp <= 1.2) return 0;      // 0.2 V/div
+        if (vpp <= 3.0) return 1;      // 0.5 V/div
+        if (vpp <= 6.0) return 2;      // 1.0 V/div
+        if (vpp <= 12.0) return 3;     // 2.0 V/div
+        return 4;                      // 5.0 V/div
+      };
+      sim.ch1Idx = pickScaleIdx(sim.vin);
+      sim.ch2Idx = pickScaleIdx(m.actualVoutPP);
+
+      if (sim.freq >= 2000) sim.timeIdx = 0;      // 100 us/div
+      else if (sim.freq >= 800) sim.timeIdx = 1;  // 250 us/div
+      else if (sim.freq >= 400) sim.timeIdx = 2;  // 500 us/div
+      else sim.timeIdx = 3;                       // 1.0 ms/div
+
+      updateKnobVisuals();
+    }
+
+    function updateKnobVisuals() {
+      const ch1Deg = -120 + (sim.ch1Idx / (CH1_SCALES.length - 1)) * 240;
+      const ch2Deg = -120 + (sim.ch2Idx / (CH2_SCALES.length - 1)) * 240;
+      const timeDeg = -120 + (sim.timeIdx / (TIME_SCALES.length - 1)) * 240;
+      const freqDeg = -135 + ((sim.freq - 100) / 4900) * 270;
+
+      document.getElementById('knobCh1').style.transform = `rotate(${ch1Deg}deg)`;
+      document.getElementById('knobCh2').style.transform = `rotate(${ch2Deg}deg)`;
+      document.getElementById('knobTime').style.transform = `rotate(${timeDeg}deg)`;
+      document.getElementById('knobFreq').style.transform = `rotate(${freqDeg}deg)`;
+
+      const c1 = getCh1Scale();
+      const c2 = getCh2Scale();
+      const td = getTimeDiv();
+
+      document.getElementById('lblCh1Scale').innerText = `${c1.toFixed(1)} V`;
+      document.getElementById('lblCh2Scale').innerText = `${c2.toFixed(1)} V`;
+      const tdStr = td >= 0.001 ? `${(td * 1000).toFixed(1)} ms` : `${(td * 1e6).toFixed(0)} µs`;
+      document.getElementById('lblTimeScale').innerText = tdStr;
+      document.getElementById('dsoTopTime').innerText = `M ${tdStr}`;
+    }
+
     function resetDefaults() {
       sim.vin = 2.0; sim.load = 'open'; sim.buffered = true; sim.vcc = 15; sim.freq = 1000;
-      sim.timeDiv = 0.00025; sim.ch1Scale = 0.5; sim.ch2Scale = 0.5;
+      sim.ch1Idx = 1; sim.ch2Idx = 1; sim.timeIdx = 1;
       document.getElementById('selVin').value = '2.0';
       document.getElementById('selLoad').value = 'open';
       document.getElementById('selBufferMode').value = 'on';
       document.getElementById('selVcc').value = '15';
-      document.getElementById('selFreq').value = '1000';
-      document.getElementById('selTimeDiv').value = '0.00025';
-      document.getElementById('selCh1Vdiv').value = '0.5';
-      document.getElementById('selCh2Vdiv').value = '0.5';
-      onTimebaseChange('0.00025');
-      onCh1ScaleChange('0.5');
-      onCh2ScaleChange('0.5');
+      document.getElementById('freqSlider').value = '1000';
       updateAll();
     }
 
@@ -746,26 +1115,15 @@
     function toggleRun() {
       sim.running = !sim.running;
       const btn = document.getElementById('btnRun');
-      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
-      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+      const trig = document.getElementById('dsoTrigStatus');
+      btn.className = sim.running ? 'dso-hw-btn run-active' : 'dso-hw-btn run-paused';
+      trig.innerText = sim.running ? "TRIG'D" : "STOP";
+      trig.style.background = sim.running ? "#059669" : "#dc2626";
     }
 
     function toggleTheme() {
       sim.laserMode = !sim.laserMode;
-      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
-    }
-
-    function onTimebaseChange(val) {
-      sim.timeDiv = parseFloat(val);
-      document.getElementById('hudTime').innerText = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + ' ms/div' : (sim.timeDiv * 1e6).toFixed(0) + ' µs/div';
-    }
-    function onCh1ScaleChange(val) {
-      sim.ch1Scale = parseFloat(val);
-      document.getElementById('hudCh1Scale').innerText = sim.ch1Scale.toFixed(1) + ' V/div';
-    }
-    function onCh2ScaleChange(val) {
-      sim.ch2Scale = parseFloat(val);
-      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'DSO Color Screen' : 'Laser-Friendly B&W Screen';
     }
 
     function getFollowerMetrics() {
@@ -774,7 +1132,6 @@
       let gain = 1.0;
 
       if (!sim.buffered) {
-        // Unbuffered 10 kΩ source connected directly to RL
         gain = rlVal === Infinity ? 1.0 : (rlVal / (10000 + rlVal));
       }
 
@@ -788,9 +1145,17 @@
 
     function updateAll() {
       const m = getFollowerMetrics();
-      document.getElementById('hudVin').innerText = sim.vin.toFixed(2) + ' Vpp';
-      document.getElementById('hudVo').innerText = m.actualVoutPP.toFixed(2) + ' Vpp';
-      document.getElementById('hudGain').innerText = m.pracGain.toFixed(2);
+      const fStr = formatFreq(sim.freq);
+      const periodMs = 1000 / sim.freq;
+
+      document.getElementById('lblFreqKnob').innerText = fStr;
+      document.getElementById('lcdFreqReadout').innerText = `fin = ${fStr}`;
+      document.getElementById('dsoTopFreq').innerText = fStr;
+      document.getElementById('dsoMeasFreq').innerText = fStr;
+      document.getElementById('dsoMeasPeriod').innerText = periodMs >= 1 ? `${periodMs.toFixed(2)} ms` : `${(periodMs * 1000).toFixed(0)} µs`;
+      document.getElementById('dsoMeasVin').innerText = `${sim.vin.toFixed(2)} V`;
+      document.getElementById('dsoMeasVo').innerText = `${m.actualVoutPP.toFixed(2)} V`;
+
       document.getElementById('statGain').innerText = m.pracGain.toFixed(3);
 
       if (sim.buffered) {
@@ -805,6 +1170,7 @@
         document.getElementById('statIso').style.color = '#f87171';
       }
 
+      updateKnobVisuals();
       drawCircuitAndPinout('schematicCanvas');
     }
 
@@ -871,7 +1237,7 @@
 
       ctx.font = 'bold 11px Arial';
       ctx.textAlign = 'right';
-      ctx.fillText('Vin', srcX - 22, srcY + 4);
+      ctx.fillText('Vi', srcX - 22, srcY + 4);
 
       // Ground below Vin source
       ctx.beginPath(); ctx.moveTo(srcX, srcY + 16); ctx.lineTo(srcX, gndY); ctx.stroke();
@@ -982,7 +1348,7 @@
     }
 
     // ---------------------------------------------------------
-    // DUAL-TRACE DSO RENDERER (Matching Fig 7.3 Overlay Style)
+    // DUAL-TRACE DSO RENDERER (Overlay Style)
     // ---------------------------------------------------------
     function drawOscilloscope(canvasId, isLaser, staticSnap) {
       const canvas = document.getElementById(canvasId);
@@ -994,8 +1360,8 @@
       const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
       const gridMinor = isLaser ? '#e2e8f0' : '#0f172a';
       const axis = isLaser ? '#000000' : '#38bdf8';
-      const tr1 = isLaser ? '#000000' : '#38bdf8';
-      const tr2 = isLaser ? '#ffffff' : '#fbbf24';
+      const tr1 = isLaser ? '#000000' : '#22d3ee'; // Cyan CH1 (Vi)
+      const tr2 = isLaser ? '#ffffff' : '#eab308'; // Yellow CH2 (Vo)
 
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
@@ -1026,8 +1392,17 @@
       ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
       ctx.stroke();
 
+      // Ground reference markers on left edge (1> and 2>)
+      ctx.fillStyle = isLaser ? '#000000' : '#22d3ee';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('1>', 3, h / 2 - 3);
+      ctx.fillStyle = isLaser ? '#000000' : '#eab308';
+      ctx.fillText('2>', 3, h / 2 + 11);
+
       const m = getFollowerMetrics();
-      const totalTime = 10 * sim.timeDiv;
+      const ch1Scale = getCh1Scale();
+      const ch2Scale = getCh2Scale();
+      const totalTime = 10 * getTimeDiv();
       const dt = totalTime / w;
       const omega = 2 * Math.PI * sim.freq;
       const t0 = staticSnap ? 0 : (sim.t % (1 / sim.freq));
@@ -1035,33 +1410,34 @@
       // CH1: Vi (Thick Solid Curve)
       ctx.save();
       ctx.strokeStyle = tr1;
-      ctx.lineWidth = isLaser ? 4.5 : 3.5;
+      ctx.lineWidth = isLaser ? 4.5 : 3.8;
       ctx.beginPath();
       for (let px = 0; px < w; px++) {
         const v1 = (sim.vin / 2) * Math.sin(omega * (t0 + px * dt));
-        const py = (h / 2) - (v1 / sim.ch1Scale) * divH;
+        const py = (h / 2) - (v1 / ch1Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
-      // CH2: Vo (Dashed Curve clearly visible inside/over CH1, matching Fig 7.3)
+      // CH2: Vo (Dashed Curve clearly visible inside/over CH1)
       ctx.save();
-      ctx.strokeStyle = isLaser && sim.buffered && !m.clipped && sim.ch1Scale === sim.ch2Scale ? '#ffffff' : (isLaser ? '#000000' : '#fbbf24');
+      ctx.strokeStyle = isLaser && sim.buffered && !m.clipped && ch1Scale === ch2Scale ? '#ffffff' : tr2;
       ctx.lineWidth = 2.0;
       ctx.setLineDash([6, 5]);
       ctx.beginPath();
       for (let px = 0; px < w; px++) {
         let v2 = m.idealVoutPeak * Math.sin(omega * (t0 + px * dt));
         v2 = Math.max(-m.satLimit, Math.min(m.satLimit, v2));
-        const py = (h / 2) - (v2 / sim.ch2Scale) * divH;
+        const py = (h / 2) - (v2 / ch2Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
       if (staticSnap) {
-        const tbStr = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + 'ms/d' : (sim.timeDiv * 1e6).toFixed(0) + 'µs/d';
+        const td = getTimeDiv();
+        const tbStr = td >= 0.001 ? (td * 1000).toFixed(1) + 'ms/d' : (td * 1e6).toFixed(0) + 'µs/d';
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(6, 6, 330, 20);
         ctx.strokeStyle = '#000';
@@ -1070,7 +1446,7 @@
         ctx.fillStyle = '#000';
         ctx.font = 'bold 10px monospace';
         ctx.textAlign = 'left';
-        ctx.fillText(`TB:${tbStr} | CH1:${sim.ch1Scale.toFixed(1)}V/d | CH2:${sim.ch2Scale.toFixed(1)}V/d`, 11, 19);
+        ctx.fillText(`TB:${tbStr} | CH1:${ch1Scale.toFixed(1)}V/d | CH2:${ch2Scale.toFixed(1)}V/d`, 11, 19);
       }
     }
 
@@ -1081,30 +1457,31 @@
       const m = getFollowerMetrics();
       const loadStr = sim.load === 'open' ? 'No Load (Open)' : (sim.load === '1000' ? 'RL = 1 kΩ' : 'RL = 470 Ω');
       const bufStr = sim.buffered ? 'Op-Amp 741 Buffer Active' : 'Unbuffered (10 kΩ Source Direct)';
+      const fStr = formatFreq(sim.freq);
 
       document.getElementById('sheetDsoCaption').innerText =
-        `Fig. 7.4: Captured Waveforms (CH1 Solid: Vi = ${sim.vin.toFixed(2)} Vpp, CH2 Dashed: Vo = ${m.actualVoutPP.toFixed(2)} Vpp)`;
+        `Fig. 7.4: Captured Waveforms at fin = ${fStr} (CH1 Solid: Vi = ${sim.vin.toFixed(2)} Vpp, CH2 Dashed: Vo = ${m.actualVoutPP.toFixed(2)} Vpp)`;
 
       document.getElementById('sheetSelectedBanner').innerText =
-        `Selected Condition: ${bufStr} | ${loadStr} | Vi = ${sim.vin.toFixed(2)} Vpp | Vo = ${m.actualVoutPP.toFixed(2)} Vpp | Gain = ${m.pracGain.toFixed(2)} | Phase = 0.0°`;
+        `Selected Condition: ${bufStr} | ${loadStr} | fin = ${fStr} | Vi = ${sim.vin.toFixed(2)} Vpp | Vo = ${m.actualVoutPP.toFixed(2)} Vpp | Gain = ${m.pracGain.toFixed(2)}`;
 
       document.getElementById('sheetTableBody').innerHTML = `
         <tr>
-          <td><strong>Selected: ${loadStr} (${sim.buffered ? 'Buffered' : 'Unbuffered'})</strong></td>
+          <td><strong>Selected: ${loadStr} (${sim.buffered ? 'Buffered' : 'Unbuffered'}, ${fStr})</strong></td>
           <td>${sim.vin.toFixed(2)} V</td>
           <td>${m.actualVoutPP.toFixed(2)} V</td>
           <td>${m.pracGain.toFixed(2)}</td>
           <td>0.0°</td>
         </tr>
         <tr>
-          <td>Standard Table 7.1: No Load</td>
+          <td>Standard Table 7.1: No Load (1.00 kHz)</td>
           <td>2.00 V</td>
           <td>2.00 V</td>
           <td>1.00</td>
           <td>0.0°</td>
         </tr>
         <tr>
-          <td>Standard Table 7.1: RL = 1 kΩ</td>
+          <td>Standard Table 7.1: RL = 1 kΩ (1.00 kHz)</td>
           <td>2.00 V</td>
           <td>2.00 V</td>
           <td>1.00</td>
@@ -1113,24 +1490,9 @@
       `;
 
       document.getElementById('sheetResultBox').innerHTML = `
-        <div class="math-line" style="color:#000000; margin-bottom:4px;">
-          <strong>Design Equation:</strong>
-          <i>A</i><sub>v</sub> = 1 + 
-          <span class="fraction">
-            <span class="fraction-top"><i>R</i><sub>f</sub></span>
-            <span class="fraction-bottom"><i>R</i><sub>i</sub></span>
-          </span>
-          = 1 + 
-          <span class="fraction">
-            <span class="fraction-top">0</span>
-            <span class="fraction-bottom">&infin;</span>
-          </span>
-          = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>
-        </div>
-        <div>
-          <strong>Result:</strong> Set up and tested the voltage follower using IC 741 (${bufStr}, ${loadStr}). For input Vi = <strong>${sim.vin.toFixed(2)} Vpp</strong>, observed output Vo = <strong>${m.actualVoutPP.toFixed(2)} Vpp</strong>, voltage gain = <strong>${m.pracGain.toFixed(2)}</strong>, and phase difference = <strong>0° (in phase)</strong>.<br>
-          <strong>Inference:</strong> The output voltage follows the input identically in magnitude and phase without dropping under load, proving the high input impedance and low output impedance of a unity-gain buffer.
-        </div>
+        <strong>Design Equation:</strong> <i>A</i><sub>v</sub> = 1 + (<i>R</i><sub>f</sub> / <i>R</i><sub>i</sub>) = 1 + (0 / &infin;) = <strong>1</strong> &nbsp;&rArr;&nbsp; <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>.<br>
+        <strong>Result:</strong> Set up and tested the voltage follower using IC 741 (${bufStr}, ${loadStr}) at fin = <strong>${fStr}</strong>. For input Vi = <strong>${sim.vin.toFixed(2)} Vpp</strong>, observed output Vo = <strong>${m.actualVoutPP.toFixed(2)} Vpp</strong>, voltage gain = <strong>${m.pracGain.toFixed(2)}</strong>, and phase difference = <strong>0° (in phase)</strong>.<br>
+        <strong>Inference:</strong> The output voltage follows the input identically in magnitude and phase without dropping under load, proving the high input impedance and low output impedance of a unity-gain buffer.
       `;
     }
 

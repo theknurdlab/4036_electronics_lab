@@ -33,7 +33,7 @@
       padding: 12px 20px;
     }
     .header-content {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -97,7 +97,7 @@
 
     main {
       flex: 1;
-      max-width: 1280px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
       padding: 16px;
@@ -136,8 +136,8 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 1024px) {
-      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    @media (min-width: 1080px) {
+      .workbench-grid { grid-template-columns: 7.4fr 4.6fr; }
     }
 
     .panel {
@@ -162,6 +162,49 @@
       gap: 8px;
     }
 
+    /* =====================================================================
+       REALISTIC DIGITAL STORAGE OSCILLOSCOPE (DSO) FRONT PANEL STYLING
+       ===================================================================== */
+    .dso-chassis {
+      background: linear-gradient(180deg, #27303f 0%, #1b222e 100%);
+      border-bottom: 2px solid #0f172a;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .dso-chassis { grid-template-columns: 1.45fr 1fr; }
+    }
+
+    .dso-bezel {
+      background: #0b0f17;
+      border: 3px solid #3f4b5e;
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .dso-screen-top-bar {
+      background: #111827;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    .dso-trig-badge {
+      background: #059669;
+      color: #ffffff;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 9.5px;
+    }
     .dso-frame {
       position: relative;
       background: #ffffff;
@@ -170,34 +213,209 @@
       display: flex;
     }
     #dsoCanvas { width: 100%; height: 100%; display: block; }
-    .dso-hud-top {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      pointer-events: none;
+
+    /* On-Screen Digital Frequency & Amplitude Readout Bar (DSO Measure Strip) */
+    .dso-measure-strip {
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      padding: 5px 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #94a3b8;
     }
-    .dso-hud-bottom {
-      position: absolute;
-      bottom: 8px;
-      right: 10px;
-      pointer-events: none;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      text-align: right;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
+    .dso-meas-cell {
+      background: #1e293b;
+      border-left: 3px solid #38bdf8;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .dso-meas-cell.ch1 { border-left-color: #eab308; }
+    .dso-meas-cell.ch2 { border-left-color: #22d3ee; }
+    .dso-meas-cell.freq { border-left-color: #10b981; }
+    .dso-meas-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; }
+    .dso-meas-val { font-size: 11px; font-weight: 800; color: #f8fafc; }
+
+    /* DSO Hardware Control Deck (Right Side of DSO Chassis) */
+    .dso-controls-deck {
+      background: #1e2634;
+      border: 1px solid #3b4659;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .dso-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 5px;
+    }
+    .dso-brand {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+    }
+    .dso-softkeys {
+      display: flex;
+      gap: 4px;
+    }
+    .dso-hw-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #64748b;
+      border-bottom: 2px solid #0f172a;
       border-radius: 4px;
-      border: 1px solid #94a3b8;
+      padding: 3px 7px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .dso-hw-btn:active { transform: translateY(1px); }
+    .dso-hw-btn.run-active { background: #059669; border-color: #34d399; }
+    .dso-hw-btn.run-paused { background: #dc2626; border-color: #f87171; }
+    .dso-hw-btn.auto-btn { background: #2563eb; border-color: #60a5fa; }
+
+    .dso-knob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .dso-module-box {
+      background: #151c27;
+      border: 1px solid #2e3849;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .dso-module-box.ch1-box { border-top: 2.5px solid #eab308; }
+    .dso-module-box.ch2-box { border-top: 2.5px solid #22d3ee; }
+    .dso-module-box.horiz-box { border-top: 2.5px solid #38bdf8; }
+    .dso-module-box.pot-box { border-top: 2.5px solid #10b981; }
+
+    .dso-mod-title {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    /* Realistic Rotary Knob Styling */
+    .rotary-knob-wrap {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 2px auto;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rotary-knob {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #475569, #1e293b 70%, #0f172a 100%);
+      border: 2px solid #94a3b8;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.25);
+      position: relative;
+      transition: transform 0.12s ease-out;
+    }
+    .rotary-knob::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 2px;
+    }
+    .rotary-knob.ch1-knob::after { background: #eab308; }
+    .rotary-knob.ch2-knob::after { background: #22d3ee; }
+    .rotary-knob.pot-knob::after { background: #10b981; }
+
+    .knob-step-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .step-mini-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 3px;
+      width: 20px;
+      height: 18px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .step-mini-btn:hover { background: #475569; }
+    .knob-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #f8fafc;
+      background: #0b0f17;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #334155;
+      min-width: 64px;
+    }
+
+    /* Digital Frequency Tuner / Dial Bar for Changing & Reading Oscillation Frequency */
+    .freq-tuner-strip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .freq-tuner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+    }
+    .freq-lcd {
+      background: #022c22;
+      border: 1px solid #059669;
+      color: #34d399;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .pot-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pot-slider-row input[type="range"] {
+      flex: 1;
+      cursor: pointer;
+      accent-color: #10b981;
     }
 
     .sub-section-bar {
@@ -214,7 +432,7 @@
     .control-grid {
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 8px;
       background: #141d2f;
       border-top: 1px solid var(--border-dark);
@@ -248,7 +466,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     @media (min-width: 640px) {
       .stat-row { grid-template-columns: repeat(4, 1fr); }
@@ -417,20 +635,21 @@
     .dev-footer {
       background: #111827;
       border-top: 1px solid #374151;
-      color: #9ca3af;
+      color: #e5e7eb;
+      font-weight: 700;
       text-align: center;
       padding: 10px 16px;
       font-size: 0.75rem;
       margin-top: auto;
     }
-    .dev-footer strong { color: #e5e7eb; }
     .sheet-credit {
       margin-top: 10px;
       padding-top: 6px;
       border-top: 1px dashed #6b7280;
       text-align: center;
       font-size: 0.7rem;
-      color: #374151;
+      font-weight: 700;
+      color: #111827;
     }
 
     @media print {
@@ -465,105 +684,155 @@
 
   <main>
     <div class="tab-nav no-print">
-      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">RC Phase Shift Oscillator &amp; Dual-Trace DSO Workbench</button>
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">RC Phase Shift Oscillator &amp; Digital Storage Oscilloscope (DSO)</button>
       <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
     </div>
 
     <!-- 1. INTERACTIVE WORKBENCH -->
     <div id="workbench-view" class="workbench-grid">
 
-      <!-- Left Column: Dual-Channel DSO -->
+      <!-- Left Column: Realistic DSO Instrument + Circuit Controls -->
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
-            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: COLLECTOR Vo, CH2: FEEDBACK Vf)</span>
+            <span>DIGITAL STORAGE OSCILLOSCOPE (CH1: COLLECTOR Vo, CH2: FEEDBACK Vf)</span>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
-            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Screen</button>
           </div>
         </div>
 
-        <div class="dso-frame">
-          <canvas id="dsoCanvas" width="700" height="410"></canvas>
+        <!-- Realistic DSO Instrument Chassis -->
+        <div class="dso-chassis">
+          <!-- Left: DSO Screen Bezel & Live On-Screen Frequency/Amplitude Measure Strip -->
+          <div class="dso-bezel">
+            <div class="dso-screen-top-bar">
+              <div><span class="dso-trig-badge" id="dsoTrigStatus">TRIG'D</span> &nbsp;CH1 DC &nbsp;CH2 AC</div>
+              <div id="dsoTopTime">M 250µs</div>
+              <div style="color:#38bdf8;">f = <strong id="dsoTopFreq">837 Hz</strong></div>
+            </div>
 
-          <div class="dso-hud-top">
-            <div>TB: <strong id="hudTime">250 µs/div</strong> | VCC: <strong>+12.0 V DC</strong></div>
-            <div>CH1 (Vo): <strong id="hudCh1Scale">2.0 V/div</strong> (Solid Sine)</div>
-            <div>CH2 (Vf): <strong id="hudCh2Scale">0.2 V/div</strong> (Dashed, 180° Shift)</div>
+            <div class="dso-frame">
+              <canvas id="dsoCanvas" width="640" height="400"></canvas>
+            </div>
+
+            <!-- Live Digital Measure Readouts Built into Screen Bottom -->
+            <div class="dso-measure-strip">
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Freq (fo)</div>
+                <div class="dso-meas-val" id="dsoMeasFreq">837 Hz</div>
+              </div>
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Period (T)</div>
+                <div class="dso-meas-val" id="dsoMeasPeriod">1.19 ms</div>
+              </div>
+              <div class="dso-meas-cell ch1">
+                <div class="dso-meas-lbl">CH1 Vpp (Vo)</div>
+                <div class="dso-meas-val" id="dsoMeasVo">6.40 V</div>
+              </div>
+              <div class="dso-meas-cell ch2">
+                <div class="dso-meas-lbl">CH2 Vpp (Vf)</div>
+                <div class="dso-meas-val" id="dsoMeasVf">0.22 V</div>
+              </div>
+            </div>
           </div>
 
-          <div class="dso-hud-bottom">
-            <div>Measured Freq (fo): <strong id="hudFreq" style="color:#059669;">1061 Hz</strong></div>
-            <div>Theoretical fo: <strong id="hudTheor" style="color:#2563eb;">1061 Hz</strong></div>
-            <div>Output Vo (pp): <strong id="hudVout">6.40 Vpp</strong></div>
-            <div>Oscillation State: <strong id="hudStatus">Sustained Sine</strong></div>
-          </div>
-        </div>
+          <!-- Right: DSO Rotary Knobs, Auto-Set, Run/Stop & Frequency Potentiometer Knob -->
+          <div class="dso-controls-deck">
+            <div class="dso-deck-header">
+              <span class="dso-brand">DSO-1052B • 50 MHz</span>
+              <div class="dso-softkeys">
+                <button class="dso-hw-btn auto-btn" onclick="autoSetDso()" title="Auto-scale Timebase and Volts/Div">AUTO</button>
+                <button class="dso-hw-btn run-active" id="btnRun" onclick="toggleRun()">RUN/STOP</button>
+                <button class="dso-hw-btn" onclick="resetDefaults()">DEFAULT</button>
+              </div>
+            </div>
 
-        <!-- DSO Scales -->
-        <div class="sub-section-bar"><span>Oscilloscope Timebase &amp; Voltage Scales (Includes 5 V/div &amp; 10 V/div)</span></div>
-        <div class="control-grid">
-          <div class="ctrl-box">
-            <label>Time / Division</label>
-            <select id="selTimeDiv" onchange="onTimebaseChange(this.value)">
-              <option value="0.0001">100 µs/div</option>
-              <option value="0.00025" selected>250 µs/div</option>
-              <option value="0.0005">500 µs/div</option>
-              <option value="0.001">1.0 ms/div</option>
-            </select>
-          </div>
+            <!-- 4 Rotary Knobs: CH1 Volts/Div, CH2 Volts/Div, Horizontal Sec/Div, Trigger Level -->
+            <div class="dso-knob-grid">
+              <!-- CH1 Volts/Div Knob -->
+              <div class="dso-module-box ch1-box">
+                <div class="dso-mod-title">CH1 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh1(1)" title="Click knob or +/- to adjust CH1 Volts/Div">
+                  <div class="rotary-knob ch1-knob" id="knobCh1"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh1(-1)">−</button>
+                  <span class="knob-readout" id="lblCh1Scale">2.0 V</span>
+                  <button class="step-mini-btn" onclick="stepCh1(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>CH1 (Output Vo) Scale</label>
-            <select id="selCh1Vdiv" onchange="onCh1ScaleChange(this.value)">
-              <option value="0.5">0.5 V/div</option>
-              <option value="1.0">1.0 V/div</option>
-              <option value="2.0" selected>2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0">10.0 V/div</option>
-            </select>
-          </div>
+              <!-- CH2 Volts/Div Knob -->
+              <div class="dso-module-box ch2-box">
+                <div class="dso-mod-title">CH2 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh2(1)" title="Click knob or +/- to adjust CH2 Volts/Div">
+                  <div class="rotary-knob ch2-knob" id="knobCh2"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh2(-1)">−</button>
+                  <span class="knob-readout" id="lblCh2Scale">0.2 V</span>
+                  <button class="step-mini-btn" onclick="stepCh2(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>CH2 (Feedback Vf) Scale</label>
-            <select id="selCh2Vdiv" onchange="onCh2ScaleChange(this.value)">
-              <option value="0.1">0.1 V/div</option>
-              <option value="0.2" selected>0.2 V/div</option>
-              <option value="0.5">0.5 V/div</option>
-              <option value="1.0">1.0 V/div</option>
-              <option value="2.0">2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0">10.0 V/div</option>
-            </select>
-          </div>
+              <!-- Horizontal Sec/Div Knob -->
+              <div class="dso-module-box horiz-box">
+                <div class="dso-mod-title">SEC/DIV (TIME)</div>
+                <div class="rotary-knob-wrap" onclick="stepTime(1)" title="Click knob or +/- to adjust Time/Div">
+                  <div class="rotary-knob" id="knobTime"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepTime(-1)">−</button>
+                  <span class="knob-readout" id="lblTimeScale">250 µs</span>
+                  <button class="step-mini-btn" onclick="stepTime(1)">+</button>
+                </div>
+              </div>
 
-          <div class="ctrl-box">
-            <label>Loop Gain (hfe Trim)</label>
-            <select id="selLoopGain" onchange="sim.gainMode = this.value; updateAll()">
-              <option value="damped">hfe &lt; 29 (Damped Decay)</option>
-              <option value="sustained" selected>hfe &ge; 29 (Sustained Sine)</option>
-              <option value="overdriven">Overdriven (Clipped Peaks)</option>
-            </select>
+              <!-- 10k POT / Frequency Fine-Tune Knob -->
+              <div class="dso-module-box pot-box">
+                <div class="dso-mod-title">10k POT (FREQ)</div>
+                <div class="rotary-knob-wrap" onclick="stepPot(10)" title="Click knob or +/- to vary 10k Potentiometer">
+                  <div class="rotary-knob pot-knob" id="knobPot"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepPot(-5)">−</button>
+                  <span class="knob-readout" id="lblPotVal">6.8 kΩ</span>
+                  <button class="step-mini-btn" onclick="stepPot(5)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Continuous 10 kΩ Potentiometer & Frequency Display Strip -->
+            <div class="freq-tuner-strip">
+              <div class="freq-tuner-top">
+                <span>10 kΩ Feedback Potentiometer (Adjusts fo)</span>
+                <span class="freq-lcd" id="lcdFreqReadout">fo = 837 Hz</span>
+              </div>
+              <div class="pot-slider-row">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">1kΩ</span>
+                <input type="range" id="potSlider" min="1000" max="10000" step="100" value="6800" oninput="onPotSlider(this.value)">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">10kΩ</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Component Parameter Variations -->
-        <div class="sub-section-bar"><span>Circuit Parameter Variations (R, C, Rc, Re, Ce, Cout)</span></div>
+        <div class="sub-section-bar"><span>RC Phase-Shift Network &amp; Transistor Bias Variations (R, C, Rc, Ce, Cout)</span></div>
         <div class="control-grid">
           <div class="ctrl-box">
-            <label>Phase-Shift Resistor (R)</label>
+            <label>Phase-Shift Resistors (R1, R2)</label>
             <select id="selR" onchange="sim.r = parseFloat(this.value); updateAll()">
               <option value="4700">4.7 kΩ (Higher Freq)</option>
-              <option value="6800" selected>6.8 kΩ (Design: 1.06 kHz)</option>
+              <option value="6800" selected>6.8 kΩ (Standard Design)</option>
               <option value="10000">10.0 kΩ (Lower Freq)</option>
             </select>
           </div>
 
           <div class="ctrl-box">
-            <label>Phase-Shift Capacitor (C)</label>
+            <label>Phase-Shift Capacitors (C × 3)</label>
             <select id="selC" onchange="sim.c = parseFloat(this.value); updateAll()">
               <option value="0.0047e-6">0.0047 µF (4.7 nF)</option>
               <option value="0.01e-6" selected>0.01 µF (10 nF Design)</option>
@@ -572,11 +841,12 @@
           </div>
 
           <div class="ctrl-box">
-            <label>Collector Resistor (Rc)</label>
-            <select id="selRc" onchange="sim.rc = parseFloat(this.value); updateAll()">
-              <option value="2200">2.2 kΩ</option>
-              <option value="3300" selected>3.3 kΩ (Standard)</option>
-              <option value="4700">4.7 kΩ</option>
+            <label>Collector Resistor (Rc) &amp; Gain</label>
+            <select id="selRcGain" onchange="onRcGainChange(this.value)">
+              <option value="3300_sustained" selected>Rc = 3.3 kΩ (Sustained Sine)</option>
+              <option value="2200_sustained">Rc = 2.2 kΩ (Sustained Sine)</option>
+              <option value="4700_overdriven">Rc = 4.7 kΩ (Overdriven Clip)</option>
+              <option value="3300_damped">hfe &lt; 29 (Damped Decay)</option>
             </select>
           </div>
 
@@ -594,44 +864,47 @@
           <div class="stat-row">
             <div class="stat-card">
               <div class="stat-label">Theoretical fo</div>
-              <div class="stat-value" id="statTheor" style="color:#60a5fa;">1061 Hz</div>
+              <div class="stat-value" id="statTheor" style="color:#60a5fa;">837 Hz</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Measured fo</div>
-              <div class="stat-value" id="statMeas" style="color:#34d399;">1061 Hz</div>
+              <div class="stat-label">DSO Measured fo</div>
+              <div class="stat-value" id="statMeas" style="color:#34d399;">837 Hz</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Network Shift</div>
-              <div class="stat-value" id="statShift" style="color:#fbbf24;">180° (3 × 60°)</div>
+              <div class="stat-label">10k Pot Setting</div>
+              <div class="stat-value" id="statPot" style="color:#fbbf24;">6.8 kΩ (68%)</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Loop Gain |Aβ|</div>
+              <div class="stat-label">Barkhausen |Aβ|</div>
               <div class="stat-value" id="statLoop" style="color:#c084fc;">1.00 (Sustained)</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Schematic & Formatted Barkhausen Equations -->
+      <!-- Right Column: Schematic with 10k Potentiometer & Formatted Equations -->
       <div class="panel" style="padding:14px;">
         <div class="panel-head" style="margin:-14px -14px 12px -14px;">
-          <span>BJT RC PHASE SHIFT OSCILLATOR SCHEMATIC</span>
-          <span style="font-size:0.7rem; color:#94a3b8;">BC548 • 3-Section RC</span>
+          <span>RC PHASE SHIFT OSCILLATOR (WITH 10 kΩ POTENTIOMETER)</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">BC548 • +12 V DC</span>
         </div>
 
         <div class="schematic-box">
-          <canvas id="schematicCanvas" width="600" height="295"></canvas>
+          <canvas id="schematicCanvas" width="600" height="300"></canvas>
         </div>
 
         <!-- Formatted Barkhausen Criterion & Design Equations Card -->
         <div class="formula-card">
           <div class="formula-title">
-            <span>Barkhausen Criterion &amp; Design Equations</span>
+            <span>Barkhausen Criterion &amp; 10 k&Omega; Potentiometer Role</span>
             <span style="font-size:0.65rem; color:#94a3b8;">3-Stage RC Network</span>
           </div>
           <ul class="formula-list">
             <li>
               <strong>Total 360° Loop Phase Shift:</strong> The CE transistor amplifier provides <strong>180°</strong> phase inversion, and the three cascaded RC sections each contribute <strong>60°</strong> phase lead (<span class="math-chip">3 &times; 60&deg; = 180&deg;</span>) at <i>f</i><sub>o</sub>.
+            </li>
+            <li>
+              <strong>10 k&Omega; Feedback Potentiometer (R<sub>pot</sub>):</strong> Connected as a variable series resistor in the feedback path to the BJT base so <span class="math-chip"><i>R</i><sub>3(eff)</sub> = <i>R</i><sub>pot</sub> + (<i>R</i><sub>1</sub> &parallel; <i>R</i><sub>2</sub> &parallel; <i>h</i><sub>ie</sub>)</span>. Adjusting the 10 k&Omega; pot varies the 3rd-stage RC time constant to tune <i>f</i><sub>o</sub> and trim loop gain.
             </li>
             <li>
               <strong>Frequency of Oscillation:</strong><br>
@@ -676,18 +949,18 @@
       <div class="sheet-section-title">EXPERIMENT 4: RC PHASE SHIFT OSCILLATOR</div>
       <div class="sheet-body-box">
         <strong>AIM:</strong> To design and set up an RC phase shift oscillator using transistor BC548 for a frequency of 1 kHz, observe the output sinusoidal waveform, and measure the frequency of oscillation.<br>
-        <strong>COMPONENTS REQUIRED:</strong> DC Power Supply (+12 V), DSO, NPN Transistor BC548 (1 no.), Resistors: R<sub>1</sub> = 33 kΩ, R<sub>2</sub> = 8.2 kΩ, R<sub>C</sub> = 3.3 kΩ, R<sub>E</sub> = 1 kΩ, Phase-shift Resistors R = 6.8 kΩ (3 nos.), Capacitors: C = 0.01 µF (3 nos.), C<sub>E</sub> = 47 µF, C<sub>out</sub> = 10 µF.
+        <strong>COMPONENTS REQUIRED:</strong> DC Power Supply (+12 V), DSO, NPN Transistor BC548 (1 no.), Resistors: R<sub>1</sub> = 33 kΩ, R<sub>2</sub> = 8.2 kΩ, R<sub>C</sub> = 3.3 kΩ, R<sub>E</sub> = 1 kΩ, Phase-shift Resistors R = 6.8 kΩ (2 nos.), Potentiometer: 10 kΩ (1 no., in feedback loop), Capacitors: C = 0.01 µF (3 nos.), C<sub>E</sub> = 47 µF, C<sub>out</sub> = 10 µF.
       </div>
 
-      <div class="sheet-section-title">CIRCUIT DIAGRAM &amp; CAPTURED DSO WAVEFORM (FOR SELECTED R AND C)</div>
+      <div class="sheet-section-title">CIRCUIT DIAGRAM &amp; CAPTURED DSO WAVEFORM (FOR SELECTED R, C &amp; 10 kΩ POT)</div>
       <div class="sheet-body-box" style="background:#ffffff;">
         <div style="display:grid; grid-template-columns: 1.05fr 0.95fr; gap:10px; align-items:center;">
           <div>
-            <canvas id="sheetSchematicCanvas" width="600" height="295" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
-            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 4.1: BJT RC Phase Shift Oscillator Circuit</div>
+            <canvas id="sheetSchematicCanvas" width="600" height="300" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <div style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;">Fig. 4.1: BJT RC Phase Shift Oscillator with 10 kΩ Feedback Potentiometer</div>
           </div>
           <div>
-            <canvas id="sheetDsoCanvas" width="560" height="275" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
+            <canvas id="sheetDsoCanvas" width="560" height="280" style="width:100%; height:auto; border:1px solid #000000;"></canvas>
             <div id="sheetDsoCaption" style="text-align:center; font-size:0.68rem; font-weight:700; margin-top:2px;"></div>
           </div>
         </div>
@@ -700,7 +973,7 @@
           <thead>
             <tr>
               <th>Condition / R &amp; C Values</th>
-              <th>Rc (kΩ)</th>
+              <th>10k Pot (Rpot) / Rc</th>
               <th>Theoretical fo = 1/(2πRC√(6+4k))</th>
               <th>Measured fo (Hz)</th>
               <th>Output Amplitude Vo (Vpp)</th>
@@ -718,45 +991,113 @@
         <div>Signature of Staff-in-Charge: _______________________</div>
       </div>
       <div class="sheet-credit">
-        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+        <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
       </div>
     </div>
   </main>
 
   <footer class="dev-footer no-print">
-    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+    <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
   </footer>
 
   <script>
+    const CH1_SCALES = [0.5, 1.0, 2.0, 5.0, 10.0];
+    const CH2_SCALES = [0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0];
+    const TIME_SCALES = [0.0001, 0.00025, 0.0005, 0.001, 0.0025];
+
     const sim = {
       r: 6800,           // 6.8 kΩ
       c: 0.01e-6,        // 0.01 uF
+      rPot: 6800,        // 10 kΩ Potentiometer set at 6.8 kΩ (68%)
       rc: 3300,          // 3.3 kΩ
       capState: 'normal',// 'normal', 'no_ce', 'no_cout'
       gainMode: 'sustained', // 'damped', 'sustained', 'overdriven'
-      timeDiv: 0.00025,  // 250 us/div
-      ch1Scale: 2.0,     // 2.0 V/div
-      ch2Scale: 0.2,     // 0.2 V/div
-      laserMode: true,
+      ch1Idx: 2,         // 2.0 V/div
+      ch2Idx: 2,         // 0.2 V/div
+      timeIdx: 1,        // 250 us/div
+      laserMode: false,  // Default to authentic DSO dark screen with B&W toggle available
       running: true,
       t: 0
     };
 
+    function getCh1Scale() { return CH1_SCALES[sim.ch1Idx]; }
+    function getCh2Scale() { return CH2_SCALES[sim.ch2Idx]; }
+    function getTimeDiv()  { return TIME_SCALES[sim.timeIdx]; }
+
+    function stepCh1(dir) {
+      sim.ch1Idx = Math.max(0, Math.min(CH1_SCALES.length - 1, sim.ch1Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepCh2(dir) {
+      sim.ch2Idx = Math.max(0, Math.min(CH2_SCALES.length - 1, sim.ch2Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepTime(dir) {
+      sim.timeIdx = Math.max(0, Math.min(TIME_SCALES.length - 1, sim.timeIdx + dir));
+      updateKnobVisuals();
+    }
+    function stepPot(pctDelta) {
+      const nextVal = Math.max(1000, Math.min(10000, sim.rPot + pctDelta * 100));
+      sim.rPot = nextVal;
+      document.getElementById('potSlider').value = String(nextVal);
+      updateAll();
+    }
+    function onPotSlider(val) {
+      sim.rPot = parseFloat(val);
+      updateAll();
+    }
+
+    function autoSetDso() {
+      const p = getOscPhysics();
+      // Auto-select Volts/div for CH1 (~6.4 Vpp -> 2.0 V/div) and CH2 (~0.22 Vpp -> 0.1 or 0.2 V/div)
+      sim.ch1Idx = p.voutPP > 8 ? 3 : 2;
+      sim.ch2Idx = 1; // 0.1 V/div
+      // Auto-select Time/div so ~2-3 cycles appear across 10 divisions
+      if (p.theorFreq > 1200) sim.timeIdx = 0;       // 100 us/div
+      else if (p.theorFreq > 600) sim.timeIdx = 1;   // 250 us/div
+      else if (p.theorFreq > 300) sim.timeIdx = 2;   // 500 us/div
+      else sim.timeIdx = 3;                          // 1.0 ms/div
+      updateKnobVisuals();
+    }
+
+    function updateKnobVisuals() {
+      const ch1Deg = -120 + (sim.ch1Idx / (CH1_SCALES.length - 1)) * 240;
+      const ch2Deg = -120 + (sim.ch2Idx / (CH2_SCALES.length - 1)) * 240;
+      const timeDeg = -120 + (sim.timeIdx / (TIME_SCALES.length - 1)) * 240;
+      const potDeg = -135 + ((sim.rPot - 1000) / 9000) * 270;
+
+      document.getElementById('knobCh1').style.transform = `rotate(${ch1Deg}deg)`;
+      document.getElementById('knobCh2').style.transform = `rotate(${ch2Deg}deg)`;
+      document.getElementById('knobTime').style.transform = `rotate(${timeDeg}deg)`;
+      document.getElementById('knobPot').style.transform = `rotate(${potDeg}deg)`;
+
+      const c1 = getCh1Scale();
+      const c2 = getCh2Scale();
+      const td = getTimeDiv();
+
+      document.getElementById('lblCh1Scale').innerText = c1 >= 1 ? `${c1.toFixed(1)} V` : `${(c1 * 1000).toFixed(0)} mV`;
+      document.getElementById('lblCh2Scale').innerText = c2 >= 1 ? `${c2.toFixed(1)} V` : `${(c2 * 1000).toFixed(0)} mV`;
+      const tdStr = td >= 0.001 ? `${(td * 1000).toFixed(1)} ms` : `${(td * 1e6).toFixed(0)} µs`;
+      document.getElementById('lblTimeScale').innerText = tdStr;
+      document.getElementById('dsoTopTime').innerText = `M ${tdStr}`;
+    }
+
+    function onRcGainChange(val) {
+      const parts = val.split('_');
+      sim.rc = parseFloat(parts[0]);
+      sim.gainMode = parts[1];
+      updateAll();
+    }
+
     function resetDefaults() {
-      sim.r = 6800; sim.c = 0.01e-6; sim.rc = 3300;
+      sim.r = 6800; sim.c = 0.01e-6; sim.rPot = 6800; sim.rc = 3300;
       sim.capState = 'normal'; sim.gainMode = 'sustained';
-      sim.timeDiv = 0.00025; sim.ch1Scale = 2.0; sim.ch2Scale = 0.2;
+      sim.ch1Idx = 2; sim.ch2Idx = 2; sim.timeIdx = 1;
       document.getElementById('selR').value = '6800';
       document.getElementById('selC').value = '0.01e-6';
-      document.getElementById('selRc').value = '3300';
+      document.getElementById('potSlider').value = '6800';
+      document.getElementById('selRcGain').value = '3300_sustained';
       document.getElementById('selCaps').value = 'normal';
-      document.getElementById('selLoopGain').value = 'sustained';
-      document.getElementById('selTimeDiv').value = '0.00025';
-      document.getElementById('selCh1Vdiv').value = '2.0';
-      document.getElementById('selCh2Vdiv').value = '0.2';
-      onTimebaseChange('0.00025');
-      onCh1ScaleChange('2.0');
-      onCh2ScaleChange('0.2');
       updateAll();
     }
 
@@ -782,33 +1123,27 @@
     function toggleRun() {
       sim.running = !sim.running;
       const btn = document.getElementById('btnRun');
-      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
-      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+      const trig = document.getElementById('dsoTrigStatus');
+      btn.className = sim.running ? 'dso-hw-btn run-active' : 'dso-hw-btn run-paused';
+      trig.innerText = sim.running ? "TRIG'D" : "STOP";
+      trig.style.background = sim.running ? "#059669" : "#dc2626";
     }
 
     function toggleTheme() {
       sim.laserMode = !sim.laserMode;
-      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
-    }
-
-    function onTimebaseChange(val) {
-      sim.timeDiv = parseFloat(val);
-      document.getElementById('hudTime').innerText = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + ' ms/div' : (sim.timeDiv * 1e6).toFixed(0) + ' µs/div';
-    }
-    function onCh1ScaleChange(val) {
-      sim.ch1Scale = parseFloat(val);
-      document.getElementById('hudCh1Scale').innerText = sim.ch1Scale.toFixed(1) + ' V/div';
-    }
-    function onCh2ScaleChange(val) {
-      sim.ch2Scale = parseFloat(val);
-      document.getElementById('hudCh2Scale').innerText = sim.ch2Scale.toFixed(1) + ' V/div';
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'DSO Color Screen' : 'Laser-Friendly B&W Screen';
     }
 
     function getOscPhysics() {
-      const k = sim.rc / sim.r;
-      const theorFreq = 1 / (2 * Math.PI * sim.r * sim.c * Math.sqrt(6 + 4 * k));
+      // Effective 3rd-stage resistance includes series 10k Potentiometer + (R1 || R2 || hie)
+      const rInBase = 2400; // 33k || 8.2k || ~3.8k hie ≈ 2.4 kΩ
+      const r3Eff = sim.rPot + rInBase;
+      const rAvg = (2 * sim.r + r3Eff) / 3;
+      const k = sim.rc / rAvg;
+      const theorFreq = 1 / (2 * Math.PI * rAvg * sim.c * Math.sqrt(6 + 4 * k));
       const oscillating = sim.capState !== 'no_ce' && sim.gainMode !== 'damped';
       const measFreq = oscillating ? theorFreq : 0;
+      const periodMs = oscillating ? (1000 / measFreq) : 0;
 
       let voutPP = 6.4;
       let status = 'Sustained Sine';
@@ -822,25 +1157,34 @@
         voutPP = 10.4; status = 'Clipped (Overdriven)';
       }
 
-      return { k, theorFreq, measFreq, oscillating, voutPP, status };
+      const vfPP = oscillating ? (voutPP / 29) : 0;
+      return { k, rAvg, r3Eff, theorFreq, measFreq, periodMs, oscillating, voutPP, vfPP, status };
     }
 
     function updateAll() {
       const p = getOscPhysics();
-      document.getElementById('hudFreq').innerText = p.oscillating ? `${Math.round(p.measFreq)} Hz` : '0 Hz';
-      document.getElementById('hudTheor').innerText = `${Math.round(p.theorFreq)} Hz`;
-      document.getElementById('hudVout').innerText = `${p.voutPP.toFixed(2)} Vpp`;
-      document.getElementById('hudStatus').innerText = p.status;
+      const potK = (sim.rPot / 1000).toFixed(1);
+      const potPct = Math.round((sim.rPot / 10000) * 100);
+
+      document.getElementById('lblPotVal').innerText = `${potK} kΩ`;
+      document.getElementById('lcdFreqReadout').innerText = p.oscillating ? `fo = ${Math.round(p.measFreq)} Hz` : 'fo = 0 Hz';
+      document.getElementById('dsoTopFreq').innerText = p.oscillating ? `${Math.round(p.measFreq)} Hz` : '0 Hz';
+      document.getElementById('dsoMeasFreq').innerText = p.oscillating ? `${Math.round(p.measFreq)} Hz` : '0 Hz';
+      document.getElementById('dsoMeasPeriod').innerText = p.oscillating ? `${p.periodMs.toFixed(2)} ms` : '---';
+      document.getElementById('dsoMeasVo').innerText = `${p.voutPP.toFixed(2)} V`;
+      document.getElementById('dsoMeasVf').innerText = `${p.vfPP.toFixed(2)} V`;
 
       document.getElementById('statTheor').innerText = `${Math.round(p.theorFreq)} Hz`;
       document.getElementById('statMeas').innerText = p.oscillating ? `${Math.round(p.measFreq)} Hz` : '0 Hz';
+      document.getElementById('statPot').innerText = `${potK} kΩ (${potPct}%)`;
       document.getElementById('statLoop').innerText = p.oscillating ? (sim.gainMode === 'overdriven' ? '> 1.0 (Clipped)' : '1.00 (Sustained)') : '< 1.0 (Damped)';
 
+      updateKnobVisuals();
       drawSchematic('schematicCanvas');
     }
 
     // ---------------------------------------------------------
-    // SCHEMATIC RENDERER (Fig 4.1)
+    // SCHEMATIC RENDERER (Fig 4.1 with 10 kΩ Potentiometer in Feedback Loop)
     // ---------------------------------------------------------
     function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
       const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
@@ -859,6 +1203,26 @@
       ctx.lineTo(len, 0);
       ctx.stroke();
       ctx.restore();
+    }
+
+    function drawPotentiometer(ctx, x1, y, x2, wiperRatio) {
+      drawZigzag(ctx, x1, y, x2, y, 5, 4);
+      const bodyStart = x1 + (x2 - x1 - 28) / 2;
+      const wiperX = bodyStart + 4 + wiperRatio * 20;
+      ctx.beginPath();
+      // Wiper arrow dropping from above onto the resistor body & tying to left terminal
+      ctx.moveTo(wiperX, y - 14);
+      ctx.lineTo(wiperX, y - 6);
+      // Arrowhead
+      ctx.moveTo(wiperX - 3, y - 10);
+      ctx.lineTo(wiperX, y - 6);
+      ctx.lineTo(wiperX + 3, y - 10);
+      // Rheostat tie-back to left wire
+      ctx.moveTo(wiperX, y - 14);
+      ctx.lineTo(x1 + 4, y - 14);
+      ctx.lineTo(x1 + 4, y);
+      ctx.stroke();
+      drawDot(ctx, x1 + 4, y);
     }
 
     function drawCap(ctx, x1, y1, x2, y2, size, gap) {
@@ -900,22 +1264,22 @@
       ctx.fillStyle = '#000000';
       ctx.lineWidth = 1.6;
 
-      const vccY = 28, gndY = 232, fbX = 52, divX = 145, qX = 245, qY = 122;
+      const vccY = 26, gndY = 224, fbX = 46, divX = 145, qX = 245, qY = 120;
       const rc1X = 335, rc2X = 415, rc3X = 495, outX = 565;
 
       // +12 V Rail
       ctx.beginPath(); ctx.moveTo(divX, vccY); ctx.lineTo(qX, vccY); ctx.stroke();
       ctx.font = 'bold 10.5px Arial'; ctx.textAlign = 'center';
-      ctx.fillText('+VCC = +12 V', (divX + qX) / 2, 18);
+      ctx.fillText('+VCC = +12 V', (divX + qX) / 2, 17);
       drawDot(ctx, divX, vccY);
 
       // Voltage Divider Bias (R1 = 33k, R2 = 8.2k)
       drawZigzag(ctx, divX, vccY, divX, qY, 5, 3);
       ctx.textAlign = 'right'; ctx.font = 'bold 9.5px Arial';
-      ctx.fillText('R1=33k', divX - 7, 75);
+      ctx.fillText('R1=33k', divX - 7, 74);
 
       drawZigzag(ctx, divX, qY, divX, gndY, 5, 3);
-      ctx.fillText('R2=8.2k', divX - 7, 178);
+      ctx.fillText('R2=8.2k', divX - 7, 174);
       drawDot(ctx, divX, qY);
 
       // Base connection & Feedback return
@@ -924,9 +1288,9 @@
       ctx.stroke();
 
       // Collector Resistor Rc
-      drawZigzag(ctx, qX, vccY, qX, 92, 5, 3);
+      drawZigzag(ctx, qX, vccY, qX, 90, 5, 3);
       ctx.textAlign = 'left';
-      ctx.fillText(`Rc=${(sim.rc/1000).toFixed(1)}k`, qX + 8, 60);
+      ctx.fillText(`Rc=${(sim.rc/1000).toFixed(1)}k`, qX + 8, 58);
 
       // NPN Transistor BC548
       ctx.beginPath(); ctx.arc(qX, qY, 18, 0, Math.PI * 2); ctx.stroke();
@@ -934,32 +1298,32 @@
       ctx.beginPath(); ctx.moveTo(qX - 8, qY - 10); ctx.lineTo(qX - 8, qY + 10); ctx.stroke();
       ctx.lineWidth = 1.6;
       ctx.beginPath();
-      ctx.moveTo(qX - 8, qY - 5); ctx.lineTo(qX, qY - 13); ctx.lineTo(qX, 92);
-      ctx.moveTo(qX - 8, qY + 5); ctx.lineTo(qX, qY + 13); ctx.lineTo(qX, 152);
+      ctx.moveTo(qX - 8, qY - 5); ctx.lineTo(qX, qY - 13); ctx.lineTo(qX, 90);
+      ctx.moveTo(qX - 8, qY + 5); ctx.lineTo(qX, qY + 13); ctx.lineTo(qX, 150);
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(qX, qY + 13); ctx.lineTo(qX - 6, qY + 11); ctx.lineTo(qX - 3, qY + 7); ctx.fill();
       ctx.fillText('BC548', qX + 20, qY + 18);
 
       // Emitter Resistor Re & Bypass Ce
-      drawZigzag(ctx, qX, 152, qX, gndY, 5, 3);
+      drawZigzag(ctx, qX, 150, qX, gndY, 5, 3);
       ctx.textAlign = 'right';
-      ctx.fillText('Re=1k', qX - 8, 192);
+      ctx.fillText('Re=1k', qX - 8, 188);
 
       const ceX = 290;
       if (sim.capState !== 'no_ce') {
         ctx.beginPath();
-        ctx.moveTo(qX, 150); ctx.lineTo(ceX, 150);
+        ctx.moveTo(qX, 148); ctx.lineTo(ceX, 148);
         ctx.moveTo(ceX, gndY); ctx.lineTo(qX, gndY);
         ctx.stroke();
-        drawDot(ctx, qX, 150);
-        drawCap(ctx, ceX, 150, ceX, gndY, 14, 5);
+        drawDot(ctx, qX, 148);
+        drawCap(ctx, ceX, 148, ceX, gndY, 14, 5);
         ctx.textAlign = 'left';
-        ctx.fillText('Ce=47µF', ceX + 7, 192);
+        ctx.fillText('Ce=47µF', ceX + 7, 188);
       }
 
-      // 3-Stage RC Phase-Shift Ladder (Collector at y = 86)
-      const ladderY = 86;
+      // 3-Stage RC Phase-Shift Ladder (Collector at y = 84)
+      const ladderY = 84;
       drawDot(ctx, qX, ladderY);
       const cValLbl = `${(sim.c * 1e6).toFixed(4).replace(/0+$/, '').replace(/\.$/, '')}µF`;
       const rValLbl = `${(sim.r / 1000).toFixed(1)}k`;
@@ -974,14 +1338,14 @@
       drawZigzag(ctx, rc2X, ladderY, rc2X, gndY, 5, 4);
       drawDot(ctx, rc2X, ladderY);
 
-      // Stage 3: C3 + Feedback loop back to Base
+      // Stage 3: C3 + 10k Potentiometer in Feedback Loop
       drawCap(ctx, rc2X, ladderY, rc3X, ladderY, 14, 4);
       drawDot(ctx, rc3X, ladderY);
 
       ctx.textAlign = 'center'; ctx.font = 'bold 9px Arial';
       ctx.fillText(`C=${cValLbl} (×3)`, (qX + rc3X) / 2, ladderY - 12);
-      ctx.fillText(`R=${rValLbl}`, rc1X + 20, 165);
-      ctx.fillText(`R=${rValLbl}`, rc2X + 20, 165);
+      ctx.fillText(`R=${rValLbl}`, rc1X + 20, 162);
+      ctx.fillText(`R=${rValLbl}`, rc2X + 20, 162);
 
       // Output Vo
       if (sim.capState !== 'no_cout') {
@@ -991,14 +1355,21 @@
       ctx.textAlign = 'left'; ctx.font = 'bold 10.5px Arial';
       ctx.fillText('Vo', outX + 3, ladderY + 4);
 
-      // Feedback loop from rc3X down to y = 264, left to fbX, up to Base (y = qY)
-      const fbBotY = 264;
+      // Feedback loop from rc3X down to y = 266, through 10 kΩ Potentiometer to fbX, up to Base (y = qY)
+      const fbBotY = 266;
+      const potLeftX = 210, potRightX = 330;
       ctx.beginPath();
       ctx.moveTo(rc3X, ladderY); ctx.lineTo(rc3X, fbBotY);
+      ctx.lineTo(potRightX, fbBotY);
+      ctx.moveTo(potLeftX, fbBotY);
       ctx.lineTo(fbX, fbBotY); ctx.lineTo(fbX, qY);
       ctx.stroke();
-      ctx.textAlign = 'center'; ctx.font = 'bold 9px Arial';
-      ctx.fillText('180° Phase-Shifted Feedback Loop (Vf)', (fbX + rc3X) / 2, fbBotY + 13);
+
+      // 10 kΩ Potentiometer symbol with wiper
+      const wiperRatio = (sim.rPot - 1000) / 9000;
+      drawPotentiometer(ctx, potLeftX, fbBotY, potRightX, wiperRatio);
+      ctx.textAlign = 'center'; ctx.font = 'bold 9.5px Arial';
+      ctx.fillText(`10 kΩ Potentiometer (Set: ${(sim.rPot / 1000).toFixed(1)} kΩ) — 180° Feedback Loop`, (fbX + rc3X) / 2, fbBotY + 20);
 
       // Ground Rail
       ctx.beginPath(); ctx.moveTo(divX, gndY); ctx.lineTo(rc2X, gndY); ctx.stroke();
@@ -1020,18 +1391,35 @@
 
       const bg = isLaser ? '#ffffff' : '#030712';
       const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
+      const gridMinor = isLaser ? '#e2e8f0' : '#0f172a';
       const axis = isLaser ? '#000000' : '#38bdf8';
-      const trVo = isLaser ? '#000000' : '#fbbf24';
-      const trVf = isLaser ? '#000000' : '#22d3ee';
+      const trVo = isLaser ? '#000000' : '#eab308'; // Yellow CH1
+      const trVf = isLaser ? '#000000' : '#22d3ee'; // Cyan CH2
 
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
       const divW = w / 10, divH = h / 8;
-      ctx.strokeStyle = gridMajor; ctx.lineWidth = 0.7;
+
+      // Fine subdivisions
+      ctx.strokeStyle = gridMinor; ctx.lineWidth = 0.5;
+      for (let x = 0; x < 10; x++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo((x + s/5)*divW, 0); ctx.lineTo((x + s/5)*divW, h); ctx.stroke();
+        }
+      }
+      for (let y = 0; y < 8; y++) {
+        for (let s = 1; s < 5; s++) {
+          ctx.beginPath(); ctx.moveTo(0, (y + s/5)*divH); ctx.lineTo(w, (y + s/5)*divH); ctx.stroke();
+        }
+      }
+
+      // Major 10x8 divisions
+      ctx.strokeStyle = gridMajor; ctx.lineWidth = 0.8;
       for (let x = 0; x <= 10; x++) { ctx.beginPath(); ctx.moveTo(x * divW, 0); ctx.lineTo(x * divW, h); ctx.stroke(); }
       for (let y = 0; y <= 8; y++) { ctx.beginPath(); ctx.moveTo(0, y * divH); ctx.lineTo(w, y * divH); ctx.stroke(); }
 
+      // Center axes with tick marks
       ctx.strokeStyle = axis; ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
@@ -1039,12 +1427,21 @@
       ctx.stroke();
 
       const p = getOscPhysics();
-      const totalTime = 10 * sim.timeDiv;
+      const ch1Scale = getCh1Scale();
+      const ch2Scale = getCh2Scale();
+      const totalTime = 10 * getTimeDiv();
       const dt = totalTime / w;
       const omega = 2 * Math.PI * p.theorFreq;
       const t0 = staticSnap ? 0 : sim.t;
 
-      // CH1: Collector Output Vo (Solid)
+      // Ground reference markers on left edge (1> and 2>)
+      ctx.fillStyle = isLaser ? '#000000' : '#eab308';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('1>', 3, h / 2 - 3);
+      ctx.fillStyle = isLaser ? '#000000' : '#22d3ee';
+      ctx.fillText('2>', 3, h / 2 + 11);
+
+      // CH1: Collector Output Vo (Solid Yellow / Black)
       ctx.save();
       ctx.strokeStyle = trVo; ctx.lineWidth = 2.4;
       ctx.beginPath();
@@ -1060,13 +1457,13 @@
           const env = Math.exp(-px / (w * 0.35));
           v1 = 2.8 * env * Math.sin(omega * (px * dt));
         }
-        const py = (h / 2) - (v1 / sim.ch1Scale) * divH;
+        const py = (h / 2) - (v1 / ch1Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
-      // CH2: Feedback Voltage Vf (Dashed, 180° inverted, scaled by 1/29)
+      // CH2: Feedback Voltage Vf (Dashed Cyan / Black, 180° inverted)
       ctx.save();
       ctx.strokeStyle = trVf; ctx.lineWidth = 1.8; ctx.setLineDash([5, 4]);
       ctx.beginPath();
@@ -1074,9 +1471,9 @@
         const t = t0 + px * dt;
         let v2 = 0;
         if (p.oscillating) {
-          v2 = -(p.voutPP / 2 / 29) * Math.sin(omega * t);
+          v2 = -(p.vfPP / 2) * Math.sin(omega * t);
         }
-        const py = (h / 2) - (v2 / sim.ch2Scale) * divH;
+        const py = (h / 2) - (v2 / ch2Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
@@ -1095,33 +1492,33 @@
         `Fig. 4.2: DSO Waveforms (Solid: Vo = ${p.voutPP.toFixed(2)} Vpp, Dashed: Feedback Vf)`;
 
       document.getElementById('sheetSelectedBanner').innerText =
-        `Selected Setting: R = ${(sim.r/1000).toFixed(1)} kΩ, C = ${cUf} µF, Rc = ${(sim.rc/1000).toFixed(1)} kΩ | Theoretical fo = ${Math.round(p.theorFreq)} Hz | Measured fo = ${fMeasStr}`;
+        `Selected Setting: R = ${(sim.r/1000).toFixed(1)} kΩ, C = ${cUf} µF, 10k Pot = ${(sim.rPot/1000).toFixed(1)} kΩ, Rc = ${(sim.rc/1000).toFixed(1)} kΩ | Theoretical fo = ${Math.round(p.theorFreq)} Hz | Measured fo = ${fMeasStr}`;
 
       document.getElementById('sheetTableBody').innerHTML = `
         <tr>
           <td><strong>Selected: R = ${(sim.r/1000).toFixed(1)} kΩ, C = ${cUf} µF</strong></td>
-          <td>${(sim.rc/1000).toFixed(1)} kΩ</td>
+          <td>${(sim.rPot/1000).toFixed(1)} kΩ / ${(sim.rc/1000).toFixed(1)} kΩ</td>
           <td>${Math.round(p.theorFreq)} Hz</td>
           <td>${fMeasStr}</td>
           <td>${p.voutPP.toFixed(2)} V</td>
         </tr>
         <tr>
           <td>Standard Design: R = 6.8 kΩ, C = 0.01 µF</td>
-          <td>3.3 kΩ</td>
+          <td>6.8 kΩ / 3.3 kΩ</td>
           <td>837 Hz</td>
           <td>837 Hz</td>
           <td>6.40 V</td>
         </tr>
         <tr>
           <td>Higher Freq: R = 4.7 kΩ, C = 0.01 µF</td>
-          <td>3.3 kΩ</td>
+          <td>4.7 kΩ / 3.3 kΩ</td>
           <td>1143 Hz</td>
           <td>1143 Hz</td>
           <td>6.40 V</td>
         </tr>
         <tr>
           <td>Lower Freq: R = 10.0 kΩ, C = 0.01 µF</td>
-          <td>3.3 kΩ</td>
+          <td>10.0 kΩ / 3.3 kΩ</td>
           <td>588 Hz</td>
           <td>588 Hz</td>
           <td>6.40 V</td>
@@ -1129,9 +1526,9 @@
       `;
 
       document.getElementById('sheetResultBox').innerHTML = `
-        <strong>Design Calculation:</strong> For <i>R</i> = ${(sim.r/1000).toFixed(1)} k&Omega;, <i>C</i> = ${cUf} &mu;F, and <i>k</i> = <i>R</i><sub>C</sub>/<i>R</i> = ${p.k.toFixed(2)}: <i>f</i><sub>o</sub> = 1 / [2&pi;<i>RC</i>&radic;(6 + 4<i>k</i>)] = <strong>${Math.round(p.theorFreq)} Hz</strong>.<br>
-        <strong>Result:</strong> Constructed the RC phase shift oscillator using transistor BC548. For selected <strong>R = ${(sim.r/1000).toFixed(1)} kΩ</strong> and <strong>C = ${cUf} µF</strong>, observed a sustained sinusoidal output of <strong>${p.voutPP.toFixed(2)} Vpp</strong> at measured frequency <strong>${fMeasStr}</strong>.<br>
-        <strong>Inference:</strong> Three cascaded RC sections provide 180° phase shift at fo, combining with the 180° phase reversal of the CE amplifier to satisfy the Barkhausen criterion (360° loop phase shift and |Aβ| ≥ 1).
+        <strong>Design Calculation:</strong> With 10 k&Omega; potentiometer set to <i>R</i><sub>pot</sub> = ${(sim.rPot/1000).toFixed(1)} k&Omega;, <i>R</i><sub>3(eff)</sub> = <i>R</i><sub>pot</sub> + (<i>R</i><sub>1</sub> &parallel; <i>R</i><sub>2</sub> &parallel; <i>h</i><sub>ie</sub>) &approx; ${(p.r3Eff/1000).toFixed(1)} k&Omega; (<i>R</i><sub>avg</sub> = ${(p.rAvg/1000).toFixed(2)} k&Omega;), <i>C</i> = ${cUf} &mu;F, and <i>k</i> = <i>R</i><sub>C</sub>/<i>R</i> = ${p.k.toFixed(2)}: <i>f</i><sub>o</sub> = 1 / [2&pi;<i>RC</i>&radic;(6 + 4<i>k</i>)] = <strong>${Math.round(p.theorFreq)} Hz</strong>.<br>
+        <strong>Result:</strong> Constructed the RC phase shift oscillator using transistor BC548 with a <strong>10 kΩ feedback potentiometer</strong> (set to <strong>${(sim.rPot/1000).toFixed(1)} kΩ</strong>), <strong>R = ${(sim.r/1000).toFixed(1)} kΩ</strong>, and <strong>C = ${cUf} µF</strong>; observed a sustained sinusoidal output of <strong>${p.voutPP.toFixed(2)} Vpp</strong> at measured frequency <strong>${fMeasStr}</strong>.<br>
+        <strong>Inference:</strong> Three cascaded RC sections (tuned via the 10 kΩ potentiometer in the feedback path) provide 180° phase shift at fo, combining with the 180° phase reversal of the CE amplifier to satisfy the Barkhausen criterion.
       `;
     }
 
