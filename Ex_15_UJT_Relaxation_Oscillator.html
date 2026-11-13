@@ -33,7 +33,7 @@
       padding: 12px 20px;
     }
     .header-content {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -97,7 +97,7 @@
 
     main {
       flex: 1;
-      max-width: 1280px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
       padding: 16px;
@@ -136,8 +136,8 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 1024px) {
-      .workbench-grid { grid-template-columns: 7fr 5fr; }
+    @media (min-width: 1080px) {
+      .workbench-grid { grid-template-columns: 7.4fr 4.6fr; }
     }
 
     .panel {
@@ -162,6 +162,49 @@
       gap: 8px;
     }
 
+    /* =====================================================================
+       REALISTIC DIGITAL STORAGE OSCILLOSCOPE (DSO) FRONT PANEL STYLING
+       ===================================================================== */
+    .dso-chassis {
+      background: linear-gradient(180deg, #27303f 0%, #1b222e 100%);
+      border-bottom: 2px solid #0f172a;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .dso-chassis { grid-template-columns: 1.45fr 1fr; }
+    }
+
+    .dso-bezel {
+      background: #0b0f17;
+      border: 3px solid #3f4b5e;
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .dso-screen-top-bar {
+      background: #111827;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    .dso-trig-badge {
+      background: #059669;
+      color: #ffffff;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 9.5px;
+    }
     .dso-frame {
       position: relative;
       background: #ffffff;
@@ -170,34 +213,205 @@
       display: flex;
     }
     #dsoCanvas { width: 100%; height: 100%; display: block; }
-    .dso-hud-top {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      pointer-events: none;
+
+    .dso-measure-strip {
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      padding: 5px 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #94a3b8;
     }
-    .dso-hud-bottom {
-      position: absolute;
-      bottom: 8px;
-      right: 10px;
-      pointer-events: none;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      line-height: 1.35;
-      text-align: right;
-      color: #0f172a;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 4px 8px;
+    .dso-meas-cell {
+      background: #1e293b;
+      border-left: 3px solid #38bdf8;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .dso-meas-cell.ch1 { border-left-color: #22d3ee; }
+    .dso-meas-cell.ch2 { border-left-color: #eab308; }
+    .dso-meas-cell.freq { border-left-color: #10b981; }
+    .dso-meas-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; }
+    .dso-meas-val { font-size: 11px; font-weight: 800; color: #f8fafc; }
+
+    .dso-controls-deck {
+      background: #1e2634;
+      border: 1px solid #3b4659;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .dso-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 5px;
+    }
+    .dso-brand {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+    }
+    .dso-softkeys {
+      display: flex;
+      gap: 4px;
+    }
+    .dso-hw-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #64748b;
+      border-bottom: 2px solid #0f172a;
       border-radius: 4px;
-      border: 1px solid #94a3b8;
+      padding: 3px 7px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .dso-hw-btn:active { transform: translateY(1px); }
+    .dso-hw-btn.run-active { background: #059669; border-color: #34d399; }
+    .dso-hw-btn.run-paused { background: #dc2626; border-color: #f87171; }
+    .dso-hw-btn.auto-btn { background: #2563eb; border-color: #60a5fa; }
+
+    .dso-knob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .dso-module-box {
+      background: #151c27;
+      border: 1px solid #2e3849;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .dso-module-box.ch1-box { border-top: 2.5px solid #22d3ee; }
+    .dso-module-box.ch2-box { border-top: 2.5px solid #eab308; }
+    .dso-module-box.horiz-box { border-top: 2.5px solid #38bdf8; }
+    .dso-module-box.pot-box { border-top: 2.5px solid #10b981; }
+
+    .dso-mod-title {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .rotary-knob-wrap {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      margin: 2px auto;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rotary-knob {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #475569, #1e293b 70%, #0f172a 100%);
+      border: 2px solid #94a3b8;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.25);
+      position: relative;
+      transition: transform 0.12s ease-out;
+    }
+    .rotary-knob::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 2px;
+    }
+    .rotary-knob.ch1-knob::after { background: #22d3ee; }
+    .rotary-knob.ch2-knob::after { background: #eab308; }
+    .rotary-knob.pot-knob::after { background: #10b981; }
+
+    .knob-step-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .step-mini-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 3px;
+      width: 20px;
+      height: 18px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .step-mini-btn:hover { background: #475569; }
+    .knob-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #f8fafc;
+      background: #0b0f17;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #334155;
+      min-width: 64px;
+    }
+
+    .freq-tuner-strip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .freq-tuner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+    }
+    .freq-lcd {
+      background: #022c22;
+      border: 1px solid #059669;
+      color: #34d399;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+    .pot-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pot-slider-row input[type="range"] {
+      flex: 1;
+      cursor: pointer;
+      accent-color: #10b981;
     }
 
     .sub-section-bar {
@@ -242,30 +456,6 @@
       padding: 4px;
       font-size: 0.74rem;
       outline: none;
-    }
-
-    .pot-card {
-      background: rgba(30, 58, 138, 0.25);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin: 10px 12px 0 12px;
-    }
-    .pot-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #93c5fd;
-      margin-bottom: 6px;
-    }
-    .pot-desc {
-      font-size: 0.73rem;
-      color: #38bdf8;
-      margin-top: 5px;
-      line-height: 1.35;
-      font-style: italic;
     }
 
     .stat-row {
@@ -433,20 +623,21 @@
     .dev-footer {
       background: #111827;
       border-top: 1px solid #374151;
-      color: #9ca3af;
+      color: #e5e7eb;
+      font-weight: 700;
       text-align: center;
       padding: 10px 16px;
       font-size: 0.75rem;
       margin-top: auto;
     }
-    .dev-footer strong { color: #e5e7eb; }
     .sheet-credit {
       margin-top: 10px;
       padding-top: 6px;
       border-top: 1px dashed #6b7280;
       text-align: center;
       font-size: 0.7rem;
-      color: #374151;
+      font-weight: 700;
+      color: #111827;
     }
 
     @media print {
@@ -473,7 +664,7 @@
 
       <div class="btn-group no-print">
         <button class="btn btn-primary" onclick="switchView('sim')">Interactive Simulator</button>
-        <button class="btn btn-emerald" onclick="switchView('sheet')">Lab Record &amp; Observation Sheet</button>
+        <button class="btn btn-emerald" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
         <button class="btn btn-secondary" onclick="window.print()">Print Worksheet / Save PDF</button>
       </div>
     </div>
@@ -481,63 +672,143 @@
 
   <main>
     <div class="tab-nav no-print">
-      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">UJT 2N2646 Relaxation Oscillator &amp; Dual-Trace DSO Workbench</button>
+      <button id="tabSimNav" class="tab-btn active" onclick="switchView('sim')">UJT 2N2646 Relaxation Oscillator &amp; DSO Workbench</button>
       <button id="tabSheetNav" class="tab-btn" onclick="switchView('sheet')">Printed Laboratory Manual (A4)</button>
     </div>
 
     <!-- 1. INTERACTIVE WORKBENCH -->
     <div id="workbench-view" class="workbench-grid">
 
-      <!-- Left Column: Dual-Channel DSO (VE Sawtooth, VB1 Spikes, VB2 Dips) -->
+      <!-- Left Column: Realistic DSO Instrument + Circuit Controls -->
       <div class="panel">
         <div class="panel-head">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
-            <span>DUAL-CHANNEL OSCILLOSCOPE (CH1: EMITTER V<sub>E</sub>, CH2: BASE V<sub>B1</sub> / V<sub>B2</sub>)</span>
+            <span>DIGITAL STORAGE OSCILLOSCOPE (CH1: EMITTER V<sub>E</sub>, CH2: BASE V<sub>B1</sub> / V<sub>B2</sub>)</span>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="resetDefaults()">Reset</button>
-            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Mode</button>
-            <button class="btn btn-emerald" style="padding:4px 10px; font-size:0.7rem;" onclick="toggleRun()" id="btnRun">RUN</button>
+            <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="toggleTheme()" id="btnTheme">Laser-Friendly B&amp;W Screen</button>
           </div>
         </div>
 
-        <div class="dso-frame">
-          <canvas id="dsoCanvas" width="700" height="410"></canvas>
+        <!-- Realistic DSO Instrument Chassis -->
+        <div class="dso-chassis">
+          <!-- Left: DSO Screen Bezel & Live Measure Strip -->
+          <div class="dso-bezel">
+            <div class="dso-screen-top-bar">
+              <div><span class="dso-trig-badge" id="dsoTrigStatus">TRIG'D</span> &nbsp;CH1 VE &nbsp;CH2 <span id="dsoCh2Label">VB1</span></div>
+              <div id="dsoTopTime">M 500µs</div>
+              <div style="color:#38bdf8;">f = <strong id="dsoTopFreq">1.00 kHz</strong></div>
+            </div>
 
-          <div class="dso-hud-top">
-            <div>TB: <strong id="hudTime">0.5 ms/div</strong> | VBB: <strong id="hudVbb">12.0 V DC</strong> | η: <strong id="hudEta">0.65</strong></div>
-            <div>CH1 (VE): <strong id="hudCh1Scale">2.0 V/div</strong> (Sawtooth)</div>
-            <div>CH2 (<span id="hudCh2Label">VB1</span>): <strong id="hudCh2Scale">2.0 V/div</strong> (Trigger Pulse)</div>
+            <div class="dso-frame">
+              <canvas id="dsoCanvas" width="640" height="400"></canvas>
+            </div>
+
+            <!-- Live Digital Measure Readouts Built into Screen Bottom -->
+            <div class="dso-measure-strip">
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Freq (fo)</div>
+                <div class="dso-meas-val" id="dsoMeasFreq">1.00 kHz</div>
+              </div>
+              <div class="dso-meas-cell freq">
+                <div class="dso-meas-lbl">Period (T)</div>
+                <div class="dso-meas-val" id="dsoMeasPeriod">1.00 ms</div>
+              </div>
+              <div class="dso-meas-cell ch1">
+                <div class="dso-meas-lbl">Peak VP</div>
+                <div class="dso-meas-val" id="dsoMeasVp">8.50 V</div>
+              </div>
+              <div class="dso-meas-cell ch2">
+                <div class="dso-meas-lbl">Valley VV</div>
+                <div class="dso-meas-val" id="dsoMeasVv">1.50 V</div>
+              </div>
+            </div>
           </div>
 
-          <div class="dso-hud-bottom">
-            <div>Peak Voltage (VP): <strong id="hudVp" style="color:#2563eb;">8.50 V</strong></div>
-            <div>Valley Voltage (VV): <strong id="hudVv">1.50 V</strong></div>
-            <div>Measured Freq (f): <strong id="hudFreq" style="color:#059669;">1000 Hz</strong></div>
-            <div>Time Period (T): <strong id="hudPeriod">1.00 ms</strong></div>
+          <!-- Right: DSO Rotary Knobs, Auto-Set, Run/Stop & R1 Potentiometer Knob -->
+          <div class="dso-controls-deck">
+            <div class="dso-deck-header">
+              <span class="dso-brand">DSO-1052B • 50 MHz</span>
+              <div class="dso-softkeys">
+                <button class="dso-hw-btn auto-btn" onclick="autoSetDso()" title="Auto-scale Timebase and Volts/Div">AUTO</button>
+                <button class="dso-hw-btn run-active" id="btnRun" onclick="toggleRun()">RUN/STOP</button>
+                <button class="dso-hw-btn" onclick="resetDefaults()">DEFAULT</button>
+              </div>
+            </div>
+
+            <!-- 4 Rotary Knobs: CH1 Volts/Div, CH2 Volts/Div, Horizontal Sec/Div, R1 Pot Knob -->
+            <div class="dso-knob-grid">
+              <!-- CH1 Volts/Div Knob -->
+              <div class="dso-module-box ch1-box">
+                <div class="dso-mod-title">CH1 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh1(1)" title="Click knob or +/- to adjust CH1 Volts/Div">
+                  <div class="rotary-knob ch1-knob" id="knobCh1"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh1(-1)">−</button>
+                  <span class="knob-readout" id="lblCh1Scale">2.0 V</span>
+                  <button class="step-mini-btn" onclick="stepCh1(1)">+</button>
+                </div>
+              </div>
+
+              <!-- CH2 Volts/Div Knob -->
+              <div class="dso-module-box ch2-box">
+                <div class="dso-mod-title">CH2 VOLTS/DIV</div>
+                <div class="rotary-knob-wrap" onclick="stepCh2(1)" title="Click knob or +/- to adjust CH2 Volts/Div">
+                  <div class="rotary-knob ch2-knob" id="knobCh2"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepCh2(-1)">−</button>
+                  <span class="knob-readout" id="lblCh2Scale">2.0 V</span>
+                  <button class="step-mini-btn" onclick="stepCh2(1)">+</button>
+                </div>
+              </div>
+
+              <!-- Horizontal Sec/Div Knob -->
+              <div class="dso-module-box horiz-box">
+                <div class="dso-mod-title">SEC/DIV (TIME)</div>
+                <div class="rotary-knob-wrap" onclick="stepTime(1)" title="Click knob or +/- to adjust Time/Div">
+                  <div class="rotary-knob" id="knobTime"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepTime(-1)">−</button>
+                  <span class="knob-readout" id="lblTimeScale">500 µs</span>
+                  <button class="step-mini-btn" onclick="stepTime(1)">+</button>
+                </div>
+              </div>
+
+              <!-- R1 Charging Resistor Knob -->
+              <div class="dso-module-box pot-box">
+                <div class="dso-mod-title">R1 POT KNOB</div>
+                <div class="rotary-knob-wrap" onclick="stepR1(2000)" title="Click knob or +/- to adjust R1">
+                  <div class="rotary-knob pot-knob" id="knobR1"></div>
+                </div>
+                <div class="knob-step-row">
+                  <button class="step-mini-btn" onclick="stepR1(-1000)">−</button>
+                  <span class="knob-readout" id="lblR1Knob">10.0 kΩ</span>
+                  <button class="step-mini-btn" onclick="stepR1(1000)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- R1 Resistor Fine-Tune Slider & Digital LCD Display -->
+            <div class="freq-tuner-strip">
+              <div class="freq-tuner-top">
+                <span>Emitter Charging Resistor R1</span>
+                <span class="freq-lcd" id="lcdR1Readout">R1 = 10.0 kΩ (f = 1.00 kHz)</span>
+              </div>
+              <div class="pot-slider-row">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">2.2k</span>
+                <input type="range" id="rSlider" min="2200" max="47000" step="500" value="10000" oninput="onRSlider(this.value)">
+                <span style="font-size:0.65rem; color:#94a3b8; font-family:monospace;">47k</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Timing Resistor R1 (or Potentiometer) Slider -->
-        <div class="pot-card">
-          <div class="pot-header">
-            <span>Emitter Charging Resistor R<sub>1</sub> (Variable / Decade Box)</span>
-            <span id="rDisplay" style="font-family:monospace; color:#34d399;">R1 = 10.0 kΩ (f = 1000 Hz)</span>
-          </div>
-          <input type="range" id="rSlider" min="2200" max="47000" step="100" value="10000" oninput="onRChange(this.value)" style="width:100%; cursor:pointer;">
-          <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:#94a3b8; margin-top:4px;">
-            <span>2.2 kΩ (High Freq ~4.5 kHz)</span>
-            <span style="color:#34d399; font-weight:700;">Standard Design: R1 = 10 kΩ, C = 0.1 µF (1 kHz)</span>
-            <span>47 kΩ (Low Freq ~212 Hz)</span>
-          </div>
-          <div class="pot-desc" id="rDesc">
-            Capacitor C charges exponentially toward VBB through R1; when VE reaches VP = η·VBB + 0.7 V, the UJT fires and discharges C through RB1 (47 Ω), producing a sharp positive trigger pulse at B1.
-          </div>
-        </div>
-
-        <!-- DSO Scales, Capacitor C, Intrinsic Standoff Ratio η & Probe Selection -->
-        <div class="sub-section-bar"><span>Oscilloscope Probe Node, Capacitor C, UJT η &amp; Voltage Scales</span></div>
+        <!-- Probe Node & Capacitor Variations -->
+        <div class="sub-section-bar"><span>Oscilloscope Probe Node, Timing Capacitor C &amp; VBB Supply</span></div>
         <div class="control-grid">
           <div class="ctrl-box">
             <label>CH2 Probed Node</label>
@@ -558,22 +829,11 @@
           </div>
 
           <div class="ctrl-box">
-            <label>Time / Division</label>
-            <select id="selTimeDiv" onchange="onTimebaseChange(this.value)">
-              <option value="0.0002">200 µs/div</option>
-              <option value="0.0005" selected>500 µs/div (0.5 ms/div)</option>
-              <option value="0.001">1.0 ms/div</option>
-              <option value="0.002">2.0 ms/div</option>
-            </select>
-          </div>
-
-          <div class="ctrl-box">
-            <label>CH1 &amp; CH2 Volts/Div</label>
-            <select id="selVdiv" onchange="onScaleChange(this.value)">
-              <option value="1.0">1.0 V/div</option>
-              <option value="2.0" selected>2.0 V/div</option>
-              <option value="5.0">5.0 V/div</option>
-              <option value="10.0">10.0 V/div</option>
+            <label>Supply Voltage VBB</label>
+            <select id="selVbb" onchange="sim.vbb = parseFloat(this.value); updateAll()">
+              <option value="12" selected>12.0 V DC (Standard)</option>
+              <option value="15">15.0 V DC</option>
+              <option value="18">18.0 V DC</option>
             </select>
           </div>
         </div>
@@ -616,7 +876,7 @@
           <ul class="formula-list">
             <li>
               <strong>Peak-Point Firing Voltage:</strong><br>
-              <span class="math-chip"><i>V</i><sub>P</sub> = &eta; &middot; <i>V</i><sub>BB</sub> + <i>V</i><sub>D</sub> = 0.65(12) + 0.7 = <strong>8.50 V</strong></span>
+              <span class="math-chip"><i>V</i><sub>P</sub> = &eta; &middot; <i>V</i><sub>BB</sub> + <i>V</i><sub>D</sub> = <strong id="fVpVal">8.50 V</strong></span>
             </li>
             <li>
               <strong>Time Period &amp; Frequency of Oscillation:</strong><br>
@@ -702,42 +962,100 @@
         <div>Signature of Staff-in-Charge: _______________________</div>
       </div>
       <div class="sheet-credit">
-        Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+        <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
       </div>
     </div>
   </main>
 
   <footer class="dev-footer no-print">
-    Developed by <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
+    <em>Developed by</em> <strong>Suresh Kumar K P</strong>, Lecturer, Department of Electrical Engineering &amp; Electric Vehicle Technology, SSM Polytechnic College.
   </footer>
 
   <script>
+    const CH1_SCALES = [1.0, 2.0, 5.0, 10.0];
+    const CH2_SCALES = [1.0, 2.0, 5.0, 10.0];
+    const TIME_SCALES = [0.0002, 0.0005, 0.001, 0.002];
+
     const sim = {
       r1: 10000,         // 10 kΩ emitter charging resistor
       c: 0.1e-6,         // 0.1 uF timing capacitor
       vbb: 12.0,         // 12 V DC supply
       eta: 0.65,         // UJT intrinsic standoff ratio
       probe: 'vb1',      // 'vb1' or 'vb2'
-      timeDiv: 0.0005,   // 0.5 ms/div
-      vScale: 2.0,       // 2.0 V/div for CH1 & CH2
-      laserMode: true,
+      ch1Idx: 1,         // 2.0 V/div
+      ch2Idx: 1,         // 2.0 V/div
+      timeIdx: 1,        // 500 us/div
+      laserMode: false,
       running: true,
       t: 0
     };
 
+    function getCh1Scale() { return CH1_SCALES[sim.ch1Idx]; }
+    function getCh2Scale() { return CH2_SCALES[sim.ch2Idx]; }
+    function getTimeDiv()  { return TIME_SCALES[sim.timeIdx]; }
+
+    function stepCh1(dir) {
+      sim.ch1Idx = Math.max(0, Math.min(CH1_SCALES.length - 1, sim.ch1Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepCh2(dir) {
+      sim.ch2Idx = Math.max(0, Math.min(CH2_SCALES.length - 1, sim.ch2Idx + dir));
+      updateKnobVisuals();
+    }
+    function stepTime(dir) {
+      sim.timeIdx = Math.max(0, Math.min(TIME_SCALES.length - 1, sim.timeIdx + dir));
+      updateKnobVisuals();
+    }
+    function stepR1(deltaOhms) {
+      const nextR = Math.max(2200, Math.min(47000, sim.r1 + deltaOhms));
+      sim.r1 = nextR;
+      document.getElementById('rSlider').value = String(nextR);
+      updateAll();
+    }
+    function onRSlider(val) {
+      sim.r1 = parseFloat(val);
+      updateAll();
+    }
+
+    function autoSetDso() {
+      sim.ch1Idx = 1; sim.ch2Idx = 1; sim.timeIdx = 1;
+      updateKnobVisuals();
+    }
+
+    function updateKnobVisuals() {
+      const ch1Deg = -120 + (sim.ch1Idx / (CH1_SCALES.length - 1)) * 240;
+      const ch2Deg = -120 + (sim.ch2Idx / (CH2_SCALES.length - 1)) * 240;
+      const timeDeg = -120 + (sim.timeIdx / (TIME_SCALES.length - 1)) * 240;
+      const r1Deg = -135 + ((sim.r1 - 2200) / 44800) * 270;
+
+      document.getElementById('knobCh1').style.transform = `rotate(${ch1Deg}deg)`;
+      document.getElementById('knobCh2').style.transform = `rotate(${ch2Deg}deg)`;
+      document.getElementById('knobTime').style.transform = `rotate(${timeDeg}deg)`;
+      document.getElementById('knobR1').style.transform = `rotate(${r1Deg}deg)`;
+
+      const c1 = getCh1Scale();
+      const c2 = getCh2Scale();
+      const td = getTimeDiv();
+
+      document.getElementById('lblCh1Scale').innerText = `${c1.toFixed(1)} V`;
+      document.getElementById('lblCh2Scale').innerText = `${c2.toFixed(1)} V`;
+      const tdStr = td >= 0.001 ? `${(td * 1000).toFixed(1)} ms` : `${(td * 1e6).toFixed(0)} µs`;
+      document.getElementById('lblTimeScale').innerText = tdStr;
+      document.getElementById('dsoTopTime').innerText = `M ${tdStr}`;
+    }
+
     function resetDefaults() {
       sim.r1 = 10000;
       sim.c = 0.1e-6;
+      sim.vbb = 12.0;
       sim.probe = 'vb1';
-      sim.timeDiv = 0.0005;
-      sim.vScale = 2.0;
+      sim.ch1Idx = 1;
+      sim.ch2Idx = 1;
+      sim.timeIdx = 1;
       document.getElementById('rSlider').value = '10000';
       document.getElementById('selCap').value = '0.1e-6';
+      document.getElementById('selVbb').value = '12';
       document.getElementById('selProbe').value = 'vb1';
-      document.getElementById('selTimeDiv').value = '0.0005';
-      document.getElementById('selVdiv').value = '2.0';
-      onTimebaseChange('0.0005');
-      onScaleChange('2.0');
       updateAll();
     }
 
@@ -763,64 +1081,53 @@
     function toggleRun() {
       sim.running = !sim.running;
       const btn = document.getElementById('btnRun');
-      btn.innerText = sim.running ? 'RUN' : 'PAUSED';
-      btn.className = sim.running ? 'btn btn-emerald' : 'btn btn-secondary';
+      const trig = document.getElementById('dsoTrigStatus');
+      btn.className = sim.running ? 'dso-hw-btn run-active' : 'dso-hw-btn run-paused';
+      trig.innerText = sim.running ? "TRIG'D" : "STOP";
+      trig.style.background = sim.running ? "#059669" : "#dc2626";
     }
 
     function toggleTheme() {
       sim.laserMode = !sim.laserMode;
-      document.getElementById('btnTheme').innerText = sim.laserMode ? 'Laser-Friendly B&W Mode' : 'DSO Color Mode';
-    }
-
-    function onTimebaseChange(val) {
-      sim.timeDiv = parseFloat(val);
-      const lbl = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + ' ms/div' : (sim.timeDiv * 1e6).toFixed(0) + ' µs/div';
-      document.getElementById('hudTime').innerText = lbl;
-    }
-
-    function onScaleChange(val) {
-      sim.vScale = parseFloat(val);
-      document.getElementById('hudCh1Scale').innerText = sim.vScale.toFixed(1) + ' V/div';
-      document.getElementById('hudCh2Scale').innerText = sim.vScale.toFixed(1) + ' V/div';
-    }
-
-    function onRChange(val) {
-      sim.r1 = parseFloat(val);
-      updateAll();
+      document.getElementById('btnTheme').innerText = sim.laserMode ? 'DSO Color Screen' : 'Laser-Friendly B&W Screen';
     }
 
     function getUjtPhysics() {
-      const vp = sim.eta * sim.vbb + 0.7; // 0.65 * 12 + 0.7 = 8.50 V
-      const vv = 1.5;                     // Valley voltage ~1.5 V
-      // For eta = 0.65, ln(1 / (1 - 0.65)) = ln(2.857) = 1.0498 ≈ 1.0 => T ≈ R1 * C
+      const vp = sim.eta * sim.vbb + 0.7;
+      const vv = 1.5;
       const period = sim.r1 * sim.c;
       const freq = 1 / period;
       const periodMs = period * 1000;
-      const vb1Peak = 3.2;                // Sharp positive spike at Base 1 during capacitor discharge
+      const vb1Peak = 3.2;
       return { vp, vv, period, freq, periodMs, vb1Peak };
     }
 
     function updateAll() {
       const p = getUjtPhysics();
       const fStr = p.freq >= 1000 ? `${(p.freq / 1000).toFixed(2)} kHz` : `${Math.round(p.freq)} Hz`;
+      const r1K = (sim.r1 / 1000).toFixed(1);
 
-      document.getElementById('rDisplay').innerText = `R1 = ${(sim.r1/1000).toFixed(1)} kΩ (f = ${fStr})`;
-      document.getElementById('hudCh2Label').innerText = sim.probe === 'vb1' ? 'VB1' : 'VB2';
-      document.getElementById('hudVp').innerText = `${p.vp.toFixed(2)} V`;
-      document.getElementById('hudVv').innerText = `${p.vv.toFixed(2)} V`;
-      document.getElementById('hudFreq').innerText = fStr;
-      document.getElementById('hudPeriod').innerText = `${p.periodMs.toFixed(2)} ms`;
+      document.getElementById('lblR1Knob').innerText = `${r1K} kΩ`;
+      document.getElementById('dsoTopFreq').innerText = fStr;
+      document.getElementById('dsoMeasFreq').innerText = fStr;
+      document.getElementById('dsoMeasPeriod').innerText = p.periodMs >= 1 ? `${p.periodMs.toFixed(2)} ms` : `${(p.periodMs * 1000).toFixed(0)} µs`;
+      document.getElementById('dsoMeasVp').innerText = `${p.vp.toFixed(2)} V`;
+      document.getElementById('dsoMeasVv').innerText = `${p.vv.toFixed(2)} V`;
+      document.getElementById('dsoCh2Label').innerText = sim.probe === 'vb1' ? 'VB1' : 'VB2';
+      document.getElementById('lcdR1Readout').innerText = `R1 = ${r1K} kΩ | f = ${fStr}`;
+      document.getElementById('fVpVal').innerText = `${p.vp.toFixed(2)} V`;
 
       document.getElementById('statFreq').innerText = fStr;
       document.getElementById('statTheor').innerText = fStr;
       document.getElementById('statVp').innerText = `${p.vp.toFixed(2)} V`;
       document.getElementById('statVv').innerText = `${p.vv.toFixed(2)} V`;
 
+      updateKnobVisuals();
       drawUjtSchematic('schematicCanvas');
     }
 
     // ---------------------------------------------------------
-    // SCHEMATIC RENDERER (Fig 15.1: UJT Relaxation Oscillator & 2N2646 TO-18 Pinout)
+    // SCHEMATIC RENDERER (Fig 15.1)
     // ---------------------------------------------------------
     function drawZigzag(ctx, x1, y1, x2, y2, w, peaks) {
       const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
@@ -883,17 +1190,15 @@
       const topY = 38, botY = 265, r1X = 125, ujtX = 285, ujtY = 152;
       const cUf = (sim.c * 1e6).toFixed(2).replace('.00', '');
 
-      // +VBB = 12 V DC Top Rail
       ctx.beginPath(); ctx.arc(205, 16, 3.5, 0, Math.PI * 2); ctx.stroke();
       ctx.font = 'bold 11px Arial'; ctx.textAlign = 'left';
-      ctx.fillText('VBB = +12 V DC', 214, 20);
+      ctx.fillText(`VBB = +${sim.vbb.toFixed(1)} V DC`, 214, 20);
       ctx.beginPath();
       ctx.moveTo(205, 20); ctx.lineTo(205, topY);
       ctx.moveTo(r1X, topY); ctx.lineTo(ujtX, topY);
       ctx.stroke();
       drawDot(ctx, 205, topY);
 
-      // Left Branch: R1 (Timing Resistor) & Capacitor C
       drawZigzag(ctx, r1X, topY, r1X, ujtY, 6, 4);
       ctx.textAlign = 'right';
       ctx.font = 'bold 10px Arial';
@@ -903,30 +1208,25 @@
       ctx.fillText(`C = ${cUf} µF`, r1X - 12, (ujtY + botY) / 2 + 3);
       drawDot(ctx, r1X, ujtY);
 
-      // Emitter Connection & Output Terminal VE
       ctx.beginPath(); ctx.moveTo(r1X, ujtY); ctx.lineTo(ujtX - 10, ujtY); ctx.stroke();
       ctx.beginPath(); ctx.arc(72, ujtY, 3, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(75, ujtY); ctx.lineTo(r1X, ujtY); ctx.stroke();
       ctx.fillText('VE', 65, ujtY + 4);
 
-      // Right Branch: R2 (100 Ω) -> UJT 2N2646 -> R3 (47 Ω)
       drawZigzag(ctx, ujtX, topY, ujtX, 118, 5, 3);
       ctx.textAlign = 'left';
       ctx.fillText('R2 = 100 Ω', ujtX + 10, 78);
 
-      // UJT Circle & Base Bar
       ctx.beginPath(); ctx.arc(ujtX, ujtY, 20, 0, Math.PI * 2); ctx.stroke();
       ctx.lineWidth = 2.6;
       ctx.beginPath(); ctx.moveTo(ujtX - 6, ujtY - 12); ctx.lineTo(ujtX - 6, ujtY + 12); ctx.stroke();
       ctx.lineWidth = 1.8;
 
-      // B2 and B1 internal leads
       ctx.beginPath();
       ctx.moveTo(ujtX, 118); ctx.lineTo(ujtX, ujtY - 8); ctx.lineTo(ujtX - 6, ujtY - 8);
       ctx.moveTo(ujtX, 186); ctx.lineTo(ujtX, ujtY + 8); ctx.lineTo(ujtX - 6, ujtY + 8);
       ctx.stroke();
 
-      // Slanted Emitter Arrow pointing into UJT base bar
       ctx.beginPath();
       ctx.moveTo(ujtX - 18, ujtY); ctx.lineTo(ujtX - 6, ujtY + 4);
       ctx.stroke();
@@ -943,7 +1243,6 @@
       ctx.fillText('B1', ujtX + 8, 182);
       ctx.fillText('E', ujtX - 24, ujtY - 8);
 
-      // Output Terminals VB2 and VB1
       ctx.beginPath(); ctx.moveTo(ujtX, 122); ctx.lineTo(352, 122); ctx.stroke();
       drawDot(ctx, ujtX, 122);
       ctx.beginPath(); ctx.arc(356, 122, 3, 0, Math.PI * 2); ctx.stroke();
@@ -955,17 +1254,14 @@
       ctx.beginPath(); ctx.arc(356, 184, 3, 0, Math.PI * 2); ctx.stroke();
       ctx.fillText('VB1', 363, 187);
 
-      // R3 (47 Ω) to Ground
       drawZigzag(ctx, ujtX, 186, ujtX, botY, 5, 3);
       ctx.fillText('R3 = 47 Ω', ujtX + 10, 228);
 
-      // Ground Rail
       ctx.beginPath(); ctx.moveTo(r1X, botY); ctx.lineTo(ujtX, botY); ctx.stroke();
       drawDot(ctx, r1X, botY);
       drawDot(ctx, ujtX, botY);
       drawGround(ctx, 205, botY);
 
-      // Divider & 2N2646 TO-18 Metal Can Bottom View on Right
       ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(415, 22); ctx.lineTo(415, h - 20); ctx.stroke();
 
@@ -975,11 +1271,9 @@
       ctx.fillText('UJT 2N2646 (TO-18)', cx, 45);
       ctx.fillText('Bottom View (Leads Up)', cx, 60);
 
-      // Metal Can Outer Rim & Tab at 45° (next to Emitter E)
       ctx.beginPath(); ctx.arc(cx, cy, rad + 6, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.stroke();
 
-      // Index Tab pointing bottom-left toward Emitter lead
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate((3 * Math.PI) / 4);
@@ -988,7 +1282,6 @@
       ctx.strokeRect(rad, -5, 13, 10);
       ctx.restore();
 
-      // 3 Leads: E (bottom-left near tab), B1 (top-left), B2 (bottom-right)
       const pins = [
         { x: cx - 16, y: cy + 16, lbl: 'E (Tab)', ox: -36, oy: 34 },
         { x: cx - 16, y: cy - 16, lbl: 'B1',      ox: -32, oy: -28 },
@@ -1002,9 +1295,6 @@
       });
     }
 
-    // ---------------------------------------------------------
-    // DUAL-TRACE DSO RENDERER (CH1: VE Sawtooth, CH2: VB1 / VB2 Pulses)
-    // ---------------------------------------------------------
     function drawOscilloscope(canvasId, isLaser, staticSnap) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
@@ -1016,7 +1306,7 @@
       const gridMinor = isLaser ? '#e2e8f0' : '#0f172a';
       const axis = isLaser ? '#000000' : '#38bdf8';
       const trVe = isLaser ? '#000000' : '#22d3ee';
-      const trPulse = isLaser ? '#000000' : '#fbbf24';
+      const trPulse = isLaser ? '#000000' : '#eab308';
 
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
@@ -1038,7 +1328,6 @@
       for (let x = 0; x <= 10; x++) { ctx.beginPath(); ctx.moveTo(x * divW, 0); ctx.lineTo(x * divW, h); ctx.stroke(); }
       for (let y = 0; y <= 8; y++) { ctx.beginPath(); ctx.moveTo(0, y * divH); ctx.lineTo(w, y * divH); ctx.stroke(); }
 
-      // Place 0V reference baseline 1 division above bottom (y = 7 * divH) so unipolar 0..10V signals use full screen height
       const zeroY = 7 * divH;
       ctx.strokeStyle = axis; ctx.lineWidth = 1.4;
       ctx.beginPath();
@@ -1046,39 +1335,43 @@
       ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
       ctx.stroke();
 
+      ctx.fillStyle = isLaser ? '#000000' : '#22d3ee';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('1>', 3, zeroY - 3);
+      ctx.fillStyle = isLaser ? '#000000' : '#eab308';
+      ctx.fillText('2>', 3, zeroY + 11);
+
       const p = getUjtPhysics();
-      const totalTime = 10 * sim.timeDiv;
+      const ch1Scale = getCh1Scale();
+      const ch2Scale = getCh2Scale();
+      const totalTime = 10 * getTimeDiv();
       const dt = totalTime / w;
       const t0 = staticSnap ? 0 : (sim.t % p.period);
 
-      // CH1: Emitter Sawtooth Voltage VE (charging exponentially from VV to VP, then rapid discharge)
+      // CH1: Sawtooth VE
       ctx.save();
-      ctx.strokeStyle = trVe;
-      ctx.lineWidth = 2.3;
+      ctx.strokeStyle = trVe; ctx.lineWidth = 2.3;
       ctx.beginPath();
       for (let px = 0; px < w; px++) {
         const t = t0 + px * dt;
-        const u = ((t % p.period) + p.period) % p.period / p.period; // normalized cycle phase [0, 1)
+        const u = ((t % p.period) + p.period) % p.period / p.period;
         let ve = p.vv;
         if (u < 0.94) {
           const frac = u / 0.94;
-          // Exponential RC charging curve from VV (1.5 V) up to VP (8.5 V)
           ve = p.vv + (p.vp - p.vv) * ((1 - Math.exp(-1.15 * frac)) / (1 - Math.exp(-1.15)));
         } else {
-          // Rapid emitter discharge through RB1
           const dFrac = (u - 0.94) / 0.06;
           ve = p.vp - (p.vp - p.vv) * dFrac;
         }
-        const py = zeroY - (ve / sim.vScale) * divH;
+        const py = zeroY - (ve / ch1Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
-      // CH2: Base-1 Positive Spikes (VB1) or Base-2 Negative Dips (VB2)
+      // CH2: VB1 / VB2 Pulses
       ctx.save();
-      ctx.strokeStyle = trPulse;
-      ctx.lineWidth = 2.0;
+      ctx.strokeStyle = trPulse; ctx.lineWidth = 2.0;
       if (isLaser) ctx.setLineDash([5, 3]);
       ctx.beginPath();
       for (let px = 0; px < w; px++) {
@@ -1086,32 +1379,31 @@
         const u = ((t % p.period) + p.period) % p.period / p.period;
         let vOut = 0.25;
         if (sim.probe === 'vb1') {
-          // Positive trigger pulse during discharge interval [0.94, 1.0]
           if (u >= 0.94) {
             const dFrac = (u - 0.94) / 0.06;
             vOut = 0.25 + p.vb1Peak * Math.exp(-3.5 * dFrac);
           }
         } else {
-          // VB2 sits near VBB - V_RB2 (~10.2 V) and dips sharply during emitter discharge
           vOut = 10.2;
           if (u >= 0.94) {
             const dFrac = (u - 0.94) / 0.06;
             vOut = 10.2 - 3.6 * Math.exp(-3.5 * dFrac);
           }
         }
-        const py = zeroY - (vOut / sim.vScale) * divH;
+        const py = zeroY - (vOut / ch2Scale) * divH;
         if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
 
       if (staticSnap) {
-        const tbStr = sim.timeDiv >= 0.001 ? (sim.timeDiv * 1000).toFixed(1) + 'ms/d' : (sim.timeDiv * 1e6).toFixed(0) + 'µs/d';
+        const td = getTimeDiv();
+        const tbStr = td >= 0.001 ? `${(td * 1000).toFixed(1)}ms/d` : `${(td * 1e6).toFixed(0)}µs/d`;
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(6, 6, 330, 20);
         ctx.strokeStyle = '#000'; ctx.lineWidth = 0.8; ctx.strokeRect(6, 6, 330, 20);
         ctx.fillStyle = '#000'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'left';
-        ctx.fillText(`TB:${tbStr} | CH1:${sim.vScale.toFixed(1)}V/d | CH2:${sim.vScale.toFixed(1)}V/d`, 11, 19);
+        ctx.fillText(`TB:${tbStr} | CH1:${ch1Scale.toFixed(1)}V/d | CH2:${ch2Scale.toFixed(1)}V/d`, 11, 19);
       }
     }
 
@@ -1132,7 +1424,7 @@
 
       document.getElementById('sheetTableBody').innerHTML = `
         <tr>
-          <td><strong>Selected: R1 = ${(sim.r1/1000).toFixed(1)} kΩ, C = ${cUf} µF</strong></td>
+          <td><strong>Selected: R1 = ${(sim.r1/1000).toFixed(1)} kΩ</strong></td>
           <td>${p.vp.toFixed(2)} V</td>
           <td>${p.vv.toFixed(2)} V</td>
           <td>${p.vb1Peak.toFixed(1)} V</td>
@@ -1180,7 +1472,7 @@
     function mainLoop(now) {
       const dt = (now - lastTime) / 1000;
       lastTime = now;
-      if (sim.running) sim.t += dt * 0.004; // Scaled visual sweep speed so individual sawtooth cycles are crisp
+      if (sim.running) sim.t += dt * 0.004;
       drawOscilloscope('dsoCanvas', sim.laserMode, false);
       requestAnimationFrame(mainLoop);
     }
