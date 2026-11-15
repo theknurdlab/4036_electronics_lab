@@ -517,8 +517,8 @@
     #bodeCanvas {
       width: 100%;
       height: auto;
-      max-width: 600px;
-      aspect-ratio: 600 / 165;
+      max-width: 1000px;
+      aspect-ratio: 1000 / 430;
       display: block;
     }
 
@@ -671,6 +671,12 @@
       header, .tab-nav, #workbench-view, .no-print { display: none !important; }
       #worksheet-view { display: block !important; padding: 0 !important; box-shadow: none !important; }
       @page { size: A4 portrait; margin: 8mm 10mm; }
+      #reportDiagramsContainer { display:block !important; width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; }
+      #reportDiagramsContainer > div { display:grid !important; grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important; align-items:start !important; gap:2mm !important; width:100% !important; max-width:none !important; margin:0 0 2mm 0 !important; padding:0 !important; box-sizing:border-box !important; break-inside:avoid !important; page-break-inside:avoid !important; }
+      #reportDiagramsContainer > div > div { min-width:0 !important; width:100% !important; max-width:none !important; }
+      #reportDiagramsContainer canvas { display:block !important; width:100% !important; max-width:none !important; height:auto !important; }
+      #reportDiagramsContainer + * { max-width:none !important; }
+      #reportDiagramsContainer > div > div > div { font-size:8pt !important; line-height:1.15 !important; }
     }
   </style>
 </head>
@@ -908,7 +914,7 @@
         </div>
 
         <div class="schematic-box" style="margin-bottom:8px;">
-          <canvas id="bodeCanvas" width="600" height="165"></canvas>
+          <canvas id="bodeCanvas" width="1000" height="430"></canvas>
         </div>
 
         <!-- Integrated Breadboard Wiring Diagram Box -->
@@ -992,7 +998,7 @@
 
       <div class="sheet-section-title">LOGGED DSO WAVEFORM DIAGRAMS (DYNAMICALLY DISPLAYED PER LOGGED MEASUREMENT)</div>
       <div class="sheet-body-box" style="background:#ffffff;">
-        <div id="reportDiagramsContainer" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; align-items:center; padding:4px;">
+        <div id="reportDiagramsContainer" style="display:block; width:100%; max-width:none; margin:0; padding:0; box-sizing:border-box;">
           <div style="grid-column: span 2; text-align:center; padding:12px; color:#6b7280; font-style:italic;">No readings logged yet. Click '+ Log Reading to Table' in the Interactive Simulator tab to display logged DSO waveforms here.</div>
         </div>
       </div>
@@ -1898,6 +1904,23 @@
       }
       ctx.stroke();
 
+      // Mark the -3 dB lower and upper cutoff frequencies on the live simulator plot.
+      const cutoffY = y3db;
+      [
+        { f: pNow.fL, label: `fL ${formatFreq(pNow.fL)}` },
+        { f: pNow.fH, label: `fH ${formatFreq(pNow.fH)}` }
+      ].forEach((c, i) => {
+        const x = padL + ((Math.log10(c.f) - 1) / 5.3) * plotW;
+        ctx.save(); ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 1.8; ctx.setLineDash([5,3]);
+        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+        ctx.setLineDash([]); ctx.fillStyle = '#b91c1c'; ctx.font = 'bold 12px Arial';
+        ctx.textAlign = (i === 0 ? 'left' : 'right');
+        ctx.fillText(c.label, i === 0 ? x + 5 : x - 5, Math.max(padT + 14, cutoffY - 10));
+        ctx.restore();
+      });
+      ctx.fillStyle = '#111827'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'left';
+      ctx.fillText('Dashed red lines: lower and upper -3 dB cutoff frequencies', padL + 6, padT + 14);
+
       const curLf = Math.log10(sim.freq);
       const curX = padL + ((curLf - 1) / 5.3) * plotW;
       const curY = padT + plotH - (Math.max(0, pNow.gainDb) / maxDb) * plotH;
@@ -1909,7 +1932,13 @@
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const w = canvas.width, h = canvas.height;
+      // Logged report graphs use a 2x backing store for crisp print/PDF output,
+      // while retaining the original 280 x 130 logical drawing coordinates.
+      const hiRes = staticSnap && canvas.width >= 560 && canvas.height >= 260;
+      const scale = hiRes ? 2 : 1;
+      if (hiRes) ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      else ctx.setTransform(1, 0, 0, 1, 0, 0);
+      const w = canvas.width / scale, h = canvas.height / scale;
 
       const bg = isLaser ? '#ffffff' : '#030712';
       const gridMajor = isLaser ? '#94a3b8' : '#1e3a5f';
@@ -2137,14 +2166,14 @@
         tbody.innerHTML = htmlRows;
 
         diagContainer.innerHTML = groupedList.map((r, idx) => `
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; background:#f9fafb; border:1px solid #000; padding:4px; border-radius:4px; margin-bottom:6px;">
-            <div style="text-align:center;">
-              <canvas id="dynDsoCanvas_${idx}" width="280" height="130" style="width:100%; height:auto; border:1px solid #000;"></canvas>
-              <div style="font-size:0.58rem; font-weight:700; margin-top:1px;">(${String.fromCharCode(97 + idx)}) Waveform [f = ${r.freqStr}, Vo = ${r.voStr}]</div>
+          <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; gap:6px; width:100%; max-width:none; box-sizing:border-box; background:#ffffff; border:0; padding:0; margin:0 0 6px 0; break-inside:avoid; page-break-inside:avoid;">
+            <div style="min-width:0; text-align:center;">
+              <canvas id="dynDsoCanvas_${idx}" width="1800" height="900" style="display:block; width:100%; max-width:none; height:auto; border:1px solid #000; image-rendering:auto;"></canvas>
+              <div style="font-size:0.9rem; font-weight:800; line-height:1.25; margin-top:5px;">(${String.fromCharCode(97 + idx)}) Input / Output Waveform [f = ${r.freqStr}, Vo = ${r.voStr}]</div>
             </div>
-            <div style="text-align:center;">
-              <canvas id="dynBodeCanvas_${idx}" width="280" height="130" style="width:100%; height:auto; border:1px solid #000;"></canvas>
-              <div style="font-size:0.58rem; font-weight:700; margin-top:1px;">Freq Response [Gain = ${r.dbStr}]</div>
+            <div style="min-width:0; text-align:center;">
+              <canvas id="dynBodeCanvas_${idx}" width="1800" height="900" style="display:block; width:100%; max-width:none; height:auto; border:1px solid #000; image-rendering:auto;"></canvas>
+              <div style="font-size:0.9rem; font-weight:800; line-height:1.25; margin-top:5px;">Frequency Response [Gain = ${r.dbStr}]</div>
             </div>
           </div>
         `).join('');
@@ -2166,49 +2195,96 @@
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const w = canvas.width, h = canvas.height;
+      const scale = 2;
+      const w = canvas.width / scale, h = canvas.height / scale;
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 32, padR = 12, padT = 10, padB = 18;
+      // Log-frequency axis: 10 Hz to 10 MHz; gain axis: -40 dB to +50 dB.
+      const padL = 48, padR = 12, padT = 12, padB = 38;
       const plotW = w - padL - padR, plotH = h - padT - padB;
+      const fMinLog = 1, fMaxLog = 7, dbMin = -40, dbMax = 50;
+      const xAt = f => padL + (Math.log10(Math.max(10, Math.min(1e7, f))) - fMinLog) / (fMaxLog-fMinLog) * plotW;
+      const yAt = db => padT + (dbMax - Math.max(dbMin, Math.min(dbMax, db))) / (dbMax-dbMin) * plotH;
 
-      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.6;
-      for (let d = 1; d <= 6; d++) {
-        const x = padL + ((d - 1) / 5.3) * plotW;
-        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+      ctx.font = '15px Arial'; ctx.textBaseline = 'middle';
+      // Horizontal dB grid and labelled scale.
+      for (let db = -40; db <= 50; db += 10) {
+        const y = yAt(db);
+        ctx.strokeStyle = db === 0 ? '#64748b' : '#d1d5db';
+        ctx.lineWidth = db === 0 ? 1 : 0.65;
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+plotW, y); ctx.stroke();
+        ctx.fillStyle = '#111827'; ctx.textAlign = 'right';
+        ctx.fillText(`${db}`, padL-5, y);
       }
-
-      ctx.strokeStyle = '#000000'; ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, plotH);
+      // Major logarithmic frequency ticks with readable labels.
+      const ticks = [
+        [10,'10 Hz'],[100,'100 Hz'],[1000,'1 kHz'],[10000,'10 kHz'],
+        [100000,'100 kHz'],[1000000,'1 MHz'],[10000000,'10 MHz']
+      ];
+      ticks.forEach(([f,label]) => {
+        const x = xAt(f);
+        ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 0.65;
+        ctx.beginPath(); ctx.moveTo(x,padT); ctx.lineTo(x,padT+plotH); ctx.stroke();
+        ctx.fillStyle = '#111827'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillText(label,x,padT+plotH+5);
+      });
+      ctx.strokeStyle = '#111827'; ctx.lineWidth = 1.1;
+      ctx.strokeRect(padL,padT,plotW,plotH);
 
       const saved = { rc: sim.rc, ce: sim.ce, rl: sim.rl };
       sim.rc = item.rc; sim.ce = item.ce; sim.rl = item.rl;
       try {
+        ctx.strokeStyle = '#111827'; ctx.lineWidth = 2.0; ctx.beginPath();
+        for (let i=0;i<=600;i++) {
+          const lf = fMinLog + (i/600)*(fMaxLog-fMinLog);
+          const f = Math.pow(10,lf);
+          const res = getAmpPhysics(f);
+          const x = padL + (i/600)*plotW;
+          const y = yAt(res.gainDb);
+          if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
 
-      ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let i = 0; i <= 100; i++) {
-        const lf = 1 + (i / 100) * 5.3;
-        const f = Math.pow(10, lf);
-        const res = getAmpPhysics(f);
-        const x = padL + (i / 100) * plotW;
-        const y = padT + plotH - (Math.max(0, res.gainDb) / 50) * plotH;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
+        const physics = getAmpPhysics(item.freq);
+        const midDb = 20 * Math.log10(physics.midGain);
+        const cutoffDb = midDb - 3;
+        [
+          { f: physics.fL, label: `fL ${formatFreq(physics.fL)}` },
+          { f: physics.fH, label: `fH ${formatFreq(physics.fH)}` }
+        ].forEach((c, i) => {
+          const x = xAt(c.f), y = yAt(cutoffDb);
+          ctx.save(); ctx.strokeStyle = '#c00000'; ctx.lineWidth = 1.8; ctx.setLineDash([7,4]);
+          ctx.beginPath(); ctx.moveTo(x,padT); ctx.lineTo(x,padT+plotH); ctx.stroke();
+          ctx.setLineDash([]); ctx.fillStyle = '#b00000'; ctx.font = 'bold 12px Arial';
+          ctx.textAlign = i === 0 ? 'left' : 'right'; ctx.textBaseline = 'bottom';
+          ctx.fillText(c.label, i === 0 ? x+6 : x-6, Math.max(padT+22,y-7));
+          ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+          ctx.restore();
+        });
+        // Horizontal -3 dB reference line.
+        ctx.save(); ctx.strokeStyle = '#555555'; ctx.lineWidth = 1.2; ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(padL,yAt(cutoffDb)); ctx.lineTo(padL+plotW,yAt(cutoffDb)); ctx.stroke();
+        ctx.setLineDash([]); ctx.fillStyle = '#222222'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'left';
+        ctx.fillText(`-3 dB level (${cutoffDb.toFixed(1)} dB)`,padL+6,yAt(cutoffDb)-5); ctx.restore();
 
-      const lfPt = Math.log10(Math.max(10, item.freq));
-      const ptX = padL + ((lfPt - 1) / 5.3) * plotW;
-      const dbVal = parseFloat(item.dbStr);
-      const ptY = padT + plotH - (Math.max(0, dbVal) / 50) * plotH;
+        const measuredDb = Number.parseFloat(item.dbStr);
+        const px = xAt(item.freq), py = yAt(measuredDb);
+        ctx.fillStyle = '#dc2626'; ctx.beginPath(); ctx.arc(px,py,3.5,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle = '#111827'; ctx.lineWidth = 0.8; ctx.stroke();
+        ctx.font = 'bold 15px Arial'; ctx.fillStyle = '#111827'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+        const labelX = Math.min(padL+plotW-48, Math.max(padL+3, px+5));
+        const labelY = Math.max(padT+10, py-4);
+        ctx.fillText(`${measuredDb.toFixed(1)} dB`,labelX,labelY);
+      } finally { Object.assign(sim,saved); }
 
-      ctx.fillStyle = '#dc2626';
-      ctx.beginPath(); ctx.arc(ptX, ptY, 3.5, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#000000'; ctx.lineWidth = 1; ctx.stroke();
-
-      } finally { Object.assign(sim, saved); }
+      // Axis titles.
+      ctx.fillStyle = '#111827'; ctx.font = 'bold 15px Arial';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillText('Frequency (Hz) — logarithmic scale',padL+plotW/2,h-2);
+      ctx.save(); ctx.translate(10,padT+plotH/2); ctx.rotate(-Math.PI/2);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('Voltage Gain (dB)',0,0); ctx.restore();
     }
 
     function printWorksheet() {
